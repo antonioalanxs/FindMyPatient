@@ -34,5 +34,8 @@ def include_api_path(application_name):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    include_api_path('swagger'),
+
     include_api_path('authentication'),
 ]

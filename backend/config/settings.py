@@ -43,7 +43,8 @@ BASE_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    "rest_framework",
+    'rest_framework',
+    'drf_yasg',
 ]
 
 LOCAL_APPS = [
@@ -51,6 +52,11 @@ LOCAL_APPS = [
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+SWAGGER_SETTINGS = {
+    "DOC_EXPANSION": "none",
+    "DEFAULT_INFO": "swagger.urls.swagger_information",
+}
 
 BASE_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
