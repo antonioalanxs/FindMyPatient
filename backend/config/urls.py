@@ -16,7 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls.conf import include
+
+
+def include_api_path(application_name):
+    """
+    Include the urls of an application in the api path.
+
+    Args:
+        application_name (str): The name of the application.
+
+    Returns:
+        django.urls.path: The path to include the urls of the application.
+    """
+    return path(f'api/{application_name}/', include(f'{application_name}.urls'))
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    include_api_path('authentication'),
 ]
