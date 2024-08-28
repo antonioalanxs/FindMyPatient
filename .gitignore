@@ -1,0 +1,11 @@
+# Environment files
+*.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Docker
+/mysql
