@@ -13,7 +13,7 @@ import {
   IonNavLink,
 } from "@ionic/react";
 
-import Error from "@/components/Error";
+import Error from "@/components/Error/Error";
 
 function HelloWorld() {
   return (
