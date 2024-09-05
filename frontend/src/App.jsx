@@ -1,4 +1,6 @@
-import Router from "@/Router";
+import { IonNav } from "@ionic/react";
+
+import HelloWorld from "@/components/HelloWorld";
 
 /**
  * The application component. This is the entry point of the application.
@@ -6,11 +8,7 @@ import Router from "@/Router";
  * @returns {JSX.Element} - The entry point of the application.
  */
 function App() {
-  return (
-    <>
-      <Router />
-    </>
-  );
+  return <IonNav root={() => <HelloWorld />} />;
 }
 
 export default App;
