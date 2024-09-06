@@ -1,0 +1,24 @@
+[
+  {
+    "model": "users.baseuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": "2024-02-28T18:06:45.230",
+      "username": "root",
+      "email": "root@root.com",
+      "reset_password_token": null
+    }
+  },
+  {
+    "model": "users.administrator",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": "2024-02-28T18:06:45.230",
+      "username": "root",
+      "email": "root@root.com",
+      "reset_password_token": null
+    }
+  }
+]
