@@ -18,7 +18,6 @@ class BaseUser(AbstractUser):
         first_name (str): The first name of the user.
         last_name (str): The last name of the user.
         is_staff (bool): Whether the user can access the admin site.
-        is_active (bool): Whether the user is active.
         is_superuser (bool): Whether the user is a superuser.
         date_joined (datetime): The date the user joined the platform.
     """
@@ -36,7 +35,6 @@ class BaseUser(AbstractUser):
     first_name = None
     last_name = None
     is_staff = None
-    is_active = None
     is_superuser = None
     date_joined = None
 
