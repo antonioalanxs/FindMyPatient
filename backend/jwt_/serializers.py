@@ -1,5 +1,7 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from base.serializers import UserSerializer
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
@@ -20,7 +22,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         """
         token = super().get_token(user)
 
-        token["id"] = user.id
-        token["username"] = user.username
+        data = UserSerializer(user).data
+        data = data.items()
+
+        for key, value in data:
+            token[key] = value
 
         return token

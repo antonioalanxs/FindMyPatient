@@ -53,7 +53,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'authentication',
-    'users'
+    'base',
+    'users',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -131,7 +132,7 @@ DATABASES = {
     },
 }
 
-AUTH_USER_MODEL = 'users.BaseUser'
+AUTH_USER_MODEL = 'base.User'
 
 FIXTURE_DIRS = [os.path.join(BASE_DIR, 'fixture')]
 
