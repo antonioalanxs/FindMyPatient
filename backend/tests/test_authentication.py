@@ -5,9 +5,4 @@ from .tests_helper import TestSetUp
 
 
 class AuthenticationAPITestCase(TestSetUp):
-    def test_hello_world(self):
-        endpoint = reverse('hello-world')
-
-        response = self.client.get(endpoint)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    pass
