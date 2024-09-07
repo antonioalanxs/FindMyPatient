@@ -22,8 +22,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         """
         token = super().get_token(user)
 
-        data = UserSerializer(user).data
-        data = data.items()
+        data = UserSerializer(user).data.items()
 
         for key, value in data:
             token[key] = value

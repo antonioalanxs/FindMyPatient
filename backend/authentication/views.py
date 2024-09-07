@@ -31,7 +31,7 @@ class LoginView(TokenObtainPairView):
                 }
             ),
             400: openapi.Response(
-                description="Bad Request",
+                description="Bad Request.",
                 examples={
                     "application/json": {
                         "message": "Invalid credentials."
@@ -41,10 +41,8 @@ class LoginView(TokenObtainPairView):
         }
     )
     def post(self, request, **kwargs):
-        data = request.data
-        user = authenticate(**data)
-        if user:
-            serializer = CustomTokenObtainPairSerializer(data=data)
+        if authenticate(**request.data) is not None:
+            serializer = CustomTokenObtainPairSerializer(data=request.data)
             if serializer.is_valid():
                 return Response(
                     {

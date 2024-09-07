@@ -11,12 +11,7 @@ class User(AbstractUser):
 
     Attributes:
         reset_password_token (str): The token used to reset the password of the user.
-        birth_date (date): The birthdate of the user.
     """
-
-    class Meta:
-        db_table = "users_user"
-
     reset_password_token = models.CharField(
         unique=True,
         max_length=255,
@@ -26,6 +21,30 @@ class User(AbstractUser):
 
     is_staff = None
     is_superuser = None
+
+    @property
+    def role(self):
+        """
+        Returns the role of the user dynamically.
+
+        Returns:
+            str: The role of the user.
+        """
+        import users.models as roles
+
+        roles = dir(roles)
+        self_name = self.__class__.__name__.lower()
+
+        for role in roles:
+            role = role.lower()
+
+            if role == self_name or "__" in role:
+                continue
+
+            if hasattr(self, role):
+                return role
+
+        return self_name
 
 
 class Address(models.Model):
