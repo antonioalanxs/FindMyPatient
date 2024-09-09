@@ -1,14 +1,14 @@
 import { IonNav } from "@ionic/react";
 
-import HelloWorld from "@/components/HelloWorld";
+import Login from "@/components/pages/Login/Login";
 
-/**
- * The application component. This is the entry point of the application.
- *
- * @returns {JSX.Element} - The entry point of the application.
- */
 function App() {
-  return <IonNav root={() => <HelloWorld />} />;
+  return (
+    <IonNav
+      root={() => <Login />}
+      style={{ maxWidth: "640px", marginInline: "auto" }}
+    />
+  );
 }
 
 export default App;
