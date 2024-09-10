@@ -1,9 +1,8 @@
-import { render } from "@testing-library/react";
-
+import { customRender } from "@/utilities/tests/customRender";
 import Login from "@/components/pages/Login/Login";
 
 describe("Login", () => {
   it("should create", () => {
-    render(<Login />);
+    customRender(<Login />);
   });
 });

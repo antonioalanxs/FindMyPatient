@@ -34,6 +34,10 @@ ALLOWED_HOSTS = []
 
 load_dotenv(ROOT_DIR / '.env')
 
+# CORS configuration
+ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
+
 # Application definition
 
 BASE_APPS = [
@@ -49,6 +53,7 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 LOCAL_APPS = [
@@ -91,7 +96,9 @@ BASE_MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-THIRD_PARTY_MIDDLEWARE = []
+THIRD_PARTY_MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+]
 
 LOCAL_MIDDLEWARE = []
 

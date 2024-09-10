@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import {
   IonContent,
@@ -10,16 +10,23 @@ import {
   IonHeader,
   IonTitle,
   IonSpinner,
+  IonToast,
 } from "@ionic/react";
-import { shieldCheckmark, person } from "ionicons/icons";
+import { shieldCheckmark, person, lockClosed } from "ionicons/icons";
 
 import { useForm } from "react-hook-form";
 
+import { jwtDecode } from "jwt-decode";
+
+import AuthenticationContext from "@/contexts/AuthenticationContext";
+import { useTitle } from "@/hooks/useTitle";
+import { authenticationService } from "@/services/AuthenticationService";
+import { storageService } from "@/services/StorageService";
 import Logo from "@/components/Text/Logo/Logo";
 import HeadingText from "@/components/Text/HeadingText/HeadingText";
 import ErrorText from "@/components/Text/ErrorText/ErrorText";
 import NavLink from "@/components/NavLink/NavLink";
-import { useTitle } from "@/hooks/useTitle";
+import { DEFAULT_DURATION } from "@/constants";
 
 function Login() {
   useTitle({ title: "Log in" });
@@ -34,10 +41,37 @@ function Login() {
   });
 
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  const [isOpenedToast, setIsOpenedToast] = useState(false);
 
+  const { setIsUserAuthenticated } = useContext(AuthenticationContext);
+
+  /**
+   * Handles the login form submission.
+   *
+   * @param {Object} data - The form data.
+   */
   const onSubmit = (data) => {
-    console.log(data);
     setIsSubmittingForm(true);
+
+    authenticationService
+      ._login(data)
+      .then((response) => {
+        const { access_token, refresh_token } = response.data;
+        const user = jwtDecode(access_token);
+
+        storageService._save(storageService.ACCESS_TOKEN, access_token);
+        storageService._save(storageService.REFRESH_TOKEN, refresh_token);
+        storageService._save(storageService.USER, user);
+
+        setIsUserAuthenticated(true);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsOpenedToast(true);
+      })
+      .finally(() => {
+        setIsSubmittingForm(false);
+      });
   };
 
   return (
@@ -58,9 +92,9 @@ function Login() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <IonInput
             type="text"
-            placeholder="User"
+            placeholder="Username"
             fill="outline"
-            {...register("user", { required: "User is required." })}
+            {...register("username", { required: "Username is required." })}
           >
             <IonIcon
               slot="start"
@@ -70,7 +104,7 @@ function Login() {
               aria-hidden="true"
             ></IonIcon>
           </IonInput>
-          <ErrorText message={errors?.user?.message} />
+          <ErrorText message={errors?.username?.message} />
 
           <IonInput
             type="password"
@@ -101,6 +135,15 @@ function Login() {
         </form>
 
         <NavLink text="Do you have forgotten your password?"></NavLink>
+
+        <IonToast
+          isOpen={isOpenedToast}
+          onDidDismiss={() => setIsOpenedToast(false)}
+          message="Invalid credentials."
+          duration={DEFAULT_DURATION}
+          icon={lockClosed}
+          color="danger"
+        />
       </IonContent>
     </>
   );

@@ -4,8 +4,6 @@ import { Storage } from "@ionic/storage";
  * A service that provides methods to interact with the `@ionic/storage` API.
  *
  * It is a singleton class that can be accessed using the `instance` property.
- *
- * It is implemented using the `Singleton` and `Builder` design patterns.
  */
 class StorageService {
   static instance = new StorageService();
@@ -24,11 +22,15 @@ class StorageService {
 
     this.storage = new Storage();
 
-    this.ACCESS_TOKEN = "accessToken";
-    this.REFRESH_TOKEN = "refreshToken";
-    this.USER = "user";
+    Promise.resolve(this.storage.create())
+      .then(() => {
+        this.ACCESS_TOKEN = "accessToken";
+        this.REFRESH_TOKEN = "refreshToken";
+        this.USER = "user";
 
-    StorageService.instance = this;
+        StorageService.instance = this;
+      })
+      .catch((error) => console.error(error));
   }
 
   /**
@@ -36,13 +38,11 @@ class StorageService {
    *
    * @param {string} key - The key to store the value.
    * @param {any} value - The value to store.
-   *
-   * @returns {Storage} - The `Storage` object.
    */
   _save = async (key, value) => {
     value = JSON.stringify(value);
-    await this.storage.set(key, value);
-    return this.storage;
+
+    await this.storage.set(key, value).catch((error) => console.error(error));
   };
 
   /**
@@ -53,18 +53,18 @@ class StorageService {
    * @returns {any} - The value stored in the storage.
    */
   _get = async (key) => {
-    let item = await this.storage.get(key);
-    item = item ? JSON.parse(item) : null;
+    let item;
+
+    await this.storage.get(key).then((value) => (item = JSON.parse(value)));
+
     return item;
   };
 
   /**
    * Removes all the key-value pairs from the storage.
-   *
-   * @param {string} key - The key to remove.
    */
   _clear = async () => {
-    await this.storage.clear();
+    await this.storage.clear().catch((error) => console.error(error));
   };
 }
 

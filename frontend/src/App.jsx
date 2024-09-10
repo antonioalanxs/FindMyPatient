@@ -1,13 +1,16 @@
 import { IonNav } from "@ionic/react";
 
 import Login from "@/components/pages/Login/Login";
+import { AuthenticationProvider } from "@/contexts/AuthenticationContext";
 
 function App() {
   return (
-    <IonNav
-      root={() => <Login />}
-      style={{ maxWidth: "640px", marginInline: "auto" }}
-    />
+    <AuthenticationProvider>
+      <IonNav
+        root={() => <Login />}
+        style={{ maxWidth: "640px", marginInline: "auto" }}
+      />
+    </AuthenticationProvider>
   );
 }
 

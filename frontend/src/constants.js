@@ -9,3 +9,10 @@ export const BRAND_NAME = "FindMyPatient";
  * @type {number}
  */
 export const DEFAULT_DURATION = 3000;
+
+/**
+ * URL of the API. Defined as an environment variable in the `.env` file.
+ *
+ * @type {string}
+ */
+export const API_URL = import.meta.env.VITE_API_URL;
