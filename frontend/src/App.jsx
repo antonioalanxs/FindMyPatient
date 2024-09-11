@@ -1,6 +1,6 @@
 import { IonNav } from "@ionic/react";
 
-import Login from "@/components/pages/Login/Login";
+import Login from "@/pages/Login/Login";
 import { AuthenticationProvider } from "@/contexts/AuthenticationContext";
 
 function App() {

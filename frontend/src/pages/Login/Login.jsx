@@ -7,8 +7,6 @@ import {
   IonText,
   IonInputPasswordToggle,
   IonIcon,
-  IonHeader,
-  IonTitle,
   IonSpinner,
   IonToast,
 } from "@ionic/react";
@@ -22,7 +20,7 @@ import AuthenticationContext from "@/contexts/AuthenticationContext";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
-import Logo from "@/components/Text/Logo/Logo";
+import Logo from "@/components/Logo/Logo";
 import HeadingText from "@/components/Text/HeadingText/HeadingText";
 import ErrorText from "@/components/Text/ErrorText/ErrorText";
 import NavLink from "@/components/NavLink/NavLink";
@@ -65,8 +63,7 @@ function Login() {
 
         setIsUserAuthenticated(true);
       })
-      .catch((error) => {
-        console.error(error);
+      .catch(() => {
         setIsOpenedToast(true);
       })
       .finally(() => {
@@ -76,13 +73,9 @@ function Login() {
 
   return (
     <>
-      <IonHeader className="ion-no-border">
-        <IonTitle>
-          <Logo />
-        </IonTitle>
-      </IonHeader>
-
       <IonContent className="ion-padding">
+        <Logo />
+
         <HeadingText text="Log in" />
 
         <IonText color="medium">
