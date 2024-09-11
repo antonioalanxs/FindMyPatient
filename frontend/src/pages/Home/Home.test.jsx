@@ -1,8 +1,8 @@
 import { customRender } from "@/utilities/tests/customRender";
-import Login from "@/pages/Login/Login";
+import Home from "@/pages/Home/Home";
 
-describe("Login", () => {
+describe("Home", () => {
   it("should create", () => {
-    customRender(<Login />);
+    customRender(<Home />);
   });
 });

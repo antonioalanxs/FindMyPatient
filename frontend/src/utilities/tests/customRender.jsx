@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 
-import { AuthenticationProvider } from "@/contexts/AuthenticationContext";
+import { IonReactMemoryRouter } from "@ionic/react-router";
 
 /**
  * Renders a component with all necessary elements.
@@ -10,14 +10,5 @@ import { AuthenticationProvider } from "@/contexts/AuthenticationContext";
  * @returns {ReactNode} - The component.
  */
 export const customRender = (component) => {
-  return render(
-    <AuthenticationProvider
-      value={{
-        isUserAuthenticated: true,
-        setIsUserAuthenticated: () => {},
-      }}
-    >
-      {component}
-    </AuthenticationProvider>
-  );
+  return render(<IonReactMemoryRouter>{component}</IonReactMemoryRouter>);
 };

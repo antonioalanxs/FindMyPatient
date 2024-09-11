@@ -1,3 +1,5 @@
+import { useHistory } from "react-router-dom";
+
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
@@ -20,6 +22,7 @@ const axiosInstance = axios.create({
  *
  * It includes an interceptor to add and refresh the access token.
  */
+
 const axiosInstanceWithTokens = axios.create({
   baseURL: API_URL,
 });
@@ -37,18 +40,17 @@ axiosInstanceWithTokens.interceptors.request.use(async (request) => {
         refresh: refreshToken,
       })
       .then((response) => {
-        accessToken = response.data.access;
-        refreshToken = response.data.refresh;
+        accessToken = response.data.access_token;
+        refreshToken = response.data.refresh_token;
         user = jwtDecode(accessToken);
 
-        storageService
-          ._save(storageService.ACCESS_TOKEN, accessToken)
-          ._save(storageService.REFRESH_TOKEN, refreshToken)
-          ._save(storageService.USER, user);
+        storageService._save(storageService.ACCESS_TOKEN, accessToken);
+        storageService._save(storageService.REFRESH_TOKEN, refreshToken);
+        storageService._save(storageService.USER, user);
       })
       .catch(() => {
         storageService._clear();
-        window.location.reload();
+        useHistory().push("/");
       });
   }
 

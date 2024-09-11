@@ -9,6 +9,6 @@ import { BRAND_NAME } from "@/constants";
  */
 export const useTitle = ({ title }) => {
   useEffect(() => {
-    document.title = `${title} | ${BRAND_NAME}`;
+    document.title = title ? `${title} | ${BRAND_NAME}` : BRAND_NAME;
   }, [title]);
 };

@@ -1,20 +1,22 @@
 import { IonImg } from "@ionic/react";
 
 /**
- * Logo component. It displays the logo of the application.
+ * Displays the logo of the application.
  *
  * @param {string} maximumWidth Maximum width of the logo. Default is "500px".
  *
  * @returns {JSX.Element} - The component.
  */
-function Logo({ maximumWidth = "500px" }) {
+function Brand({ maximumWidth = "325px" }) {
   return (
     <h1
       style={{
         maxWidth: maximumWidth,
+        marginInline: "auto",
         cursor: "pointer",
         pointerEvents: "none",
       }}
+      className="ion-text-center"
     >
       <IonImg
         src="/logo.webp"
@@ -29,4 +31,4 @@ function Logo({ maximumWidth = "500px" }) {
   );
 }
 
-export default Logo;
+export default Brand;

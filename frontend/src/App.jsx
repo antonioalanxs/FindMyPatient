@@ -1,17 +1,7 @@
-import { IonNav } from "@ionic/react";
-
-import Login from "@/pages/Login/Login";
-import { AuthenticationProvider } from "@/contexts/AuthenticationContext";
+import Router from "@/Router";
 
 function App() {
-  return (
-    <AuthenticationProvider>
-      <IonNav
-        root={() => <Login />}
-        style={{ maxWidth: "640px", marginInline: "auto" }}
-      />
-    </AuthenticationProvider>
-  );
+  return <Router />;
 }
 
 export default App;
