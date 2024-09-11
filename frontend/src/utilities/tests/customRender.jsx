@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 
-import { IonReactMemoryRouter } from "@ionic/react-router";
+import { MemoryRouter } from "react-router-dom";
 
 /**
  * Renders a component with all necessary elements.
@@ -10,5 +10,5 @@ import { IonReactMemoryRouter } from "@ionic/react-router";
  * @returns {ReactNode} - The component.
  */
 export const customRender = (component) => {
-  return render(<IonReactMemoryRouter>{component}</IonReactMemoryRouter>);
+  return render(<MemoryRouter>{component}</MemoryRouter>);
 };
