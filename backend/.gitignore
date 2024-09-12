@@ -6,7 +6,7 @@ __pycache__/
 *.db
 *.sqlite3
 
-**/migrations/
+**/migrations/*.py
 !**/migrations/__init__.py
 
 # Media files
