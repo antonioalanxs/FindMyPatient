@@ -8,6 +8,13 @@
   --ion-color-primary-shade: #3b53a7;
   --ion-color-primary-tint: #566ec5;
 
+  --ion-color-success: #4ae373;
+  --ion-color-success-rgb: 74, 227, 115;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-color-success-shade: #41c865;
+  --ion-color-success-tint: #5ce681;
+
   --custom-font-family: "Poppins", sans-serif;
   --custom-icon-size: 20px;
 }

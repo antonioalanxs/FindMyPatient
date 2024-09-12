@@ -5,6 +5,8 @@ import { IonRouterOutlet } from "@ionic/react";
 
 import Index from "@/pages/Index/Index";
 import Home from "@/pages/Home/Home";
+import PasswordResetRequest from "@/pages/PasswordResetRequest/PasswordResetRequest";
+import PasswordReset from "@/pages/PasswordReset/PasswordReset";
 
 function Router() {
   return (
@@ -12,6 +14,8 @@ function Router() {
       <IonRouterOutlet>
         <Route path="/" exact component={Index} />
         <Route path="/home" exact component={Home} />
+        <Route path="/reset" exact component={PasswordResetRequest} />
+        <Route path="/reset/:token" exact component={PasswordReset} />
       </IonRouterOutlet>
     </IonReactRouter>
   );

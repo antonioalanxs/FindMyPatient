@@ -39,7 +39,7 @@ class StorageService {
    * @param {string} key - The key to store the value.
    * @param {any} value - The value to store.
    */
-  _save = async (key, value) => {
+  save = async (key, value) => {
     value = JSON.stringify(value);
 
     await this.storage.set(key, value).catch((error) => console.error(error));
@@ -52,7 +52,7 @@ class StorageService {
    *
    * @returns {any} - The value stored in the storage.
    */
-  _get = async (key) => {
+  get = async (key) => {
     let item;
 
     await this.storage.get(key).then((value) => (item = JSON.parse(value)));
@@ -63,7 +63,7 @@ class StorageService {
   /**
    * Removes all the key-value pairs from the storage.
    */
-  _clear = async () => {
+  clear = async () => {
     await this.storage.clear().catch((error) => console.error(error));
   };
 }

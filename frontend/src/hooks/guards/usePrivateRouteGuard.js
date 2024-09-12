@@ -16,7 +16,7 @@ export const usePrivateRouteGuard = () => {
 
   useEffect(() => {
     const invoke = async () => {
-      const item = await storageService._get(storageService.USER);
+      const item = await storageService.get(storageService.USER);
 
       setUser(item);
 

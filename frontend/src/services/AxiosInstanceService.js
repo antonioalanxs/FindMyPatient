@@ -44,12 +44,12 @@ axiosInstanceWithTokens.interceptors.request.use(async (request) => {
         refreshToken = response.data.refresh_token;
         user = jwtDecode(accessToken);
 
-        storageService._save(storageService.ACCESS_TOKEN, accessToken);
-        storageService._save(storageService.REFRESH_TOKEN, refreshToken);
-        storageService._save(storageService.USER, user);
+        storageService.save(storageService.ACCESS_TOKEN, accessToken);
+        storageService.save(storageService.REFRESH_TOKEN, refreshToken);
+        storageService.save(storageService.USER, user);
       })
       .catch(() => {
-        storageService._clear();
+        storageService.clear();
         useHistory().push("/");
       });
   }

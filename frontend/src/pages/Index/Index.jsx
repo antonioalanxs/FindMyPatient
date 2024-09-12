@@ -45,23 +45,18 @@ function Login() {
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [isOpenedToast, setIsOpenedToast] = useState(false);
 
-  /**
-   * Handles the login form submission.
-   *
-   * @param {Object} data - The form data.
-   */
   const onSubmit = (data) => {
     setIsSubmittingForm(true);
 
     authenticationService
-      ._login(data)
+      .login(data)
       .then((response) => {
         const { access_token, refresh_token } = response.data;
         const user = jwtDecode(access_token);
 
-        storageService._save(storageService.ACCESS_TOKEN, access_token);
-        storageService._save(storageService.REFRESH_TOKEN, refresh_token);
-        storageService._save(storageService.USER, user);
+        storageService.save(storageService.ACCESS_TOKEN, access_token);
+        storageService.save(storageService.REFRESH_TOKEN, refresh_token);
+        storageService.save(storageService.USER, user);
 
         history.push("/home");
       })
@@ -91,7 +86,7 @@ function Login() {
       <IonText color="primary" className="ion-text-center">
         <h3
           style={{
-            marginTop: "2.50em",
+            marginTop: "2em",
           }}
         >
           Log in
@@ -154,7 +149,7 @@ function Login() {
       </form>
 
       <Link
-        to="/"
+        to="/reset"
         style={{
           display: "block",
           textAlign: "center",
