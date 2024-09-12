@@ -17,6 +17,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from constants import BRAND_NAME
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
@@ -73,9 +75,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
 }
 
 SIMPLE_JWT = {
@@ -111,6 +110,9 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+RESET_PASSWORD_CLIENT_URL = os.getenv("RESET_PASSWORD_CLIENT_URL")
+BRAND_NAME = "FindMyPatient"
 
 ROOT_URLCONF = 'config.urls'
 
