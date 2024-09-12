@@ -1,0 +1,28 @@
+[
+  {
+    "model": "base.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "root",
+      "email": "aj.alanis.2020@alumnos.urjc.es",
+      "is_active": true,
+      "first_name": "Antonio José",
+      "last_name": "Alanís Bernal",
+      "reset_password_token": null
+    }
+  },
+  {
+    "model": "users.administrator",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "root",
+      "email": "aj.alanis.2020@alumnos.urjc.es",
+      "is_active": true,
+      "first_name": "Antonio José",
+      "last_name": "Alanís Bernal",
+      "reset_password_token": null
+    }
+  }
+]

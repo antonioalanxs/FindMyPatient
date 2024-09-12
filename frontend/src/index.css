@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap");
+
+:root {
+  --ion-color-primary: #435ebe;
+  --ion-color-primary-rgb: 67, 94, 190;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3b53a7;
+  --ion-color-primary-tint: #566ec5;
+
+  --custom-font-family: "Poppins", sans-serif;
+  --custom-icon-size: 20px;
+}
+
+* {
+  font-family: var(--custom-font-family);
+}
+
+ion-icon {
+  font-size: var(--custom-icon-size);
+}
+
+ion-toolbar {
+  --background: transparent;
+}
+
+.input-outline-container {
+  background-color: white;
+}

@@ -1,43 +1,27 @@
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonButtons,
-  IonBackButton,
-  IonButton,
-  IonNavLink,
-} from "@ionic/react";
-
-import AnotherPage from "@/components/AnotherPage";
+import { IonText } from "@ionic/react";
 
 /**
- * Error component. It is displayed when an error occurs.
+ * Error text component. It displays an error message.
  *
- * @returns {JSX.Element} - The error component.
+ * @param {string} message Error message.
+ *
+ * @returns {JSX.Element} - The component.
  */
-function Error() {
+function ErrorText({ message }) {
   return (
     <>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
-          </IonButtons>
-
-          <IonTitle>Error</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent class="ion-padding">
-        <div>Oops! An error occurred...</div>
-
-        <IonNavLink routerDirection="forward" component={() => <AnotherPage />}>
-          <IonButton>Go to Another page</IonButton>
-        </IonNavLink>
-      </IonContent>
+      <IonText color="danger" className="ion-text-end">
+        <p
+          style={{
+            fontSize: ".9em",
+            marginBlock: ".5em",
+          }}
+        >
+          {message}
+        </p>
+      </IonText>
     </>
   );
 }
 
-export default Error;
+export default ErrorText;

@@ -6,8 +6,8 @@ __pycache__/
 *.db
 *.sqlite3
 
-/migrations/
-!/migrations/__init__.py
+**/migrations/*.py
+!**/migrations/__init__.py
 
 # Media files
 collectstatic/

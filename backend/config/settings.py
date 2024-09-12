@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+
+from datetime import timedelta
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +34,10 @@ ALLOWED_HOSTS = []
 
 load_dotenv(ROOT_DIR / '.env')
 
+# CORS configuration
+ALLOWED_HOSTS = ["*"]
+CORS_ORIGIN_ALLOW_ALL = True
+
 # Application definition
 
 BASE_APPS = [
@@ -45,10 +52,14 @@ BASE_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'drf_yasg',
+    'rest_framework_simplejwt',
+    'corsheaders',
 ]
 
 LOCAL_APPS = [
     'authentication',
+    'base',
+    'users',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -56,6 +67,23 @@ INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 SWAGGER_SETTINGS = {
     "DOC_EXPANSION": "none",
     "DEFAULT_INFO": "swagger.urls.swagger_information",
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=25),
+    "REFRESH_TOKEN_LIFETIME": timedelta(hours=2),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
 }
 
 BASE_MIDDLEWARE = [
@@ -68,7 +96,9 @@ BASE_MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-THIRD_PARTY_MIDDLEWARE = []
+THIRD_PARTY_MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+]
 
 LOCAL_MIDDLEWARE = []
 
@@ -109,23 +139,28 @@ DATABASES = {
     },
 }
 
+AUTH_USER_MODEL = 'base.User'
+
+FIXTURE_DIRS = [os.path.join(BASE_DIR, 'fixture')]
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.authentication.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.authentication.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.authentication.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.authentication.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
