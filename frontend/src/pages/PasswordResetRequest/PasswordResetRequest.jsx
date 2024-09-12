@@ -13,26 +13,27 @@ import {
   IonBackButton,
   IonTitle,
 } from "@ionic/react";
-import { mail, checkmark, helpOutline } from "ionicons/icons";
+import { mail, checkmark, help } from "ionicons/icons";
 
 import { Link } from "react-router-dom";
 
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { usePublicRouteGuard } from "@/hooks/guards/usePublicRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
 import Layout from "@/components/Layout/Layout";
 import Error from "@/components/Error/Error";
-import { HTTP_200_OK, BRAND_NAME } from "@/constants";
+import { BRAND_NAME, HTTP_404_NOT_FOUND } from "@/constants";
 
 function PasswordResetRequest() {
   usePublicRouteGuard();
 
-  useTitle({ title: "Password reset request" });
+  useTitle({ title: "Forgot password" });
 
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [wasSuccessfulToast, setWasSuccessfulToast] = useState(false);
+  const [isSuccessfullToast, setIsSuccessfullToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
   const [isOpenedToast, setIsOpenedToast] = useState(false);
 
   const {
@@ -50,10 +51,15 @@ function PasswordResetRequest() {
     authenticationService
       .resetPasswordRequest(data.mail)
       .then(() => {
-        setWasSuccessfulToast(true);
+        setIsSuccessfullToast(true);
+        setToastMessage("Link successfully sent! Check your mail.");
       })
-      .catch(() => {
-        setWasSuccessfulToast(false);
+      .catch((error) => {
+        setIsSuccessfullToast(false);
+
+        error.response.status === HTTP_404_NOT_FOUND
+          ? setToastMessage("Introduced mail does not exist.")
+          : setToastMessage("An error occurred. Try again later.");
       })
       .finally(() => {
         setIsSubmittingForm(false);
@@ -135,13 +141,9 @@ function PasswordResetRequest() {
         <IonToast
           isOpen={isOpenedToast}
           onDidDismiss={() => setIsOpenedToast(false)}
-          message={
-            wasSuccessfulToast
-              ? "Link sent. Check your mail."
-              : "Introduced mail does not exist."
-          }
-          color={wasSuccessfulToast ? "success" : "danger"}
-          icon={wasSuccessfulToast ? checkmark : helpOutline}
+          message={toastMessage}
+          color={isSuccessfullToast ? "success" : "danger"}
+          icon={isSuccessfullToast ? checkmark : help}
           buttons={[
             {
               text: "Close",

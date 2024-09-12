@@ -47,12 +47,12 @@ class PasswordResetRequestTestCase(APITestCase):
     def test_password_reset_request_non_existing_email(self):
         response = self.client.post(self.url, {"email": "test2@test.com"}, format="json")
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_password_reset_request_blank_email(self):
         response = self.client.post(self.url, {"email": ""}, format="json")
 
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
 class PasswordResetTestCase(APITestCase):

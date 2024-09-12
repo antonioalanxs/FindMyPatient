@@ -87,8 +87,8 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
                     }
                 }
             ),
-            400: openapi.Response(
-                description='Introduced email does not exist.',
+            404: openapi.Response(
+                description='Introduced email not found.',
                 examples={
                     'application/json': {
                         'email': 'Introduced email does not exist.'
@@ -116,7 +116,7 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
 
         return Response(
             {'message': 'Introduced email does not exist.'},
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_404_NOT_FOUND
         )
 
 

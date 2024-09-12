@@ -18,7 +18,7 @@ export const DEFAULT_DURATION = 3000;
 export const API_URL = import.meta.env.VITE_API_URL;
 
 /**
- * Constant for the HTTP status code 200.
+ * Constant for the HTTP status code 404.
  * @type {number}
  */
-export const HTTP_200_OK = 200;
+export const HTTP_404_NOT_FOUND = 404;
