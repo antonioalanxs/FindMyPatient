@@ -54,14 +54,14 @@ function Login() {
     setIsSubmittingForm(true);
 
     authenticationService
-      ._login(data)
+      .login(data)
       .then((response) => {
         const { access_token, refresh_token } = response.data;
         const user = jwtDecode(access_token);
 
-        storageService._save(storageService.ACCESS_TOKEN, access_token);
-        storageService._save(storageService.REFRESH_TOKEN, refresh_token);
-        storageService._save(storageService.USER, user);
+        storageService.save(storageService.ACCESS_TOKEN, access_token);
+        storageService.save(storageService.REFRESH_TOKEN, refresh_token);
+        storageService.save(storageService.USER, user);
 
         history.push("/home");
       })
@@ -154,7 +154,7 @@ function Login() {
       </form>
 
       <Link
-        to="/"
+        to="/reset"
         style={{
           display: "block",
           textAlign: "center",

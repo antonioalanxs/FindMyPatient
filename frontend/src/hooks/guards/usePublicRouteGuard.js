@@ -14,7 +14,7 @@ export const usePublicRouteGuard = () => {
 
   useEffect(() => {
     const invoke = async () => {
-      const user = await storageService._get(storageService.USER);
+      const user = await storageService.get(storageService.USER);
       !!user && history.push("/home");
     };
 

@@ -51,7 +51,7 @@ class PasswordResetRequestTestCase(APITestCase):
 
     def test_password_reset_request_blank_email(self):
         response = self.client.post(self.url, {"email": ""}, format="json")
-        
+
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
