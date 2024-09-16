@@ -1,8 +1,6 @@
-import { IonSpinner } from "@ionic/react";
-
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
-import Layout from "@/components/Layout/Layout";
+import Layout from "@/layouts/Layout/Layout";
 
 function Home() {
   const user = usePrivateRouteGuard();
@@ -13,7 +11,11 @@ function Home() {
     <Layout>
       <div>Home</div>
 
-      {user ? <pre>{JSON.stringify(user)}</pre> : <IonSpinner />}
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+
+      {user && <pre>{JSON.stringify(user)}</pre>}
     </Layout>
   );
 }

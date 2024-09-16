@@ -1,20 +1,5 @@
 import { useState } from "react";
 
-import {
-  IonInput,
-  IonButton,
-  IonText,
-  IonIcon,
-  IonSpinner,
-  IonToast,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonBackButton,
-  IonTitle,
-} from "@ionic/react";
-import { mail, checkmark, help } from "ionicons/icons";
-
 import { Link } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
@@ -22,19 +7,18 @@ import { useForm } from "react-hook-form";
 import { usePublicRouteGuard } from "@/hooks/guards/usePublicRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
-import Layout from "@/components/Layout/Layout";
-import Error from "@/components/Error/Error";
-import { BRAND_NAME, HTTP_404_NOT_FOUND } from "@/constants";
+import { notificationService } from "@/services/NotificationService";
+import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
+import FormErrorText from "@/components/FormErrorText/FormErrorText";
 
 function PasswordResetRequest() {
   usePublicRouteGuard();
 
-  useTitle({ title: "Forgot password" });
+  useTitle({ title: "Password reset request" });
 
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [isSuccessfullToast, setIsSuccessfullToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState(null);
-  const [isOpenedToast, setIsOpenedToast] = useState(false);
+  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const {
     register,
@@ -51,108 +35,74 @@ function PasswordResetRequest() {
     authenticationService
       .resetPasswordRequest(data.mail)
       .then(() => {
-        setIsSuccessfullToast(true);
-        setToastMessage("Link successfully sent! Check your mail.");
+        notificationService.showModal(
+          "Email sent successfully. Check your inbox.",
+          notificationService.ICONS.SUCCESS
+        );
+        setErrorMessage(null);
       })
       .catch((error) => {
-        setIsSuccessfullToast(false);
-
-        error.response.status === HTTP_404_NOT_FOUND
-          ? setToastMessage("Introduced mail does not exist.")
-          : setToastMessage("An error occurred. Try again later.");
+        setErrorMessage(error.response.data.message);
       })
       .finally(() => {
         setIsSubmittingForm(false);
-        setIsOpenedToast(true);
+        setIsSubmittedForm(true);
       });
   };
 
   return (
-    <>
-      <Layout>
-        <IonHeader className="ion-no-border">
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/" color="primary" />
-            </IonButtons>
-
-            <IonTitle color="primary" slot="end">
-              <h1
-                style={{
-                  margin: "0",
-
-                  fontWeight: "525",
-                  fontSize: "1.35rem",
-                }}
-              >
-                {BRAND_NAME}
-              </h1>
-            </IonTitle>
-          </IonToolbar>
-        </IonHeader>
-
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          style={{
-            maxWidth: "430px",
-            marginInline: "auto",
-          }}
-        >
-          <IonText color="medium" className="ion-text-center">
-            <p>We will send you a link to recover your password.</p>
-          </IonText>
-
-          <IonInput
-            type="text"
+    <AuthenticationLayout
+      title="Password reset request"
+      subtitle="We will send you a link to recover your password."
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group position-relative has-icon-left mb-4">
+          <input
+            type="email"
             placeholder="Mail"
-            fill="outline"
+            autoComplete="off"
+            className={`form-control form-control-xl ${
+              isSubmittedForm && errors?.mail && "is-invalid"
+            }`}
             {...register("mail", { required: "Mail is required." })}
-          >
-            <IonIcon
-              slot="start"
-              icon={mail}
-              color="medium"
-              aria-label="Mail"
-              aria-hidden="true"
-            ></IonIcon>
-          </IonInput>
-          <Error message={errors?.mail?.message} />
+          />
+          <div className="form-control-icon">
+            <i class="bi bi-envelope"></i>{" "}
+          </div>
+          {isSubmittedForm && <FormErrorText message={errors?.mail?.message} />}
+        </div>
 
-          <IonButton
-            type="submit"
-            expand="block"
-            disabled={isSubmittingForm}
-            className="ion-margin-vertical"
-          >
-            {isSubmittingForm ? <IonSpinner /> : "Send"}
-          </IonButton>
-        </form>
+        {errorMessage && (
+          <div className="alert alert-danger alert-dismissible show fade">
+            <span className="ms-1">{errorMessage}</span>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setErrorMessage(null)}
+            ></button>
+          </div>
+        )}
 
-        <Link
-          to="/"
-          style={{
-            display: "block",
-            textAlign: "center",
-          }}
-        >
-          Do you have remembered your password?
-        </Link>
+        <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
+          {isSubmittingForm ? (
+            <div className="spinner-border text-light" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            "Send"
+          )}
+        </button>
+      </form>
 
-        <IonToast
-          isOpen={isOpenedToast}
-          onDidDismiss={() => setIsOpenedToast(false)}
-          message={toastMessage}
-          color={isSuccessfullToast ? "success" : "danger"}
-          icon={isSuccessfullToast ? checkmark : help}
-          buttons={[
-            {
-              text: "Close",
-              role: "cancel",
-            },
-          ]}
-        />
-      </Layout>
-    </>
+      <Link
+        to="/"
+        className="d-block text-center fw-bold fs-5 text-decoration-none"
+      >
+        Did you remember your password?
+      </Link>
+    </AuthenticationLayout>
   );
 }
 

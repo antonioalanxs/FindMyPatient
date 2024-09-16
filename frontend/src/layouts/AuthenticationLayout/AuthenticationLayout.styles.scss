@@ -1,0 +1,74 @@
+@import "@/ui/variables";
+
+#authentication {
+  height: 100vh;
+
+  overflow: hidden;
+
+  #authentication-right {
+    height: 100%;
+
+    background: $page-auth-right-bg;
+  }
+
+  #authentication-left {
+    padding: 1rem 5rem;
+
+    background-color: $body-bg;
+
+    .authentication-logo {
+      margin-bottom: 1rem;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .authentication-title {
+      font-size: 3rem;
+    }
+
+    .authentication-subtitle {
+      font-size: 1.5rem;
+
+      color: #6c7079;
+    }
+
+    
+    @media screen and (max-width: 576px) {
+      padding-inline: 3rem;
+
+      .authentication-title {
+        font-size: 3rem;
+      }
+
+      .authentication-subtitle {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}
+
+html[data-bs-theme="dark"] {
+  @import "@/ui/themes/dark/variables-dark";
+
+  #authentication-right {
+    background: $page-auth-right-bg;
+  }
+}
+
+.password-form-group input {
+  padding-right: 3.2rem !important;
+}
+
+.form-control-icon-right {
+  padding-right: 1rem !important;
+  
+  position: absolute;
+  right: 0 !important;
+  left: auto !important;
+}
+
+.form-password.form-control.is-invalid {
+  background-position: right calc(2.6em + 0.1875rem) center !important;
+}

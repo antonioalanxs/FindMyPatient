@@ -2,17 +2,6 @@ import { useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 
-import {
-  IonInput,
-  IonButton,
-  IonText,
-  IonInputPasswordToggle,
-  IonIcon,
-  IonSpinner,
-  IonToast,
-} from "@ionic/react";
-import { shieldCheckmark, person, lockClosed } from "ionicons/icons";
-
 import { useForm } from "react-hook-form";
 
 import { jwtDecode } from "jwt-decode";
@@ -21,10 +10,8 @@ import { usePublicRouteGuard } from "@/hooks/guards/usePublicRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
-import Brand from "@/components/Brand/Brand";
-import Error from "@/components/Error/Error";
-import { DEFAULT_DURATION } from "@/constants";
-import Layout from "@/components/Layout/Layout";
+import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
+import FormErrorText from "@/components/FormErrorText/FormErrorText";
 
 function Login() {
   usePublicRouteGuard();
@@ -37,13 +24,12 @@ function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    mode: "onTouched",
-    reValidateMode: "onChange",
-  });
+  } = useForm();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [isOpenedToast, setIsOpenedToast] = useState(false);
+  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const onSubmit = (data) => {
     setIsSubmittingForm(true);
@@ -61,112 +47,91 @@ function Login() {
         history.push("/home");
       })
       .catch((error) => {
-        console.error(error);
-        setIsOpenedToast(true);
+        setErrorMessage(error.response.data.message);
       })
       .finally(() => {
         setIsSubmittingForm(false);
+        setIsSubmittedForm(true);
       });
   };
 
   return (
-    <Layout className="ion-padding">
-      <Brand />
+    <AuthenticationLayout
+      title="Log in"
+      subtitle="Introduce your credentials to access to the system."
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group position-relative has-icon-left mb-4">
+          <input
+            type="text"
+            placeholder="Username"
+            autoComplete="off"
+            className={`form-control form-control-xl ${
+              isSubmittedForm && errors?.username && "is-invalid"
+            }`}
+            {...register("username", { required: "Username is required." })}
+          />
+          <div className="form-control-icon">
+            <i className="bi bi-person"></i>
+          </div>
+          {isSubmittedForm && (
+            <FormErrorText message={errors?.username?.message} />
+          )}
+        </div>
 
-      <IonText
-        color="dark"
-        className="ion-text-center"
-        style={{
-          textWrap: "no",
-        }}
-      >
-        <h2>The platform where doctors can be sure of their patients.</h2>
-      </IonText>
+        <div className="password-form-group form-group position-relative has-icon-left mb-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            autoComplete="off"
+            className="form-control form-control-xl form-password"
+            {...register("password", { required: "Password is required." })}
+          />
+          <div className="form-control-icon">
+            <i className="bi bi-shield-lock"></i>
+          </div>
+          <div
+            className="form-control-icon form-control-icon-right"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+          </div>
+          {isSubmittedForm && (
+            <FormErrorText message={errors?.password?.message} />
+          )}
+        </div>
 
-      <IonText color="primary" className="ion-text-center">
-        <h3
-          style={{
-            marginTop: "2em",
-          }}
-        >
-          Log in
-        </h3>
-      </IonText>
+        {errorMessage && (
+          <div className="alert alert-danger alert-dismissible show fade">
+            <span className="ms-1">{errorMessage}</span>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setErrorMessage(null)}
+            ></button>
+          </div>
+        )}
 
-      <IonText color="medium" className="ion-text-center">
-        <p>Introduce your credentials to access to the system.</p>
-      </IonText>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        style={{
-          maxWidth: "411px",
-          marginInline: "auto",
-        }}
-      >
-        <IonInput
-          type="text"
-          placeholder="Username"
-          fill="outline"
-          {...register("username", { required: "Username is required." })}
-        >
-          <IonIcon
-            slot="start"
-            icon={person}
-            color="medium"
-            aria-label="User"
-            aria-hidden="true"
-          ></IonIcon>
-        </IonInput>
-        <Error message={errors?.username?.message} />
-
-        <IonInput
-          type="password"
-          placeholder="Password"
-          fill="outline"
-          className="ion-margin-top"
-          {...register("password", { required: "Password is required." })}
-        >
-          <IonIcon
-            slot="start"
-            icon={shieldCheckmark}
-            color="medium"
-            aria-label="Password"
-            aria-hidden="true"
-          ></IonIcon>
-          <IonInputPasswordToggle slot="end" color="medium" />
-        </IonInput>
-        <Error message={errors?.password?.message} />
-
-        <IonButton
-          type="submit"
-          expand="block"
-          disabled={isSubmittingForm}
-          className="ion-margin-vertical"
-        >
-          {isSubmittingForm ? <IonSpinner /> : "Enter"}
-        </IonButton>
+        <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
+          {isSubmittingForm ? (
+            <div className="spinner-border text-light" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            "Enter"
+          )}
+        </button>
       </form>
 
       <Link
         to="/reset"
-        style={{
-          display: "block",
-          textAlign: "center",
-        }}
+        className="d-block text-center fw-bold fs-5 text-decoration-none"
       >
-        Do you have forgotten your password?
+        Did you forget your password?
       </Link>
-
-      <IonToast
-        isOpen={isOpenedToast}
-        onDidDismiss={() => setIsOpenedToast(false)}
-        message="Invalid credentials."
-        duration={DEFAULT_DURATION}
-        icon={lockClosed}
-        color="danger"
-      />
-    </Layout>
+    </AuthenticationLayout>
   );
 }
 
