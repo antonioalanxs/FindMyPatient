@@ -1,67 +1,34 @@
-import { useState, useEffect } from "react";
-
-import {
-  IonInput,
-  IonButton,
-  IonText,
-  IonInputPasswordToggle,
-  IonIcon,
-  IonSpinner,
-  IonToast,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-} from "@ionic/react";
-import { shieldCheckmark, checkmark, help } from "ionicons/icons";
+import { useState } from "react";
 
 import { useParams, useHistory, Link } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 
+import { usePublicRouteGuard } from "@/hooks/guards/usePublicRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
-import Layout from "@/components/Layout/Layout";
-import Brand from "@/components/Brand/Brand";
-import Error from "@/components/Error/Error";
+import { notificationService } from "@/services/NotificationService";
+import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
+import FormErrorText from "@/components/FormErrorText/FormErrorText";
 
 function PasswordReset() {
+  usePublicRouteGuard();
+
   useTitle({ title: "Reset your password" });
 
   const { token } = useParams();
   const history = useHistory();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isOpenedToast, setIsOpenedToast] = useState(false);
-  const [isSuccessfullToast, setIsSuccessfullToast] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    authenticationService
-      .isResetPasswordTokenValid(token)
-      .then((response) => {
-        !response.data.is_reset_password_token_valid && history.push("/");
-      })
-      .catch(() => {
-        setIsSuccessfullToast(false);
-        setIsOpenedToast(true);
-        history.push("/");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    mode: "onTouched",
-    reValidateMode: "onChange",
-  });
-
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  } = useForm();
 
   const onSubmit = (data) => {
     setIsSubmittingForm(true);
@@ -69,123 +36,82 @@ function PasswordReset() {
     authenticationService
       .resetPassword(token, data.password)
       .then(() => {
-        setIsSuccessfullToast(true);
-        setIsOpenedToast(true);
+        notificationService.showToast(
+          "Password reset successfully.",
+          notificationService.ICONS.SUCCESS
+        );
         history.push("/");
       })
-      .catch(() => {
-        setIsSuccessfullToast(false);
-        setIsOpenedToast(true);
-        history.push("/");
+      .catch((error) => {
+        setErrorMessage(error.response.data.message);
       })
       .finally(() => {
         setIsSubmittingForm(false);
+        setIsSubmittedForm(true);
       });
   };
 
   return (
-    <Layout className="ion-padding">
-      {isLoading ? (
-        <IonSpinner
-          color="primary"
-          style={{
-            position: "absolute",
-            top: "17.5%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        />
-      ) : (
-        <>
-          <IonHeader className="ion-no-border">
-            <IonToolbar>
-              <IonTitle color="primary">
-                <Link to="/">
-                  <Brand maximumWidth="250px" />
-                </Link>
-              </IonTitle>
-            </IonToolbar>
-          </IonHeader>
-
-          <IonText color="primary" className="ion-text-center">
-            <h2
-              style={{
-                marginTop: ".35em",
-              }}
-            >
-              Reset your password
-            </h2>
-          </IonText>
-
-          <IonText color="medium" className="ion-text-center">
-            <p>Enter your new password below.</p>
-          </IonText>
-
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            style={{
-              maxWidth: "411px",
-              marginInline: "auto",
-            }}
-          >
-            <IonInput
-              type="password"
-              placeholder="Password"
-              fill="outline"
-              className="ion-margin-top"
-              {...register("password", { required: "Password is required." })}
-            >
-              <IonIcon
-                slot="start"
-                icon={shieldCheckmark}
-                color="medium"
-                aria-label="Password"
-                aria-hidden="true"
-              ></IonIcon>
-              <IonInputPasswordToggle slot="end" color="medium" />
-            </IonInput>
-            <Error message={errors?.password?.message} />
-
-            <IonButton
-              type="submit"
-              expand="block"
-              disabled={isSubmittingForm}
-              className="ion-margin-vertical"
-            >
-              {isSubmittingForm ? <IonSpinner /> : "Save"}
-            </IonButton>
-          </form>
-
-          <Link
-            to="/"
-            style={{
-              display: "block",
-              textAlign: "center",
-            }}
-          >
-            I have changed my mind
-          </Link>
-
-          <IonToast
-            isOpen={isOpenedToast}
-            onDidDismiss={() => setIsOpenedToast(false)}
-            message={
-              isSuccessfullToast
-                ? "Your password has been successfully reset."
-                : "Something went wrong. Try again later."
-            }
-            icon={isSuccessfullToast ? checkmark : help}
-            color={isSuccessfullToast ? "success" : "danger"}
-            buttons={[
-              {
-                text: "Close",
-                role: "cancel",
-              },
-            ]}
+    <AuthenticationLayout
+      title="Reset your password"
+      subtitle="Enter your new password below."
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="password-form-group form-group position-relative has-icon-left mb-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            autoComplete="off"
+            className={`form-control form-control-xl form-password ${
+              isSubmittedForm && errors?.username && "is-invalid"
+            }`}
+            {...register("password", { required: "Password is required." })}
           />
-        </>
-      )}
-    </Layout>
+          <div className="form-control-icon">
+            <i className="bi bi-shield-lock"></i>
+          </div>
+          <div
+            className="form-control-icon form-control-icon-right"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
+          </div>
+          {isSubmittedForm && (
+            <FormErrorText message={errors?.password?.message} />
+          )}
+        </div>
+
+        {errorMessage && (
+          <div className="alert alert-danger alert-dismissible show fade">
+            <span className="ms-1">{errorMessage}</span>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+              onClick={() => setErrorMessage(null)}
+            ></button>
+          </div>
+        )}
+
+        <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
+          {isSubmittingForm ? (
+            <div className="spinner-border text-light" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            "Save"
+          )}
+        </button>
+      </form>
+
+      <Link
+        to="/"
+        className="d-block text-center fw-bold fs-5 text-decoration-none"
+      >
+        Did you remember your password?
+      </Link>
+    </AuthenticationLayout>
   );
 }
 

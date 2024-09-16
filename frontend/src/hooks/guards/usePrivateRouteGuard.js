@@ -12,15 +12,15 @@ import { storageService } from "@/services/StorageService";
 export const usePrivateRouteGuard = () => {
   const history = useHistory();
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const invoke = async () => {
       const item = await storageService.get(storageService.USER);
 
-      setUser(item);
+      !!!item && history.push("/");
 
-      !!!user && history.push("/");
+      setUser(item);
     };
 
     invoke();
