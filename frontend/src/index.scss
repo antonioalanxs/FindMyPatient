@@ -1,1 +1,9 @@
-@import "@/ui/index.scss"
+@import "@/ui/index.scss";
+
+:root {
+    --ion-background-color: $body-color;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

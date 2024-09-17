@@ -1,14 +1,16 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import get_user_model
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from jwt_.serializers import CustomTokenObtainPairSerializer
 
@@ -47,17 +49,15 @@ class LoginView(TokenObtainPairView):
         }
     )
     def post(self, request, **kwargs):
-        if authenticate(**request.data) is not None:
-            serializer = CustomTokenObtainPairSerializer(data=request.data)
-            if serializer.is_valid():
-                return Response(
-                    {
-                        'access_token': serializer.validated_data.get('access'),
-                        'refresh_token': serializer.validated_data.get('refresh')
-                    },
-                    status=status.HTTP_200_OK
-                )
-
+        serializer = CustomTokenObtainPairSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(
+                {
+                    'access_token': serializer.validated_data.get('access'),
+                    'refresh_token': serializer.validated_data.get('refresh')
+                },
+                status=status.HTTP_200_OK
+            )
         return Response(
             {'message': 'Invalid credentials.'},
             status=status.HTTP_401_UNAUTHORIZED
@@ -178,37 +178,52 @@ class PasswordResetView(APIView, URICertifierMixin):
             status=status.HTTP_400_BAD_REQUEST
         )
 
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
-        operation_summary='Checks if the password reset token is valid.',
-        operation_description='Checks if the password reset token is valid.',
+        operation_summary="Handles user logout.",
+        operation_description="Invalidates the refresh token and waits for the access token expiration.\n\nThe refresh token is automatically invalidated and added to the blacklist when `RefreshToken.for_user(user)` is called. This process also generates a new one, but it is not provided and expires over time.\n\nThe access token must be provided in the request header.",
         request_body=None,
-        manual_parameters=[
-            openapi.Parameter(
-                name='token',
-                in_=openapi.IN_PATH,
-                type=openapi.TYPE_STRING,
-                required=True,
-                description='The password reset token.',
-            ),
-        ],
+        manual_parameters=[],
+        security=[{"Bearer": []}],
         responses={
             200: openapi.Response(
-                description='If the password reset token is valid or not.',
+                description="User successfully logged out.",
                 examples={
-                    'application/json': {
-                        'is_reset_password_token_valid': True
+                    "application/json": {
+                        "message": "User successfully logged out."
                     }
+                }
+            ),
+            401: openapi.Response(
+                description="Unauthorized.",
+                examples={
+                    "application/json": [
+                        {
+                            "detail": "Authentication credentials were not provided."
+                        },
+                        {
+                            "detail": "Given token not valid for any token type",
+                            "code": "token_not_valid",
+                            "messages": [
+                                {
+                                    "token_class": "AccessToken",
+                                    "token_type": "access",
+                                    "message": "Token is invalid or expired"
+                                }
+                            ]
+                        }
+                    ]
                 }
             )
         }
     )
-    def get(self, request, token):
+    def post(self, request):
+        RefreshToken.for_user(request.user).blacklist()
+
         return Response(
-            data=
-            {
-                'is_reset_password_token_valid': bool(
-                    self.is_legal('reset_password_token', token, caducate=False)
-                )
-            },
+            {"message": "User successfully logged out."},
             status=status.HTTP_200_OK
         )

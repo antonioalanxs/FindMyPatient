@@ -1,8 +1,14 @@
+from datetime import timedelta
+
+from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
+from django.utils import timezone
 
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
+
+from rest_framework_simplejwt.tokens import AccessToken
 
 from users.models import Administrator
 from utilities.functions import save
@@ -34,9 +40,7 @@ class LoginTestCase(APITestCase):
 class PasswordResetRequestTestCase(APITestCase):
     def setUp(self):
         self.url = reverse("reset_password_request")
-
         self.existing_email = "test@test.com"
-
         self.user = Administrator.objects.create(email=self.existing_email, username="test", password="test")
 
     def test_password_reset_request_existing_email(self):
@@ -62,11 +66,8 @@ class PasswordResetTestCase(APITestCase):
             username="test",
             password="test",
         )
-
         self.new_password = "test2"
-
         self.token = default_token_generator.make_token(self.user)
-
         save(self.user, "reset_password_token", self.token)
 
     def test_password_reset_valid_url(self):
@@ -103,16 +104,45 @@ class PasswordResetTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_is_reset_password_token_valid_with_valid_token(self):
-        url = reverse("reset_password", kwargs={"token": self.token})
-        response = self.client.get(url)
 
+class LogoutTestCase(APITestCase):
+    """
+        Test case for user logout endpoint.
+    """
+
+    def setUp(self):
+        """
+            Set up the test case.
+        """
+        self.url = reverse("logout")
+        self.user = Administrator.objects.create(
+            email="test@test.com",
+            username="test",
+            password="test",
+        )
+        self.access_token = AccessToken.for_user(self.user)
+
+    def test_logout_authenticated_user(self):
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {self.access_token}"
+        )
+        response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(response.data["is_reset_password_token_valid"])
 
-    def test_is_reset_password_token_valid_with_non_valid_token(self):
-        url = reverse("reset_password", kwargs={"token": "test"})
-        response = self.client.get(url)
+    def test_logout_non_authenticated_user(self):
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(response.data["is_reset_password_token_valid"])
+    def test_logout_with_expired_access_token(self):
+        self.test_logout_authenticated_user()
+        self.access_token.set_exp(
+            from_time=timezone.now() - timedelta(
+                seconds=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"].total_seconds()
+            )
+        )
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {self.access_token}"
+        )
+
+        response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

@@ -7,15 +7,31 @@ function Home() {
 
   useTitle({ title: "Home" });
 
+  /**
+   * Get the greeting message based on the current time.
+   *
+   * @returns {string} The greeting message
+   */
+  function getGreeting() {
+    const hours = new Date().getHours();
+
+    if (hours < 12) {
+      return "Good morning";
+    } else if (hours < 18) {
+      return "Good afternoon";
+    } else {
+      return "Good evening";
+    }
+  }
+
   return (
-    <Layout>
-      <div>Home</div>
-
-      <div className="spinner-border text-primary" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-
-      {user && <pre>{JSON.stringify(user)}</pre>}
+    <Layout
+      title={`${getGreeting()}, ${user.first_name}!`}
+      subtitle="Here is everything you need to get started."
+    >
+      {user && (
+        <p className="text-success text-truncate">{JSON.stringify(user)}</p>
+      )}
     </Layout>
   );
 }
