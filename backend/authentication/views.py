@@ -227,3 +227,41 @@ class LogoutView(APIView):
             {"message": "User successfully logged out."},
             status=status.HTTP_200_OK
         )
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(
+        operation_summary='Handles password change.',
+        operation_description='Changes the user password.',
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'password': openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description='The new password.'
+                )
+            }
+        ),
+        manual_parameters=[],
+        responses={
+            200: openapi.Response(
+                description='Password successfully changed.',
+                examples={
+                    'application/json': {
+                        'message': 'Password successfully changed!'
+                    }
+                }
+            )
+        }
+    )
+    def put(self, request):
+        user = request.user
+
+        user.set_password(request.data['password'])
+        user.save()
+
+        return Response(
+            {'message': 'Password successfully changed!'},
+            status=status.HTTP_200_OK
+        )

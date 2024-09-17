@@ -71,6 +71,17 @@ class AuthenticationService {
   logout = () => {
     return axiosInstanceWithTokens.post(`${this._prefix}logout`);
   };
+
+  /**
+   * Changes the password of the user.
+   *
+   * @param {String} password - The new password.
+   *
+   * @returns {Promise} - The promise object representing the completion of the request.
+   */
+  changePassword = (password) => {
+    return axiosInstanceWithTokens.put(`${this._prefix}password`, { password });
+  };
 }
 
 export const authenticationService = AuthenticationService.instance;
