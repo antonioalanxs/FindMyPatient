@@ -56,6 +56,7 @@ THIRD_PARTY_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'corsheaders',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 LOCAL_APPS = [
@@ -78,11 +79,12 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=25),
-    "REFRESH_TOKEN_LIFETIME": timedelta(hours=2),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=2),
+    'ROTATE_REFRESH_TOKENS': True,
+    'TOKEN_BLACKLIST_ENABLED': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'TOKEN_REFRESH_SERIALIZER': "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
 }
 
 BASE_MIDDLEWARE = [
@@ -170,7 +172,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
