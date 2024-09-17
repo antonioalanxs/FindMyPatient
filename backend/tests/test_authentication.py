@@ -62,7 +62,6 @@ class PasswordResetRequestTestCase(APITestCase):
 class PasswordResetTestCase(APITestCase):
     def setUp(self):
         self.user = Administrator.objects.create(
-            email="test@test.com",
             username="test",
             password="test",
         )
@@ -116,7 +115,6 @@ class LogoutTestCase(APITestCase):
         """
         self.url = reverse("logout")
         self.user = Administrator.objects.create(
-            email="test@test.com",
             username="test",
             password="test",
         )
@@ -145,4 +143,28 @@ class LogoutTestCase(APITestCase):
         )
 
         response = self.client.post(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+class ChangePasswordTestCase(APITestCase):
+
+    def setUp(self):
+        self.url = reverse("change_password")
+        self.user = Administrator.objects.create(
+            username="test",
+            password="test",
+        )
+        self.new_password = "test2"
+
+    def test_change_password_authenticated_user(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.put(self.url, {"password": self.new_password})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(
+            Administrator.objects.get(pk=self.user.pk).check_password(self.new_password)
+        )
+
+    def test_change_password_non_authenticated_user(self):
+        response = self.client.put(self.url, {"password": self.new_password})
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

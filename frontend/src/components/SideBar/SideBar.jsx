@@ -78,7 +78,7 @@ function SideBar() {
         <div className="sidebar-wrapper active">
           <div className="sidebar-header position-relative">
             <div className="d-flex justify-content-between align-items-center gap-1 mt-3">
-              <Link to="/" className="text-decoration-none">
+              <Link to="/home" className="text-decoration-none">
                 <h1 className="fs-5 mb-0 text-primary">{BRAND_NAME}</h1>
               </Link>
 
