@@ -11,7 +11,6 @@ from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from jwt_.serializers import CustomTokenObtainPairSerializer
 
@@ -181,6 +180,8 @@ class PasswordResetView(APIView, URICertifierMixin):
 
 
 class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
     @swagger_auto_schema(
         operation_summary="Handles user logout.",
         operation_description="Invalidates the refresh token and waits for the access token expiration.\n\nThe refresh token is automatically invalidated and added to the blacklist when `RefreshToken.for_user(user)` is called. This process also generates a new one, but it is not provided and expires over time.\n\nThe access token must be provided in the request header.",
