@@ -2,7 +2,6 @@ import {
   axiosInstance,
   axiosInstanceWithTokens,
 } from "@/services/AxiosInstanceService";
-import axios from "axios";
 
 /**
  * Authentication service. It is used to related operations with the authentication.
@@ -62,6 +61,15 @@ class AuthenticationService {
    */
   resetPassword = (token, password) => {
     return axiosInstance.put(`${this._prefix}reset/${token}`, { password });
+  };
+
+  /**
+   * Logs out the user.
+   *
+   * @returns {Promise} - The promise object representing the completion of the request.
+   */
+  logout = () => {
+    return axiosInstanceWithTokens.post(`${this._prefix}logout`);
   };
 }
 

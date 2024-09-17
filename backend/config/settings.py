@@ -85,6 +85,7 @@ SIMPLE_JWT = {
     'TOKEN_BLACKLIST_ENABLED': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'TOKEN_REFRESH_SERIALIZER': "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 BASE_MIDDLEWARE = [

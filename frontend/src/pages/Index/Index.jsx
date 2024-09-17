@@ -12,6 +12,7 @@ import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
 import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
 import FormErrorText from "@/components/FormErrorText/FormErrorText";
+import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
 
 function Login() {
   usePublicRouteGuard();
@@ -47,7 +48,8 @@ function Login() {
         history.push("/home");
       })
       .catch((error) => {
-        setErrorMessage(error.response.data.message);
+        const detail = error.response?.data?.detail;
+        setErrorMessage(detail ? `${detail}.` : UNAVAILABLE_SERVICE_MESSAGE);
       })
       .finally(() => {
         setIsSubmittingForm(false);

@@ -19,7 +19,9 @@ function Layout({ title, subtitle, children }) {
 
         <header>
           <h2 className="fs-3 text-primary">{title}</h2>
-          <p className="text-secondary">{subtitle}</p>
+          <p id="subtitle" className="text-secondary">
+            {subtitle}
+          </p>
         </header>
 
         <div>{children}</div>

@@ -25,16 +25,16 @@ function AuthenticationLayout({ title, subtitle, children }) {
               </h1>
             </Link>
 
-            <h2 className="authentication-title">{title}</h2>
-            <p className="authentication-subtitle mb-4">{subtitle}</p>
+            <h2 className="text-primary fs-1">{title}</h2>
+            <p className="text-secondary fs-5 mb-4">{subtitle}</p>
 
             {children}
           </div>
 
-          <div
+          <aside
             id="authentication-right"
             className="col-lg-6 col-xl-7 d-none d-lg-block"
-          ></div>
+          ></aside>
         </div>
       </div>
     </IonContent>

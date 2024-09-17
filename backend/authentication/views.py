@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import get_user_model
 
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from jwt_.serializers import CustomTokenObtainPairSerializer
 
@@ -49,17 +50,15 @@ class LoginView(TokenObtainPairView):
         }
     )
     def post(self, request, **kwargs):
-        if authenticate(**request.data) is not None:
-            serializer = CustomTokenObtainPairSerializer(data=request.data)
-            if serializer.is_valid():
-                return Response(
-                    {
-                        'access_token': serializer.validated_data.get('access'),
-                        'refresh_token': serializer.validated_data.get('refresh')
-                    },
-                    status=status.HTTP_200_OK
-                )
-
+        serializer = CustomTokenObtainPairSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(
+                {
+                    'access_token': serializer.validated_data.get('access'),
+                    'refresh_token': serializer.validated_data.get('refresh')
+                },
+                status=status.HTTP_200_OK
+            )
         return Response(
             {'message': 'Invalid credentials.'},
             status=status.HTTP_401_UNAUTHORIZED
@@ -180,9 +179,8 @@ class PasswordResetView(APIView, URICertifierMixin):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
 
+class LogoutView(APIView):
     @swagger_auto_schema(
         operation_summary="Handles user logout.",
         operation_description="Invalidates the refresh token and waits for the access token expiration.\n\nThe refresh token is automatically invalidated and added to the blacklist when `RefreshToken.for_user(user)` is called. This process also generates a new one, but it is not provided and expires over time.\n\nThe access token must be provided in the request header.",

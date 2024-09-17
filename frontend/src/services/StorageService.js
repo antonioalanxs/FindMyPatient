@@ -62,10 +62,12 @@ class StorageService {
   };
 
   /**
-   * Removes all the key-value pairs from the storage.
+   * Removes the value stored using its key.
+   *
+   * @param {string} key - The key to remove the value.
    */
-  clear = async () => {
-    await this.storage.clear().catch((error) => console.error(error));
+  remove = async (key) => {
+    await this.storage.remove(key).catch((error) => console.error(error));
   };
 }
 

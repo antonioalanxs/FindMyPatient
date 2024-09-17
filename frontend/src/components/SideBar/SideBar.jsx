@@ -5,18 +5,12 @@ import { Link, useHistory } from "react-router-dom";
 import { storageService } from "@/services/StorageService";
 import SunIcon from "@/icons/SunIcon/SunIcon";
 import MoonIcon from "@/icons/MoonIcon/MoonIcon";
-import { BRAND_NAME } from "@/constants";
+import { BRAND_NAME, THEMES } from "@/constants";
 
 // Links to the pages.
 const LINKS = {
   HOME: "/home",
   SETTINGS: "/settings",
-};
-
-// Keys for the themes.
-const THEMES = {
-  LIGHT: "light",
-  DARK: "dark",
 };
 
 function SideBar() {

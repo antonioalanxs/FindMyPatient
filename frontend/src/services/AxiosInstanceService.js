@@ -4,6 +4,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 import { storageService } from "@/services/StorageService";
+import { notificationService } from "@/services/NotificationService";
 import { API_URL } from "@/constants";
 
 /**
@@ -28,9 +29,9 @@ const axiosInstanceWithTokens = axios.create({
 });
 
 axiosInstanceWithTokens.interceptors.request.use(async (request) => {
-  let accessToken = storageService.get(storageService.ACCESS_TOKEN);
-  let refreshToken = storageService.get(storageService.REFRESH_TOKEN);
-  let user = storageService.get(storageService.USER);
+  let accessToken = await storageService.get(storageService.ACCESS_TOKEN);
+  let refreshToken = await storageService.get(storageService.REFRESH_TOKEN);
+  let user = await storageService.get(storageService.USER);
 
   const isAccessTokenExpired = user.exp < new Date() / 1000;
 
@@ -39,18 +40,26 @@ axiosInstanceWithTokens.interceptors.request.use(async (request) => {
       .post(`/tokens/refresh/`, {
         refresh: refreshToken,
       })
-      .then((response) => {
+      .then(async (response) => {
         accessToken = response.data.access_token;
         refreshToken = response.data.refresh_token;
         user = jwtDecode(accessToken);
 
-        storageService.save(storageService.ACCESS_TOKEN, accessToken);
-        storageService.save(storageService.REFRESH_TOKEN, refreshToken);
-        storageService.save(storageService.USER, user);
+        await storageService.save(storageService.ACCESS_TOKEN, accessToken);
+        await storageService.save(storageService.REFRESH_TOKEN, refreshToken);
+        await storageService.save(storageService.USER, user);
       })
-      .catch(() => {
-        storageService.clear();
-        useHistory().push("/");
+      .catch(async (error) => {
+        await storageService.remove(storageService.ACCESS_TOKEN);
+        await storageService.remove(storageService.REFRESH_TOKEN);
+        await storageService.remove(storageService.USER);
+
+        notificationService.showToast(
+          "Your session has expired. Please restart the application and log in again.",
+          "error"
+        );
+
+        notificationService.showToast(error.response.data.detail, "error");
       });
   }
 
