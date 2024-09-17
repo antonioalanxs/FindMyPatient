@@ -27,6 +27,7 @@ class StorageService {
         this.ACCESS_TOKEN = "accessToken";
         this.REFRESH_TOKEN = "refreshToken";
         this.USER = "user";
+        this.THEME = "theme";
 
         StorageService.instance = this;
       })

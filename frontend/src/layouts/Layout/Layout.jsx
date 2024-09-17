@@ -18,7 +18,7 @@ function Layout({ title, subtitle, children }) {
         <SideBar />
 
         <header>
-          <h1 className="fs-3 mb-1">{title}</h1>
+          <h2 className="fs-3 text-primary">{title}</h2>
           <p className="text-secondary">{subtitle}</p>
         </header>
 

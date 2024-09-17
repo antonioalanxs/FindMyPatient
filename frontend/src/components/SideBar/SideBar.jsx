@@ -1,17 +1,30 @@
+import { useEffect, useState } from "react";
+
 import { Link, useHistory } from "react-router-dom";
 
+import { storageService } from "@/services/StorageService";
 import SunIcon from "@/icons/SunIcon/SunIcon";
 import MoonIcon from "@/icons/MoonIcon/MoonIcon";
-
 import { BRAND_NAME } from "@/constants";
 
 // Links to the pages.
 const LINKS = {
   HOME: "/home",
+  SETTINGS: "/settings",
+};
+
+// Keys for the themes.
+const THEMES = {
+  LIGHT: "light",
+  DARK: "dark",
 };
 
 function SideBar() {
   const history = useHistory();
+
+  const [isChecked, setIsChecked] = useState(
+    document.documentElement.getAttribute("data-bs-theme") === THEMES.DARK
+  );
 
   /**
    * Plays with classes to show/hide the sidebar and its backdrop.
@@ -19,6 +32,38 @@ function SideBar() {
   function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("active");
     document.querySelector(".sidebar-backdrop").classList.toggle("d-none");
+  }
+
+  useEffect(() => {
+    /**
+     * Initializes the theme of the application based on the preference of the user.
+     */
+    const initializeTheme = async () => {
+      const theme =
+        (await storageService.get(storageService.THEME)) ?? THEMES.LIGHT;
+
+      document.documentElement.setAttribute("data-bs-theme", theme);
+      document.body.classList.add(theme);
+      setIsChecked(theme === THEMES.DARK);
+    };
+
+    initializeTheme();
+  }, []);
+
+  /**
+   * Toggles the theme of the application and saves the preference in the storage.
+   */
+  async function toggleTheme() {
+    const theme =
+      document.documentElement.getAttribute("data-bs-theme") === THEMES.LIGHT
+        ? THEMES.DARK
+        : THEMES.LIGHT;
+
+    document.documentElement.setAttribute("data-bs-theme", theme);
+    document.body.classList.replace(document.body.classList[0], theme);
+    setIsChecked(theme === THEMES.DARK);
+
+    await storageService.save(storageService.THEME, theme);
   }
 
   return (
@@ -50,6 +95,8 @@ function SideBar() {
                     className="form-check-input me-0 cursor-pointer"
                     type="checkbox"
                     id="toggle-dark"
+                    onChange={() => toggleTheme()}
+                    checked={isChecked}
                   />
                   <label className="form-check-label"></label>
                 </div>
@@ -84,6 +131,17 @@ function SideBar() {
                 <Link to={LINKS.HOME} className="sidebar-link">
                   <i className="bi bi-grid-fill"></i>
                   <span>Home</span>
+                </Link>
+              </li>
+
+              <li
+                className={`sidebar-item ${
+                  history.location.pathname === LINKS.SETTINGS && "active"
+                }`}
+              >
+                <Link to={LINKS.SETTINGS} className="sidebar-link">
+                  <i className="bi bi-gear-fill"></i>
+                  <span>Settings</span>
                 </Link>
               </li>
             </ul>
