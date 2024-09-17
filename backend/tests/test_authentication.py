@@ -102,17 +102,3 @@ class PasswordResetTestCase(APITestCase):
         response = self.client.put(url, {"password": self.new_password})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_is_reset_password_token_valid_with_valid_token(self):
-        url = reverse("reset_password", kwargs={"token": self.token})
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertTrue(response.data["is_reset_password_token_valid"])
-
-    def test_is_reset_password_token_valid_with_non_valid_token(self):
-        url = reverse("reset_password", kwargs={"token": "test"})
-        response = self.client.get(url)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(response.data["is_reset_password_token_valid"])

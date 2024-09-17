@@ -177,38 +177,3 @@ class PasswordResetView(APIView, URICertifierMixin):
             {'message': 'Invalid token.'},
             status=status.HTTP_400_BAD_REQUEST
         )
-
-    @swagger_auto_schema(
-        operation_summary='Checks if the password reset token is valid.',
-        operation_description='Checks if the password reset token is valid.',
-        request_body=None,
-        manual_parameters=[
-            openapi.Parameter(
-                name='token',
-                in_=openapi.IN_PATH,
-                type=openapi.TYPE_STRING,
-                required=True,
-                description='The password reset token.',
-            ),
-        ],
-        responses={
-            200: openapi.Response(
-                description='If the password reset token is valid or not.',
-                examples={
-                    'application/json': {
-                        'is_reset_password_token_valid': True
-                    }
-                }
-            )
-        }
-    )
-    def get(self, request, token):
-        return Response(
-            data=
-            {
-                'is_reset_password_token_valid': bool(
-                    self.is_legal('reset_password_token', token, caducate=False)
-                )
-            },
-            status=status.HTTP_200_OK
-        )
