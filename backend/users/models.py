@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from base.models import User, MedicalSpecialty, Address
+from base.models import User, MedicalSpecialty, Address, ClinicalHistory
 
 
 # Create your models here.
@@ -30,7 +30,7 @@ class Doctor(User):
         verbose_name_plural = "Doctors"
 
     collegiate_code = models.CharField(max_length=10, unique=True)
-    medical_specialties = models.ManyToManyField(MedicalSpecialty, blank=True)
+    medical_specialties = models.ManyToManyField(MedicalSpecialty)
 
 
 class Patient(User):
@@ -84,11 +84,11 @@ class Patient(User):
         null=False
     )
 
-    address = models.OneToOneField(
+    address = models.ForeignKey(
         Address,
         on_delete=models.SET_NULL,
         blank=True,
-        null=True,
+        null=True
     )
 
     social_security_code = models.CharField(
@@ -105,3 +105,5 @@ class Patient(User):
         null=True,
         blank=True
     )
+
+    clinical_history = models.ManyToManyField(ClinicalHistory)

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class User(AbstractUser):
     """
     This model is used to store the common fields between the different types of users.
@@ -42,9 +41,9 @@ class User(AbstractUser):
                 continue
 
             if hasattr(self, role):
-                return role
+                return role.capitalize()
 
-        return self_name
+        return self_name.capitalize()
 
 
 class Address(models.Model):
@@ -93,3 +92,17 @@ class MedicalSpecialty(models.Model):
         null=True,
         blank=True
     )
+
+class ClinicalHistory(models.Model):
+    """
+    This model is used to store the clinical history of the patients.
+
+    Attributes:
+        title (str): The title of the medical history or treatment.
+        description (str): A description or notes about the medical history or treatment.
+        created_at (date): The date when the history was created.
+    """
+    title = models.CharField(max_length=255, null=False, blank=False)
+    description = models.TextField(null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
