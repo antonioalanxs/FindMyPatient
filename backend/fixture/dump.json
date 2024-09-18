@@ -24,5 +24,170 @@
       "last_name": "Alanís Bernal",
       "reset_password_token": null
     }
+  },
+  {
+    "model": "base.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "doctorjones",
+      "email": "doctor.jones@example.com",
+      "is_active": true,
+      "first_name": "Indiana Doe",
+      "last_name": "Jones Doe",
+      "reset_password_token": null
+    }
+  },
+  {
+    "model": "users.doctor",
+    "pk": 2,
+    "fields": {
+      "user_ptr_id": 2,
+      "collegiate_code": "COL1234567",
+      "medical_specialties": [1, 2]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "doctorbrown",
+      "email": "doctor.brown@example.com",
+      "is_active": true,
+      "first_name": "Emmett",
+      "last_name": "Brown McFly",
+      "reset_password_token": null
+    }
+  },
+  {
+    "model": "users.doctor",
+    "pk": 4,
+    "fields": {
+      "user_ptr_id": 4,
+      "collegiate_code": "COL9876543",
+      "medical_specialties": [2]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "patientdoe",
+      "email": "jane.doe@example.com",
+      "is_active": true,
+      "first_name": "Jane Doe",
+      "last_name": "Smith Doe",
+      "reset_password_token": null
+    }
+  },
+  {
+    "model": "users.patient",
+    "pk": 3,
+    "fields": {
+      "user_ptr_id": 3,
+      "identity_card_number": "ID987654321",
+      "gender": "F",
+      "birth_date": "1985-05-20",
+      "phone_number": "+123456789",
+      "nationality": "Spanish",
+      "address": 1,
+      "social_security_code": "SS987654321",
+      "assigned_doctor": 2,
+      "clinical_history": [1, 2]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "patientmcfly",
+      "email": "marty.mcfly@example.com",
+      "is_active": true,
+      "first_name": "Marty",
+      "last_name": "McFly Johnson",
+      "reset_password_token": null
+    }
+  },
+  {
+    "model": "users.patient",
+    "pk": 5,
+    "fields": {
+      "user_ptr_id": 5,
+      "identity_card_number": "ID123456789",
+      "gender": "M",
+      "birth_date": "1968-06-12",
+      "phone_number": "+987654321",
+      "nationality": "American",
+      "address": 1,
+      "social_security_code": "SS123456789",
+      "assigned_doctor": 4,
+      "clinical_history": [3, 4]
+    }
+  },
+  {
+    "model": "base.address",
+    "pk": 1,
+    "fields": {
+      "street": "Serrano Street",
+      "city": "Madrid",
+      "state": "Madrid",
+      "country": "Spain",
+      "zip_code": "28001"
+    }
+  },
+  {
+    "model": "base.medicalspecialty",
+    "pk": 1,
+    "fields": {
+      "name": "Archaeology",
+      "description": "Specialty focused on the study of human history and prehistory through the excavation of sites and the analysis of artifacts."
+    }
+  },
+  {
+    "model": "base.medicalspecialty",
+    "pk": 2,
+    "fields": {
+      "name": "Pediatrics",
+      "description": "Specialty focused on the health and medical care of infants, children, and adolescents."
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 1,
+    "fields": {
+      "title": "General check-up",
+      "description": "Patient came in for a routine check-up. No issues detected.",
+      "created_at": "2023-09-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 2,
+    "fields": {
+      "title": "Flu treatment",
+      "description": "Patient diagnosed with seasonal flu. Prescribed rest and fluids.",
+      "created_at": "2023-10-10T14:00:00Z"
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 3,
+    "fields": {
+      "title": "Sprained ankle",
+      "description": "Patient injured ankle during sports. Recommended physiotherapy.",
+      "created_at": "2023-08-20T09:30:00Z"
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 4,
+    "fields": {
+      "title": "Back pain",
+      "description": "Patient reports chronic back pain. Suggested posture correction exercises.",
+      "created_at": "2023-09-05T12:45:00Z"
+    }
   }
 ]
