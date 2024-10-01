@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
 
@@ -11,12 +11,35 @@ import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
 import Layout from "@/layouts/Layout/Layout";
 import { THEMES } from "@/constants";
-import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
+import {
+  UNAVAILABLE_SERVICE_MESSAGE,
+  ROLES,
+  TOKEN_STRUCTURE,
+} from "@/constants";
 
 function Settings() {
-  const user = usePrivateRouteGuard();
+  const data = usePrivateRouteGuard();
 
   useTitle({ title: "Settings" });
+
+  const [user, setUser] = useState(data);
+  const [address, setAddress] = useState(null);
+
+  useEffect(() => {
+    const items = { ...data };
+
+    if (items.role === ROLES.PATIENT) {
+      setAddress(new Map(Array.from(Object.entries(items)).slice(-5)));
+
+      delete items.assigned_doctor_id;
+    }
+
+    delete items.exp;
+    delete items.role;
+    delete items.user_id;
+
+    setUser(items);
+  }, [data]);
 
   const history = useHistory();
 
@@ -46,30 +69,85 @@ function Settings() {
   /**
    * Handles the click event on the log out button.
    */
-  function handleClick() {
-    authenticationService.logout().finally(async () => {
-      await storageService.remove(storageService.REFRESH_TOKEN);
-      await storageService.remove(storageService.ACCESS_TOKEN);
-      await storageService.remove(storageService.USER);
+  async function handleExitClick() {
+    await storageService.remove(storageService.REFRESH_TOKEN);
+    await storageService.remove(storageService.ACCESS_TOKEN);
+    await storageService.remove(storageService.USER);
 
-      history.push("/");
+    history.push("/");
 
-      document.documentElement.setAttribute("data-bs-theme", THEMES.LIGHT);
+    document.documentElement.setAttribute("data-bs-theme", THEMES.LIGHT);
 
-      notificationService.showToast(
-        "You have been logged out successfully.",
-        "success"
-      );
-    });
+    notificationService.showToast(
+      "You have been logged out successfully.",
+      "success"
+    );
+
+    authenticationService.logout();
   }
 
   return (
     <Layout title="Settings" subtitle="Set up your account and preferences.">
-      {/* Account details */}
+      {/* General information */}
       <div className="card border-0">
         <div className="card-header pb-0">
-          <h3 className="fs-5">Account details</h3>
-          <p className="text-secondary">See your account information.</p>
+          <h3 className="fs-5">General information</h3>
+          <p className="text-secondary">Your global data in the system.</p>
+        </div>
+
+        <div className="card-body">
+          <form className="form">
+            <div className="row">
+              {Object.entries(user).map(([key, value]) => {
+                if (
+                  key !== TOKEN_STRUCTURE.DATE_JOINED &&
+                  key !== TOKEN_STRUCTURE.BIRTH_DATE
+                ) {
+                  key = key.replace(/_/g, " ");
+                  key = key.charAt(0).toUpperCase() + key.slice(1);
+                } else {
+                  value = new Date(value).toLocaleDateString();
+                }
+
+                if (key === TOKEN_STRUCTURE.DATE_JOINED) {
+                  key = "Joined at";
+                }
+
+                if (key === TOKEN_STRUCTURE.BIRTH_DATE) {
+                  key = "Date of birth";
+                }
+
+                if (key === TOKEN_STRUCTURE.GENDER) {
+                  value = "M" ? "Male" : "Female";
+                }
+
+                return (
+                  <div className="col-md-6 col-12" key={key}>
+                    <div className="form-group">
+                      <label htmlFor={key}>{key}</label>
+                      <input
+                        type="text"
+                        className="form-control mt-1"
+                        id={key}
+                        value={value ?? "N/A"}
+                        disabled
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* Role */}
+      <div className="card border-0">
+        <div className="card-header pb-0">
+          <h3 className="fs-5">Role</h3>
+          <p className="text-secondary">
+            It determines the permissions you have in the system.
+          </p>
         </div>
 
         <div className="card-body">
@@ -77,87 +155,118 @@ function Settings() {
             <div className="row">
               <div className="col-md-6 col-12">
                 <div className="form-group">
-                  <label htmlFor="firstName">First name</label>
                   <input
                     type="text"
                     className="form-control mt-1"
-                    id="firstName"
-                    value={user.first_name ?? "N/A"}
+                    value={data.role ?? "N/A"}
                     disabled
                   />
                 </div>
               </div>
-
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="lastName">Last name</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="lastName"
-                    value={user.last_name ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <input
-                    type="username"
-                    className="form-control mt-1"
-                    id="username"
-                    value={user.username ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    className="form-control mt-1"
-                    id="email"
-                    value={user.email ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="role">Role</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="role"
-                    value={user.role ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="createdAt">Joined at</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="createdAt"
-                    value={new Date(user.date_joined).toLocaleString() ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="col-md-6 col-12"></div>
             </div>
           </form>
         </div>
       </div>
+
+      {/* Address */}
+      {address && (
+        <div className="card border-0">
+          <div className="card-header pb-0">
+            <h3 className="fs-5">Address</h3>
+            <p className="text-secondary">
+              The address where you live and can be contacted.
+            </p>
+          </div>
+
+          <div className="card-body">
+            <form className="form">
+              <div className="row">
+                {Array.from(Object.entries(user))
+                  .slice(-5)
+                  .map(([key, value]) => {
+                    <div className="col-md-6 col-12" key={key}>
+                      <div className="form-group">
+                        <label htmlFor={key}>{key}</label>
+                        <input
+                          type="text"
+                          className="form-control mt-1"
+                          id={key}
+                          value={value ?? "N/A"}
+                          disabled
+                        />
+                      </div>
+                    </div>;
+                  })}
+
+                <div className="col-md-6 col-12">
+                  <div className="form-group">
+                    <label htmlFor="street">Street</label>
+                    <input
+                      type="text"
+                      className="form-control mt-1"
+                      id="street"
+                      value={user.street ?? "N/A"}
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="form-group">
+                    <label htmlFor="city">City</label>
+                    <input
+                      type="text"
+                      className="form-control mt-1"
+                      id="city"
+                      value={user.city ?? "N/A"}
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="form-group">
+                    <label htmlFor="state">State</label>
+                    <input
+                      type="text"
+                      className="form-control mt-1"
+                      id="state"
+                      value={user.state ?? "N/A"}
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="form-group">
+                    <label htmlFor="zipCode">Zip code</label>
+                    <input
+                      type="text"
+                      className="form-control mt-1"
+                      id="zipCode"
+                      value={user.zip_code ?? "N/A"}
+                      disabled
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="form-group">
+                    <label htmlFor="country">Country</label>
+                    <input
+                      type="text"
+                      className="form-control mt-1"
+                      id="country"
+                      value={user.country ?? "N/A"}
+                      disabled
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Change password */}
       <div className="card border-0">
@@ -238,7 +347,7 @@ function Settings() {
         </div>
 
         <div className="card-body">
-          <button className="btn btn-danger" onClick={() => handleClick()}>
+          <button className="btn btn-danger" onClick={() => handleExitClick()}>
             Log out
           </button>
         </div>
