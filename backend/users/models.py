@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from base.models import User, MedicalSpecialty, Address, ClinicalHistory
+from base.models import User, MedicalSpecialty, ClinicalHistory
 
 
 # Create your models here.
@@ -38,58 +38,19 @@ class Patient(User):
     This model is used to store the patients of the platform.
 
     Attributes:
-        identity_card_number (str): The identity card number of the patient.
-        gender (str): The gender of the patient.
-        birth_date (date): The birthdate of the patient.
-        phone_number (str): The phone number of the patient.
-        nationality (str): The nationality of the patient.
-        address (Address): The address of the patient.
         social_security_code (str): The social security code of the patient.
         assigned_doctor (Doctor): The doctor assigned to the patient.
+        clinical_history (list of ClinicalHistory): The clinical history of the patient.
+        street (str): The street of the patient's address.
+        city (str): The city of the address of the patient.
+        state (str): The state of the address of the patient.
+        country (str): The country of the address of the patient.
+        zip_code (str): The zip code of the address of the patient.
     """
 
     class Meta:
         verbose_name = "Patient"
         verbose_name_plural = "Patients"
-
-    identity_card_number = models.CharField(
-        max_length=20,
-        unique=True,
-        blank=False,
-        null=False
-    )
-
-    gender = models.CharField(
-        max_length=1,
-        choices=(
-            ("M", "Male"),
-            ("F", "Female"),
-        ),
-    )
-
-    birth_date = models.DateField(
-        null=False,
-        blank=False
-    )
-
-    phone_number = models.CharField(
-        max_length=20,
-        blank=False,
-        null=False
-    )
-
-    nationality = models.CharField(
-        max_length=255,
-        blank=False,
-        null=False
-    )
-
-    address = models.ForeignKey(
-        Address,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
 
     social_security_code = models.CharField(
         max_length=12,
@@ -107,3 +68,9 @@ class Patient(User):
     )
 
     clinical_history = models.ManyToManyField(ClinicalHistory)
+
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=10)

@@ -2,7 +2,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from base.serializers import UserSerializer
 
-
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
     Custom serializer for obtaining a JSON Web Token pair and return more data in responses.

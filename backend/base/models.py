@@ -10,12 +10,49 @@ class User(AbstractUser):
 
     Attributes:
         reset_password_token (str): The token used to reset the password of the user.
+        identity_card_number (str): The identity card number of the patient.
+        gender (str): The gender of the patient.
+        birth_date (date): The birthdate of the patient.
+        phone_number (str): The phone number of the patient.
+        nationality (str): The nationality of the patient.
     """
     reset_password_token = models.CharField(
         unique=True,
         max_length=255,
         null=True,
         blank=True
+    )
+
+    birth_date = models.DateField(
+        null=False,
+        blank=False
+    )
+
+    identity_card_number = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=False,
+        null=False
+    )
+
+    gender = models.CharField(
+        max_length=1,
+        choices=(
+            ("M", "Male"),
+            ("F", "Female"),
+        ),
+    )
+
+    phone_number = models.CharField(
+        max_length=20,
+        blank=False,
+        null=False
+    )
+
+    nationality = models.CharField(
+        max_length=255,
+        blank=False,
+        null=False
     )
 
     is_staff = None
@@ -44,29 +81,6 @@ class User(AbstractUser):
                 return role.capitalize()
 
         return self_name.capitalize()
-
-
-class Address(models.Model):
-    """
-    This model is used to store the address of a user.
-
-    Attributes:
-        street (str): The street of the address.
-        city (str): The city of the address.
-        state (str): The state of the address.
-        country (str): The country of the address.
-        zip_code (str): The zip code of the address.
-    """
-
-    class Meta:
-        verbose_name = "Address"
-        verbose_name_plural = "Addresses"
-
-    street = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
-    zip_code = models.CharField(max_length=10)
 
 
 class MedicalSpecialty(models.Model):
