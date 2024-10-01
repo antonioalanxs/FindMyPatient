@@ -4,14 +4,13 @@ import { Link, useHistory } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 
-import { jwtDecode } from "jwt-decode";
-
 import { usePublicRouteGuard } from "@/hooks/guards/usePublicRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
 import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
 import FormErrorText from "@/components/FormErrorText/FormErrorText";
+import decode from "@/utilities/tokensHelper";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
 
 function Login() {
@@ -39,7 +38,7 @@ function Login() {
       .login(data)
       .then((response) => {
         const { access_token, refresh_token } = response.data;
-        const user = jwtDecode(access_token);
+        const user = decode(access_token);
 
         storageService.save(storageService.ACCESS_TOKEN, access_token);
         storageService.save(storageService.REFRESH_TOKEN, refresh_token);
