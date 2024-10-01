@@ -69,21 +69,21 @@ function Settings() {
   /**
    * Handles the click event on the log out button.
    */
-  async function handleExitClick() {
-    await storageService.remove(storageService.REFRESH_TOKEN);
-    await storageService.remove(storageService.ACCESS_TOKEN);
-    await storageService.remove(storageService.USER);
+  function handleExitClick() {
+    authenticationService.logout().finally(async () => {
+      await storageService.remove(storageService.REFRESH_TOKEN);
+      await storageService.remove(storageService.ACCESS_TOKEN);
+      await storageService.remove(storageService.USER);
 
-    history.push("/");
+      history.push("/");
 
-    document.documentElement.setAttribute("data-bs-theme", THEMES.LIGHT);
+      document.documentElement.setAttribute("data-bs-theme", THEMES.LIGHT);
 
-    notificationService.showToast(
-      "You have been logged out successfully.",
-      "success"
-    );
-
-    authenticationService.logout();
+      notificationService.showToast(
+        "You have been logged out successfully.",
+        "success"
+      );
+    });
   }
 
   return (
