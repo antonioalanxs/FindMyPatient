@@ -17,7 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
         object_ = (Administrator.objects.filter(id=id_) or
                    Doctor.objects.filter(id=id_) or
                    Patient.objects.filter(id=id_))
-
         data = object_.values().first()
 
         data["date_joined"] = instance.date_joined.isoformat()

@@ -35,29 +35,3 @@ export const ROLES = {
   DOCTOR: "Doctor",
   PATIENT: "Patient",
 };
-
-/**
- * Constant for the structure of the tokens.
- */
-export const TOKEN_STRUCTURE = {
-  EXPIRATION: "exp",
-  USER_ID: "user_id",
-  USERNAME: "username",
-  FIRST_NAME: "first_name",
-  LAST_NAME: "last_name",
-  EMAIL: "email",
-  DATE_JOINED: "date_joined",
-  BIRTH_DATE: "birth_date",
-  IDENTITY_CARD_NUMBER: "identity_card_number",
-  GENDER: "gender",
-  PHONE_NUMBER: "phone_number",
-  NATIONALITY: "nationality",
-  SOCIAL_SECURITY_CODE: "social_security_code",
-  ASSIGNED_DOCTOR_ID: "assigned_doctor_id",
-  STREET: "street",
-  CITY: "city",
-  STATE: "state",
-  COUNTRY: "country",
-  ZIP_CODE: "zip_code",
-  ROLE: "role",
-};

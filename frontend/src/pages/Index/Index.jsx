@@ -10,7 +10,7 @@ import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
 import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
 import FormErrorText from "@/components/FormErrorText/FormErrorText";
-import decode from "@/utilities/tokensHelper";
+import { decode } from "@/utilities/functions";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
 
 function Login() {
@@ -117,7 +117,7 @@ function Login() {
 
         <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
           {isSubmittingForm ? (
-            <div className="spinner-border text-light" role="status">
+            <div className="spinner-border" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           ) : (

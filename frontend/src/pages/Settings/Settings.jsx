@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
@@ -7,50 +7,38 @@ import { useForm } from "react-hook-form";
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
-import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
 import Layout from "@/layouts/Layout/Layout";
-import { THEMES } from "@/constants";
-import {
-  UNAVAILABLE_SERVICE_MESSAGE,
-  ROLES,
-  TOKEN_STRUCTURE,
-} from "@/constants";
+import { cleanText } from "@/utilities/functions";
+import { UNAVAILABLE_SERVICE_MESSAGE, ROLES } from "@/constants";
 
 function Settings() {
-  const data = usePrivateRouteGuard();
+  let data = usePrivateRouteGuard();
+
+  delete data.exp;
+  delete data.user_id;
+  delete data?.assigned_doctor_id;
+
+  const { role, street, city, state, country, zip_code, ...user } = data;
+  const address = { street, city, state, country, zip_code };
 
   useTitle({ title: "Settings" });
 
-  const [user, setUser] = useState(data);
-  const [address, setAddress] = useState(null);
-
-  useEffect(() => {
-    const items = { ...data };
-
-    if (items.role === ROLES.PATIENT) {
-      setAddress(new Map(Array.from(Object.entries(items)).slice(-5)));
-
-      delete items.assigned_doctor_id;
-    }
-
-    delete items.exp;
-    delete items.role;
-    delete items.user_id;
-
-    setUser(items);
-  }, [data]);
-
+  const { register, handleSubmit } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmittingChangePasswordForm, setIsSubmittingChangePasswordForm] =
+    useState(false);
+  const [isSubmittingExitForm, setIsSubmittingExitForm] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
 
-  const { register, handleSubmit } = useForm();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-
-  function onSubmit(data) {
-    setIsSubmittingForm(true);
+  /**
+   * Handles the submit event on the change password form.
+   *
+   * @param {Object} data - The form data.
+   */
+  function onChangePasswordSubmit(data) {
+    setIsSubmittingChangePasswordForm(true);
 
     authenticationService
       .changePassword(data.password)
@@ -58,18 +46,28 @@ function Settings() {
         notificationService.showToast(response.data.message, "success");
       })
       .catch((error) => {
-        const detail = error.response?.data?.detail;
-        setErrorMessage(detail ?? UNAVAILABLE_SERVICE_MESSAGE);
+        setErrorMessage(
+          error.response?.data?.detail ?? UNAVAILABLE_SERVICE_MESSAGE
+        );
       })
       .finally(() => {
-        setIsSubmittingForm(false);
+        setIsSubmittingChangePasswordForm(false);
       });
   }
+
+  /**
+   * Handles the submit event on the change address form.
+   *
+   * @param {Object} data - The form data.
+   */
+  function onChangeAddressSubmit(data) {}
 
   /**
    * Handles the click event on the log out button.
    */
   function handleExitClick() {
+    setIsSubmittingExitForm(true);
+
     authenticationService.logout().finally(async () => {
       await storageService.remove(storageService.REFRESH_TOKEN);
       await storageService.remove(storageService.ACCESS_TOKEN);
@@ -83,6 +81,8 @@ function Settings() {
         "You have been logged out successfully.",
         "success"
       );
+
+      setIsSubmittingExitForm(false);
     });
   }
 
@@ -99,27 +99,17 @@ function Settings() {
           <form className="form">
             <div className="row">
               {Object.entries(user).map(([key, value]) => {
-                if (
-                  key !== TOKEN_STRUCTURE.DATE_JOINED &&
-                  key !== TOKEN_STRUCTURE.BIRTH_DATE
-                ) {
-                  key = key.replace(/_/g, " ");
-                  key = key.charAt(0).toUpperCase() + key.slice(1);
-                } else {
-                  value = new Date(value).toLocaleDateString();
-                }
+                key === "date_joined" &&
+                  (key = "Joined at") &&
+                  (value = new Date(value).toLocaleDateString());
 
-                if (key === TOKEN_STRUCTURE.DATE_JOINED) {
-                  key = "Joined at";
-                }
+                key === "birt_date" &&
+                  (key = "Date of birth") &&
+                  (value = new Date(value).toLocaleDateString());
 
-                if (key === TOKEN_STRUCTURE.BIRTH_DATE) {
-                  key = "Date of birth";
-                }
+                key === "gender" && (value = "M" ? "Male" : "Female");
 
-                if (key === TOKEN_STRUCTURE.GENDER) {
-                  value = "M" ? "Male" : "Female";
-                }
+                key = cleanText(key);
 
                 return (
                   <div className="col-md-6 col-12" key={key}>
@@ -129,7 +119,7 @@ function Settings() {
                         type="text"
                         className="form-control mt-1"
                         id={key}
-                        value={value ?? "N/A"}
+                        defaultValue={value ?? "N/A"}
                         disabled
                       />
                     </div>
@@ -140,7 +130,6 @@ function Settings() {
           </form>
         </div>
       </div>
-
       {/* Role */}
       <div className="card border-0">
         <div className="card-header pb-0">
@@ -158,7 +147,7 @@ function Settings() {
                   <input
                     type="text"
                     className="form-control mt-1"
-                    value={data.role ?? "N/A"}
+                    value={role ?? "N/A"}
                     disabled
                   />
                 </div>
@@ -169,21 +158,22 @@ function Settings() {
       </div>
 
       {/* Address */}
-      {address && (
+      {role === ROLES.PATIENT && (
         <div className="card border-0">
           <div className="card-header pb-0">
             <h3 className="fs-5">Address</h3>
             <p className="text-secondary">
-              The address where you live and can be contacted.
+              You can change the address where you live and can be contacted.
             </p>
           </div>
 
           <div className="card-body">
             <form className="form">
               <div className="row">
-                {Array.from(Object.entries(user))
-                  .slice(-5)
-                  .map(([key, value]) => {
+                {Array.from(Object.entries(address)).map(([key, value]) => {
+                  key = cleanText(key);
+
+                  return (
                     <div className="col-md-6 col-12" key={key}>
                       <div className="form-group">
                         <label htmlFor={key}>{key}</label>
@@ -191,78 +181,32 @@ function Settings() {
                           type="text"
                           className="form-control mt-1"
                           id={key}
-                          value={value ?? "N/A"}
-                          disabled
+                          defaultValue={value ?? "N/A"}
                         />
                       </div>
-                    </div>;
-                  })}
-
-                <div className="col-md-6 col-12">
-                  <div className="form-group">
-                    <label htmlFor="street">Street</label>
-                    <input
-                      type="text"
-                      className="form-control mt-1"
-                      id="street"
-                      value={user.street ?? "N/A"}
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <div className="form-group">
-                    <label htmlFor="city">City</label>
-                    <input
-                      type="text"
-                      className="form-control mt-1"
-                      id="city"
-                      value={user.city ?? "N/A"}
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <div className="form-group">
-                    <label htmlFor="state">State</label>
-                    <input
-                      type="text"
-                      className="form-control mt-1"
-                      id="state"
-                      value={user.state ?? "N/A"}
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <div className="form-group">
-                    <label htmlFor="zipCode">Zip code</label>
-                    <input
-                      type="text"
-                      className="form-control mt-1"
-                      id="zipCode"
-                      value={user.zip_code ?? "N/A"}
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6 col-12">
-                  <div className="form-group">
-                    <label htmlFor="country">Country</label>
-                    <input
-                      type="text"
-                      className="form-control mt-1"
-                      id="country"
-                      value={user.country ?? "N/A"}
-                      disabled
-                    />
-                  </div>
-                </div>
+                    </div>
+                  );
+                })}
               </div>
+
+              <button
+                className="btn btn-primary d-flex justify-content-center align-items-center mt-3"
+                style={{ width: "150px", height: "37.5px" }}
+              >
+                {isSubmittingChangePasswordForm ? (
+                  <div
+                    className="spinner-border"
+                    role="status"
+                    style={{
+                      scale: "0.50",
+                    }}
+                  >
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                ) : (
+                  "Change address"
+                )}
+              </button>
             </form>
           </div>
         </div>
@@ -279,8 +223,8 @@ function Settings() {
         </div>
 
         <div className="card-body">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="password-form-group form-group position-relative has-icon-left mb-4">
+          <form onSubmit={handleSubmit(onChangePasswordSubmit)}>
+            <div className="password-form-group form-group position-relative has-icon-left">
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="New password"
@@ -315,12 +259,12 @@ function Settings() {
             )}
 
             <button
-              className="btn btn-primary d-flex justify-content-center align-items-center"
+              className="btn btn-primary d-flex justify-content-center align-items-center mt-4"
               style={{ width: "175px", height: "37.5px" }}
             >
-              {isSubmittingForm ? (
+              {isSubmittingChangePasswordForm ? (
                 <div
-                  className="spinner-border text-light"
+                  className="spinner-border"
                   role="status"
                   style={{
                     scale: "0.50",
@@ -347,8 +291,27 @@ function Settings() {
         </div>
 
         <div className="card-body">
-          <button className="btn btn-danger" onClick={() => handleExitClick()}>
-            Log out
+          <button
+            className="btn btn-danger d-flex justify-content-center align-items-center"
+            onClick={() => handleExitClick()}
+            style={{
+              width: "100px",
+              height: "37.5px",
+            }}
+          >
+            {isSubmittingExitForm ? (
+              <div
+                className="spinner-border"
+                role="status"
+                style={{
+                  scale: "0.50",
+                }}
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              "Log out"
+            )}
           </button>
         </div>
       </div>
