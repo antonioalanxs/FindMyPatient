@@ -26,7 +26,7 @@ function Home() {
 
   return (
     <Layout
-      title={`${getGreeting()}, ${user.first_name}!`}
+      title={`${getGreeting()}, ${user?.first_name}!`}
       subtitle="Here is everything you need to get started."
     >
       {user && (
