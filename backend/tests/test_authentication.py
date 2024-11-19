@@ -114,14 +114,7 @@ class PasswordResetTestCase(APITestCase):
 
 
 class LogoutTestCase(APITestCase):
-    """
-        Test case for user logout endpoint.
-    """
-
     def setUp(self):
-        """
-            Set up the test case.
-        """
         self.url = reverse("logout")
         self.user = Administrator.objects.create(
             username="test",
@@ -157,7 +150,6 @@ class LogoutTestCase(APITestCase):
 
 
 class ChangePasswordTestCase(APITestCase):
-
     def setUp(self):
         self.url = reverse("change_password")
         self.user = Administrator.objects.create(
