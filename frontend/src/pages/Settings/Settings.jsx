@@ -5,14 +5,13 @@ import { useHistory } from "react-router-dom";
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
-import { userService } from "@/services/UserService";
 import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
 import Layout from "@/layouts/Layout/Layout";
 import ChangePassword from "@/pages/Settings/ChangePassword/ChangePassword";
 import Address from "@/pages/Settings/Address/Address";
 import { cleanText } from "@/utilities/functions";
-import { UNAVAILABLE_SERVICE_MESSAGE, ROLES } from "@/constants";
+import { ROLES, THEMES } from "@/constants";
 
 function Settings() {
   let token = usePrivateRouteGuard();
