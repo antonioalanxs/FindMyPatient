@@ -2,51 +2,40 @@ import { useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
-import { useForm } from "react-hook-form";
-
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
 import Layout from "@/layouts/Layout/Layout";
-import { THEMES } from "@/constants";
-import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
+import ChangePassword from "@/pages/Settings/ChangePassword/ChangePassword";
+import Address from "@/pages/Settings/Address/Address";
+import { cleanText } from "@/utilities/functions";
+import { ROLES, THEMES } from "@/constants";
 
 function Settings() {
-  const user = usePrivateRouteGuard();
+  let token = usePrivateRouteGuard();
+  let items = { ...token };
+
+  delete items.exp;
+  delete items.user_id;
+  delete items?.assigned_doctor_id;
+
+  const { role, street, city, state, country, zip_code, ...user } = items;
+  const address = { street, city, state, country, zip_code };
 
   useTitle({ title: "Settings" });
 
   const history = useHistory();
 
-  const { register, handleSubmit } = useForm();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-
-  function onSubmit(data) {
-    setIsSubmittingForm(true);
-
-    authenticationService
-      .changePassword(data.password)
-      .then((response) => {
-        notificationService.showToast(response.data.message, "success");
-      })
-      .catch((error) => {
-        const detail = error.response?.data?.detail;
-        setErrorMessage(detail ?? UNAVAILABLE_SERVICE_MESSAGE);
-      })
-      .finally(() => {
-        setIsSubmittingForm(false);
-      });
-  }
+  const [isSubmittingExitForm, setIsSubmittingExitForm] = useState(false);
 
   /**
    * Handles the click event on the log out button.
    */
-  function handleClick() {
+  function handleExitClick() {
+    setIsSubmittingExitForm(true);
+
     authenticationService.logout().finally(async () => {
       await storageService.remove(storageService.REFRESH_TOKEN);
       await storageService.remove(storageService.ACCESS_TOKEN);
@@ -60,172 +49,84 @@ function Settings() {
         "You have been logged out successfully.",
         "success"
       );
+
+      setIsSubmittingExitForm(false);
     });
   }
 
   return (
     <Layout title="Settings" subtitle="Set up your account and preferences.">
-      {/* Account details */}
+      {/* General information */}
       <div className="card border-0">
         <div className="card-header pb-0">
-          <h3 className="fs-5">Account details</h3>
-          <p className="text-secondary">See your account information.</p>
+          <h3 className="fs-5">General information</h3>
+          <p className="text-secondary">Your global data in the system.</p>
         </div>
 
         <div className="card-body">
-          <form className="form">
+          <form>
             <div className="row">
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="firstName">First name</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="firstName"
-                    value={user.first_name ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
+              {Object.entries(user).map(([key, value]) => {
+                const id = key;
 
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="lastName">Last name</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="lastName"
-                    value={user.last_name ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
+                key === "date_joined" &&
+                  (key = "Joined at") &&
+                  (value = new Date(value).toLocaleDateString());
 
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="username">Username</label>
-                  <input
-                    type="username"
-                    className="form-control mt-1"
-                    id="username"
-                    value={user.username ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
+                key === "birt_date" &&
+                  (key = "Date of birth") &&
+                  (value = new Date(value).toLocaleDateString());
 
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    className="form-control mt-1"
-                    id="email"
-                    value={user.email ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
+                key === "gender" && (value = "M" ? "Male" : "Female");
 
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="role">Role</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="role"
-                    value={user.role ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
+                key = cleanText(key);
 
-              <div className="col-md-6 col-12">
-                <div className="form-group">
-                  <label htmlFor="createdAt">Joined at</label>
-                  <input
-                    type="text"
-                    className="form-control mt-1"
-                    id="createdAt"
-                    value={new Date(user.date_joined).toLocaleString() ?? "N/A"}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="col-md-6 col-12"></div>
+                return (
+                  <div className="col-md-6 col-12" key={key}>
+                    <div className="form-group">
+                      <label htmlFor={key}>{key}</label>
+                      <input
+                        type="text"
+                        className="form-control mt-1"
+                        id={id}
+                        defaultValue={value ?? "N/A"}
+                        disabled
+                      />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </form>
         </div>
       </div>
 
-      {/* Change password */}
+      {/* Role */}
       <div className="card border-0">
         <div className="card-header pb-0">
-          <h3 className="fs-5">Change password</h3>
+          <h3 className="fs-5">Role</h3>
           <p className="text-secondary">
-            This is a secure area. Please do not share your password with
-            anyone.
+            It determines the permissions you have in the system.
           </p>
         </div>
 
         <div className="card-body">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="password-form-group form-group position-relative has-icon-left mb-4">
+          <div className="row">
+            <div className="col-md-6 col-12">
               <input
-                type={showPassword ? "text" : "password"}
-                placeholder="New password"
-                autoComplete="off"
-                className="form-control form-control-lg form-password"
-                {...register("password", { required: "Password is required." })}
+                type="text"
+                className="form-control"
+                value={role ?? "N/A"}
+                disabled
               />
-              <div className="form-control-icon">
-                <i className="bi bi-shield-lock"></i>
-              </div>
-              <div
-                className="form-control-icon form-control-icon-right"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                <i
-                  className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
-                ></i>
-              </div>
             </div>
-
-            {errorMessage && (
-              <div className="alert alert-danger alert-dismissible show fade">
-                <span className="ms-1">{errorMessage}</span>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="alert"
-                  aria-label="Close"
-                  onClick={() => setErrorMessage(null)}
-                ></button>
-              </div>
-            )}
-
-            <button
-              className="btn btn-primary d-flex justify-content-center align-items-center"
-              style={{ width: "175px", height: "37.5px" }}
-            >
-              {isSubmittingForm ? (
-                <div
-                  className="spinner-border text-light"
-                  role="status"
-                  style={{
-                    scale: "0.50",
-                  }}
-                >
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              ) : (
-                "Change password"
-              )}
-            </button>
-          </form>
+          </div>
         </div>
       </div>
+
+      {role === ROLES.PATIENT && <Address address={address} token={token} />}
+
+      <ChangePassword />
 
       {/* Log out */}
       <div className="card border-0">
@@ -238,8 +139,27 @@ function Settings() {
         </div>
 
         <div className="card-body">
-          <button className="btn btn-danger" onClick={() => handleClick()}>
-            Log out
+          <button
+            className="btn btn-danger d-flex justify-content-center align-items-center"
+            onClick={() => handleExitClick()}
+            style={{
+              width: "100px",
+              height: "37.5px",
+            }}
+          >
+            {isSubmittingExitForm ? (
+              <div
+                className="spinner-border"
+                role="status"
+                style={{
+                  scale: "0.50",
+                }}
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            ) : (
+              "Log out"
+            )}
           </button>
         </div>
       </div>

@@ -9,20 +9,193 @@
       "is_active": true,
       "first_name": "Antonio José",
       "last_name": "Alanís Bernal",
-      "reset_password_token": null
+      "reset_password_token": null,
+      "birth_date": "2002-07-04",
+      "identity_card_number": "ID123456789",
+      "gender": "M",
+      "phone_number": "+123456789",
+      "nationality": "Spanish"
     }
   },
   {
     "model": "users.administrator",
     "pk": 1,
     "fields": {
+      "user_ptr_id": 1
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 2,
+    "fields": {
       "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
-      "username": "root",
-      "email": "aj.alanis.2020@alumnos.urjc.es",
+      "username": "NEU1234567",
+      "email": "doctor.neuro@example.com",
       "is_active": true,
-      "first_name": "Antonio José",
-      "last_name": "Alanís Bernal",
-      "reset_password_token": null
+      "first_name": "Alice",
+      "last_name": "Neuro",
+      "reset_password_token": null,
+      "birth_date": "1980-07-15",
+      "identity_card_number": "ID123456780",
+      "gender": "F",
+      "phone_number": "+987654321",
+      "nationality": "American"
+    }
+  },
+  {
+    "model": "users.doctor",
+    "pk": 2,
+    "fields": {
+      "user_ptr_id": 2,
+      "collegiate_code": "NEU1234567",
+      "medical_specialties": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "NEU9876543",
+      "email": "doctor.smith@example.com",
+      "is_active": true,
+      "first_name": "John",
+      "last_name": "Smith",
+      "reset_password_token": null,
+      "birth_date": "1975-12-10",
+      "identity_card_number": "ID987654322",
+      "gender": "M",
+      "phone_number": "+111222333",
+      "nationality": "British"
+    }
+  },
+  {
+    "model": "users.doctor",
+    "pk": 4,
+    "fields": {
+      "user_ptr_id": 4,
+      "collegiate_code": "NEU9876543",
+      "medical_specialties": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "SS987654321",
+      "email": "jane.doe@example.com",
+      "is_active": true,
+      "first_name": "Jane",
+      "last_name": "Doe",
+      "reset_password_token": null,
+      "birth_date": "1960-05-20",
+      "identity_card_number": "ID987654323",
+      "gender": "F",
+      "phone_number": "+123456789",
+      "nationality": "Spanish"
+    }
+  },
+  {
+    "model": "users.patient",
+    "pk": 3,
+    "fields": {
+      "user_ptr_id": 3,
+      "social_security_code": "SS987654321",
+      "assigned_doctor": 2,
+      "clinical_history": [
+        1,
+        2
+      ],
+      "street": "Serrano Street",
+      "city": "Madrid",
+      "state": "Madrid",
+      "country": "Spain",
+      "zip_code": "28001"
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "username": "SS123456789",
+      "email": "marty.mcfly@example.com",
+      "is_active": true,
+      "first_name": "Marty",
+      "last_name": "McFly Johnson",
+      "reset_password_token": null,
+      "birth_date": "1965-11-22",
+      "identity_card_number": "ID123456781",
+      "gender": "M",
+      "phone_number": "+987654321",
+      "nationality": "American"
+    }
+  },
+  {
+    "model": "users.patient",
+    "pk": 5,
+    "fields": {
+      "user_ptr_id": 5,
+      "social_security_code": "SS123456789",
+      "assigned_doctor": 4,
+      "clinical_history": [
+        3,
+        4
+      ],
+      "street": "Hill Valley",
+      "city": "California",
+      "state": "California",
+      "country": "United States",
+      "zip_code": "95420"
+    }
+  },
+  {
+    "model": "base.medicalspecialty",
+    "pk": 1,
+    "fields": {
+      "name": "Neurology",
+      "description": "Specialty focused on disorders of the nervous system, including neurodegenerative diseases like Alzheimer's and Parkinson's."
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 1,
+    "fields": {
+      "title": "Early Alzheimer's symptoms",
+      "description": "Patient reported memory loss and difficulty in concentrating. MRI suggested early signs of Alzheimer's disease.",
+      "created_at": "2023-07-01T09:00:00Z"
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 2,
+    "fields": {
+      "title": "Mild cognitive impairment",
+      "description": "Patient showing mild cognitive impairment (MCI) but still able to perform daily tasks. Advised regular monitoring.",
+      "created_at": "2023-08-15T11:00:00Z"
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 3,
+    "fields": {
+      "title": "Parkinson's disease diagnosis",
+      "description": "Patient presented with tremors, stiffness, and slow movement. Diagnosed with early-stage Parkinson's disease.",
+      "created_at": "2023-06-20T08:30:00Z"
+    }
+  },
+  {
+    "model": "base.clinicalhistory",
+    "pk": 4,
+    "fields": {
+      "title": "Progressive motor symptoms",
+      "description": "Motor symptoms of Parkinson's have progressed, with increased tremors and difficulty walking. Adjusted medication.",
+      "created_at": "2023-09-05T12:45:00Z"
     }
   }
 ]

@@ -1,10 +1,8 @@
-import { useHistory } from "react-router-dom";
-
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 
 import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
+import { decode } from "@/utilities/functions";
 import { API_URL } from "@/constants";
 
 /**
@@ -43,7 +41,7 @@ axiosInstanceWithTokens.interceptors.request.use(async (request) => {
       .then(async (response) => {
         accessToken = response.data.access_token;
         refreshToken = response.data.refresh_token;
-        user = jwtDecode(accessToken);
+        user = decode(accessToken);
 
         await storageService.save(storageService.ACCESS_TOKEN, accessToken);
         await storageService.save(storageService.REFRESH_TOKEN, refreshToken);
@@ -53,6 +51,7 @@ axiosInstanceWithTokens.interceptors.request.use(async (request) => {
         await storageService.remove(storageService.ACCESS_TOKEN);
         await storageService.remove(storageService.REFRESH_TOKEN);
         await storageService.remove(storageService.USER);
+        await storageService.remove(storageService.THEME);
 
         notificationService.showToast(
           "Your session has expired. Please restart the application and log in again.",

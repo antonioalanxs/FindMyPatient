@@ -11,7 +11,7 @@ class StorageService {
   /**
    * Creates an instance of `StorageService`. If it already exists, it returns the existing instance.
    *
-   * In addition, it initializes the `ACCESS_TOKEN`, `REFRESH_TOKEN`, and `USER` constants keys.
+   * In addition, it initializes the `ACCESS_TOKEN`, `REFRESH_TOKEN`, `USER` and `THEME` properties.
    *
    * @returns {StorageService} - The `StorageService` instance.
    */

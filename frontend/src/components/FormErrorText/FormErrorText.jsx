@@ -6,7 +6,7 @@
  * @returns {JSX.Element} - The component.
  */
 function FormErrorText({ message }) {
-  return <p className="invalid-feedback">{message}</p>;
+  return message && <p className="invalid-feedback d-block mb-0">{message}</p>;
 }
 
 export default FormErrorText;

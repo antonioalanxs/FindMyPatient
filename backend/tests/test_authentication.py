@@ -23,7 +23,10 @@ class LoginTestCase(APITestCase):
             "password": "root"
         }
 
-        self.user = Administrator.objects.create(username=self.credentials["username"])
+        self.user = Administrator.objects.create(
+            username=self.credentials["username"],
+            birth_date="2024-07-04"
+        )
         self.user.set_password(self.credentials["password"])
         self.user.save()
 
@@ -41,7 +44,12 @@ class PasswordResetRequestTestCase(APITestCase):
     def setUp(self):
         self.url = reverse("reset_password_request")
         self.existing_email = "test@test.com"
-        self.user = Administrator.objects.create(email=self.existing_email, username="test", password="test")
+        self.user = Administrator.objects.create(
+            email=self.existing_email,
+            username="test",
+            password="test",
+            birth_date="2024-07-04"
+        )
 
     def test_password_reset_request_existing_email(self):
         response = self.client.post(self.url, {"email": self.existing_email}, format="json")
@@ -64,6 +72,7 @@ class PasswordResetTestCase(APITestCase):
         self.user = Administrator.objects.create(
             username="test",
             password="test",
+            birth_date="2024-07-04"
         )
         self.new_password = "test2"
         self.token = default_token_generator.make_token(self.user)
@@ -105,18 +114,12 @@ class PasswordResetTestCase(APITestCase):
 
 
 class LogoutTestCase(APITestCase):
-    """
-        Test case for user logout endpoint.
-    """
-
     def setUp(self):
-        """
-            Set up the test case.
-        """
         self.url = reverse("logout")
         self.user = Administrator.objects.create(
             username="test",
             password="test",
+            birth_date="2024-07-01"
         )
         self.access_token = AccessToken.for_user(self.user)
 
@@ -145,13 +148,14 @@ class LogoutTestCase(APITestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-class ChangePasswordTestCase(APITestCase):
 
+class ChangePasswordTestCase(APITestCase):
     def setUp(self):
         self.url = reverse("change_password")
         self.user = Administrator.objects.create(
             username="test",
             password="test",
+            birth_date="2024-07-01"
         )
         self.new_password = "test2"
 

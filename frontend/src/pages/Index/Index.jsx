@@ -4,14 +4,13 @@ import { Link, useHistory } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 
-import { jwtDecode } from "jwt-decode";
-
 import { usePublicRouteGuard } from "@/hooks/guards/usePublicRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import { authenticationService } from "@/services/AuthenticationService";
 import { storageService } from "@/services/StorageService";
 import AuthenticationLayout from "@/layouts/AuthenticationLayout/AuthenticationLayout";
 import FormErrorText from "@/components/FormErrorText/FormErrorText";
+import { decode } from "@/utilities/functions";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
 
 function Login() {
@@ -29,7 +28,6 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const onSubmit = (data) => {
@@ -39,7 +37,7 @@ function Login() {
       .login(data)
       .then((response) => {
         const { access_token, refresh_token } = response.data;
-        const user = jwtDecode(access_token);
+        const user = decode(access_token);
 
         storageService.save(storageService.ACCESS_TOKEN, access_token);
         storageService.save(storageService.REFRESH_TOKEN, refresh_token);
@@ -53,7 +51,6 @@ function Login() {
       })
       .finally(() => {
         setIsSubmittingForm(false);
-        setIsSubmittedForm(true);
       });
   };
 
@@ -69,16 +66,14 @@ function Login() {
             placeholder="Username"
             autoComplete="off"
             className={`form-control form-control-xl ${
-              isSubmittedForm && errors?.username && "is-invalid"
+              errors?.username && "is-invalid"
             }`}
             {...register("username", { required: "Username is required." })}
           />
           <div className="form-control-icon">
             <i className="bi bi-person"></i>
           </div>
-          {isSubmittedForm && (
-            <FormErrorText message={errors?.username?.message} />
-          )}
+          {<FormErrorText message={errors?.username?.message} />}
         </div>
 
         <div className="password-form-group form-group position-relative has-icon-left mb-4">
@@ -86,7 +81,9 @@ function Login() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             autoComplete="off"
-            className="form-control form-control-xl form-password"
+            className={`form-control form-control-xl form-password ${
+              errors?.password && "is-invalid"
+            }`}
             {...register("password", { required: "Password is required." })}
           />
           <div className="form-control-icon">
@@ -98,9 +95,7 @@ function Login() {
           >
             <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
           </div>
-          {isSubmittedForm && (
-            <FormErrorText message={errors?.password?.message} />
-          )}
+          {<FormErrorText message={errors?.password?.message} />}
         </div>
 
         {errorMessage && (
@@ -118,7 +113,7 @@ function Login() {
 
         <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
           {isSubmittingForm ? (
-            <div className="spinner-border text-light" role="status">
+            <div className="spinner-border" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           ) : (
