@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useForm } from "react-hook-form";
 
-import { userService } from "@/services/userService";
+import { userService } from "@/services/UserService";
 import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
 import FormErrorText from "@/components/FormErrorText/FormErrorText";
