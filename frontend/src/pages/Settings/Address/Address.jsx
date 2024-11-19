@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { userService } from "@/services/userService";
 import { storageService } from "@/services/StorageService";
 import { notificationService } from "@/services/NotificationService";
+import FormErrorText from "@/components/FormErrorText/FormErrorText";
 import { cleanText } from "@/utilities/functions";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
 
@@ -17,7 +18,11 @@ import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
  * @returns {JSX.Element} - The form for changing the address of the patient.
  */
 function Address({ address, token }) {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -70,8 +75,9 @@ function Address({ address, token }) {
                       className="form-control mt-1"
                       id={id}
                       defaultValue={value ?? "N/A"}
-                      {...register(id)}
+                      {...register(id, { required: `${key} is required.` })}
                     />
+                    <FormErrorText message={errors?.[id]?.message} />
                   </div>
                 </div>
               );

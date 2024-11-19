@@ -28,7 +28,6 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const onSubmit = (data) => {
@@ -52,7 +51,6 @@ function Login() {
       })
       .finally(() => {
         setIsSubmittingForm(false);
-        setIsSubmittedForm(true);
       });
   };
 
@@ -68,16 +66,14 @@ function Login() {
             placeholder="Username"
             autoComplete="off"
             className={`form-control form-control-xl ${
-              isSubmittedForm && errors?.username && "is-invalid"
+              errors?.username && "is-invalid"
             }`}
             {...register("username", { required: "Username is required." })}
           />
           <div className="form-control-icon">
             <i className="bi bi-person"></i>
           </div>
-          {isSubmittedForm && (
-            <FormErrorText message={errors?.username?.message} />
-          )}
+          {<FormErrorText message={errors?.username?.message} />}
         </div>
 
         <div className="password-form-group form-group position-relative has-icon-left mb-4">
@@ -85,7 +81,9 @@ function Login() {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             autoComplete="off"
-            className="form-control form-control-xl form-password"
+            className={`form-control form-control-xl form-password ${
+              errors?.password && "is-invalid"
+            }`}
             {...register("password", { required: "Password is required." })}
           />
           <div className="form-control-icon">
@@ -97,9 +95,7 @@ function Login() {
           >
             <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
           </div>
-          {isSubmittedForm && (
-            <FormErrorText message={errors?.password?.message} />
-          )}
+          {<FormErrorText message={errors?.password?.message} />}
         </div>
 
         {errorMessage && (

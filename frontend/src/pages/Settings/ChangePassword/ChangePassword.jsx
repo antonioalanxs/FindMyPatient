@@ -4,10 +4,15 @@ import { useForm } from "react-hook-form";
 
 import { authenticationService } from "@/services/AuthenticationService";
 import { notificationService } from "@/services/NotificationService";
+import FormErrorText from "@/components/FormErrorText/FormErrorText";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/constants";
 
 function ChangePassword() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
@@ -41,7 +46,7 @@ function ChangePassword() {
       </div>
 
       <div className="card-body">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="password-form-group form-group position-relative has-icon-left">
             <input
               type={showPassword ? "text" : "password"}
@@ -61,6 +66,7 @@ function ChangePassword() {
                 className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
               ></i>
             </div>
+            <FormErrorText message={errors?.password?.message} />
           </div>
 
           {errorMessage && (
@@ -77,7 +83,7 @@ function ChangePassword() {
           )}
 
           <button
-            className="btn btn-primary d-flex justify-content-center align-items-center mt-4"
+            className="btn btn-primary d-flex justify-content-center align-items-center mt-3"
             style={{ width: "175px", height: "37.5px" }}
           >
             {isSubmittingForm ? (
