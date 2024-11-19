@@ -51,6 +51,7 @@ axiosInstanceWithTokens.interceptors.request.use(async (request) => {
         await storageService.remove(storageService.ACCESS_TOKEN);
         await storageService.remove(storageService.REFRESH_TOKEN);
         await storageService.remove(storageService.USER);
+        await storageService.remove(storageService.THEME);
 
         notificationService.showToast(
           "Your session has expired. Please restart the application and log in again.",
