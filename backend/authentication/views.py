@@ -77,7 +77,7 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
                 )
             }
         ),
-        manual_parameters=None,
+        manual_parameters=[],
         responses={
             200: openapi.Response(
                 description='Email successfully sent.',
@@ -228,16 +228,21 @@ class LogoutView(APIView):
             status=status.HTTP_200_OK
         )
 
+
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(
         operation_summary='Handles password change.',
-        operation_description='Changes the user password.',
+        operation_description='Changes the user password. The old password must be provided to change it.',
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
-                'password': openapi.Schema(
+                'old_password': openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description='The old password.'
+                ),
+                'new_password': openapi.Schema(
                     type=openapi.TYPE_STRING,
                     description='The new password.'
                 )
@@ -252,11 +257,42 @@ class ChangePasswordView(APIView):
                         'message': 'Password successfully changed!'
                     }
                 }
+            ),
+            401: openapi.Response(
+                description="Unauthorized.",
+                examples={
+                    "application/json": [
+                        {
+                            "detail": "Authentication credentials were not provided."
+                        },
+                        {
+                            "detail": "Given token not valid for any token type",
+                            "code": "token_not_valid",
+                            "messages": [
+                                {
+                                    "token_class": "AccessToken",
+                                    "token_type": "access",
+                                    "message": "Token is invalid or expired"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ),
+            400: openapi.Response(
+                description='Old password is incorrect.',
+                examples={
+                    'application/json': {
+                        'detail': 'Old password is incorrect.'
+                    }
+                }
             )
         }
     )
     def put(self, request):
         user = request.user
+
+
 
         user.set_password(request.data['password'])
         user.save()
