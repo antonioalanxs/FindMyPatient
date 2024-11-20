@@ -1,18 +1,8 @@
-from datetime import timedelta
-
-from django.conf import settings
-from django.contrib.auth.tokens import default_token_generator
-from django.utils import timezone
-
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from rest_framework_simplejwt.tokens import AccessToken
-
-from users.models import Administrator, Patient
-from utilities.functions import save
-
+from users.models import Patient
 
 class UsersTestCase(APITestCase):
     def setUp(self):
