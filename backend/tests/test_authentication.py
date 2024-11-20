@@ -119,7 +119,7 @@ class LogoutTestCase(APITestCase):
         self.user = Administrator.objects.create(
             username="test",
             password="test",
-            birth_date="2024-07-01"
+            birth_date="2024-07-04"
         )
         self.access_token = AccessToken.for_user(self.user)
 
@@ -152,23 +152,49 @@ class LogoutTestCase(APITestCase):
 class ChangePasswordTestCase(APITestCase):
     def setUp(self):
         self.url = reverse("change_password")
+        self.old_password = "test"
         self.user = Administrator.objects.create(
             username="test",
-            password="test",
-            birth_date="2024-07-01"
+            birth_date="2024-07-04"
         )
+        self.user.set_password(self.old_password)
         self.new_password = "test2"
 
-    def test_change_password_authenticated_user(self):
+    def test_change_password_with_correct_old_password(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.put(self.url, {"password": self.new_password})
+        response = self.client.put(
+            self.url,
+            {
+                "old_password": self.old_password,
+                "new_password": self.new_password
+            }
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(
             Administrator.objects.get(pk=self.user.pk).check_password(self.new_password)
         )
 
+    def test_change_password_with_non_correct_old_password(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.put(
+            self.url,
+            {
+                "old_password": "_test",
+                "new_password": self.new_password
+            }
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_change_password_non_authenticated_user(self):
-        response = self.client.put(self.url, {"password": self.new_password})
+        response = self.client.put(
+            self.url,
+            {
+                "old_password": self.old_password,
+                "new_password": self.new_password
+            }
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
