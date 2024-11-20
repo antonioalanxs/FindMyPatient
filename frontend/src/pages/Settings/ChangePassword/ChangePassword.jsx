@@ -14,7 +14,8 @@ function ChangePassword() {
     formState: { errors },
   } = useForm();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -22,7 +23,7 @@ function ChangePassword() {
     setIsSubmittingForm(true);
 
     authenticationService
-      .changePassword(data.password)
+      .changePassword(data)
       .then((response) => {
         notificationService.showToast(response.data.message, "success");
       })
@@ -46,27 +47,53 @@ function ChangePassword() {
       </div>
 
       <div className="card-body">
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="password-form-group form-group position-relative has-icon-left">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="password-form-group form-group position-relative has-icon-left mb-3 col-md-6 col-12">
             <input
-              type={showPassword ? "text" : "password"}
+              type={showOldPassword ? "text" : "password"}
+              placeholder="Old password"
+              autoComplete="off"
+              className="form-control form-control-lg form-password"
+              {...register("old_password", {
+                required: "Old password is required.",
+              })}
+            />
+            <div className="form-control-icon">
+              <i className="bi bi-shield-x"></i>
+            </div>
+            <div
+              className="form-control-icon form-control-icon-right"
+              onClick={() => setShowOldPassword(!showOldPassword)}
+            >
+              <i
+                className={`bi ${showOldPassword ? "bi-eye-slash" : "bi-eye"}`}
+              ></i>
+            </div>
+            <FormErrorText message={errors?.old_password?.message} />
+          </div>
+
+          <div className="password-form-group form-group position-relative has-icon-left col-md-6 col-12">
+            <input
+              type={showNewPassword ? "text" : "password"}
               placeholder="New password"
               autoComplete="off"
               className="form-control form-control-lg form-password"
-              {...register("password", { required: "Password is required." })}
+              {...register("new_password", {
+                required: "New password is required.",
+              })}
             />
             <div className="form-control-icon">
               <i className="bi bi-shield-lock"></i>
             </div>
             <div
               className="form-control-icon form-control-icon-right"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowNewPassword(!showNewPassword)}
             >
               <i
-                className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}
+                className={`bi ${showNewPassword ? "bi-eye-slash" : "bi-eye"}`}
               ></i>
             </div>
-            <FormErrorText message={errors?.password?.message} />
+            <FormErrorText message={errors?.new_password?.message} />
           </div>
 
           {errorMessage && (
@@ -83,7 +110,7 @@ function ChangePassword() {
           )}
 
           <button
-            className="btn btn-primary d-flex justify-content-center align-items-center mt-3"
+            className="btn btn-primary d-flex justify-content-center align-items-center mt-4"
             style={{ width: "175px", height: "37.5px" }}
           >
             {isSubmittingForm ? (

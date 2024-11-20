@@ -73,14 +73,18 @@ class AuthenticationService {
   };
 
   /**
-   * Changes the password of the user.
+   * Changes the password of the user. It requires the old password and the new password.
    *
-   * @param {String} password - The new password.
+   * @param {String} old_password - The old password.
+   * @param {String} new_password - The new password.
    *
    * @returns {Promise} - The promise object representing the completion of the request.
    */
-  changePassword = (password) => {
-    return axiosInstanceWithTokens.put(`${this._prefix}password`, { password });
+  changePassword = ({ old_password, new_password }) => {
+    return axiosInstanceWithTokens.put(`${this._prefix}password`, {
+      old_password,
+      new_password,
+    });
   };
 }
 
