@@ -1,6 +1,7 @@
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import Layout from "@/layouts/Layout/Layout";
+import Map from "@/components/Map/Map";
 
 function Home() {
   const user = usePrivateRouteGuard();
@@ -32,6 +33,8 @@ function Home() {
       {user && (
         <p className="text-success text-truncate">{JSON.stringify(user)}</p>
       )}
+
+      <Map />
     </Layout>
   );
 }
