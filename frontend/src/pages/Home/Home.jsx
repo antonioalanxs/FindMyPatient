@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import Layout from "@/layouts/Layout/Layout";
@@ -7,6 +9,23 @@ function Home() {
   const user = usePrivateRouteGuard();
 
   useTitle({ title: "Home" });
+
+  useEffect(() => {
+    const f = () => {
+      const url = `ws://localhost:8000/ws/WebSocket-server`;
+
+      console.log(url);
+
+      const webSocket = new WebSocket(url);
+
+      webSocket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log(data);
+      };
+    };
+
+    f();
+  }, []);
 
   /**
    * Get the greeting message based on the current time.

@@ -44,6 +44,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
+ASGI_APPLICATION = 'config.asgi.application'
+
 BASE_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,12 +61,14 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
+    'channels',
 ]
 
 LOCAL_APPS = [
     'authentication',
     'base',
     'users',
+    'tracking',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
