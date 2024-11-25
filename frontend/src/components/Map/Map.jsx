@@ -13,17 +13,17 @@ const Map = () => {
   const [path, setPath] = useState([]);
   const [zoom, setZoom] = useState(17);
 
-  //   useEffect(() => {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (location) => {
-  //         const { latitude, longitude } = location.coords;
-  //         setPosition([latitude, longitude]);
-  //       },
-  //       (error) => {
-  //         alert(error);
-  //       }
-  //     );
-  //   }, []);
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (location) => {
+        const { latitude, longitude } = location.coords;
+        setPosition([latitude, longitude]);
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }, []);
 
   /**
    * Move the map to the center prop when it changes.
@@ -38,36 +38,42 @@ const Map = () => {
     }, [center, map]);
   };
 
-  useEffect(() => {
-    let currentPosition = { lat: 40.416775, lng: -3.70379 }; // Madrid, España
+  // useEffect(() => {
+  //   let currentPosition = {
+  //     latitude: 37.45481675523301,
+  //     longitude: -6.04586161773036,
+  //   };
 
-    const simulateMovement = () => {
-      const moveLat = Math.random() * 0.001 - 0.0005;
-      const moveLng = Math.random() * 0.001 - 0.0005;
+  //   const simulateMovement = () => {
+  //     const moveLatitude = Math.random() * 0.001 - 0.0005;
+  //     const moveLongitude = Math.random() * 0.001 - 0.0005;
 
-      currentPosition = {
-        lat: currentPosition.lat + moveLat,
-        lng: currentPosition.lng + moveLng,
-      };
+  //     currentPosition = {
+  //       latitude: currentPosition.latitude + moveLatitude,
+  //       longitude: currentPosition.longitude + moveLongitude,
+  //     };
 
-      setPosition([currentPosition.lat, currentPosition.lng]);
+  //     setPosition([currentPosition.latitude, currentPosition.longitude]);
 
-      setPath((prevPath) => [
-        ...prevPath,
-        [currentPosition.lat, currentPosition.lng],
-      ]);
+  //     setPath((previousPath) => [
+  //       ...previousPath,
+  //       [currentPosition.latitude, currentPosition.longitude],
+  //     ]);
 
-      if (Math.random() < 0.1) {
-        setZoom((prevZoom) =>
-          Math.max(13, Math.min(19, prevZoom + (Math.random() < 0.5 ? -1 : 1)))
-        );
-      }
-    };
+  //     if (Math.random() < 0.1) {
+  //       setZoom((previousZoom) =>
+  //         Math.max(
+  //           13,
+  //           Math.min(19, previousZoom + (Math.random() < 0.5 ? -1 : 1))
+  //         )
+  //       );
+  //     }
+  //   };
 
-    const interval = setInterval(simulateMovement, 1000);
+  //   const interval = setInterval(simulateMovement, 3000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   return (
     <div className="card border-0">
