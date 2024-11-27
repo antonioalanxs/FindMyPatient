@@ -1,32 +1,42 @@
+from config import settings
+
+from unittest import mock
+
+from django.conf import settings
 from django.test import TransactionTestCase
 
 from channels.testing import WebsocketCommunicator
 
-from config.asgi import application
-
 
 class TrackingConsumerTest(TransactionTestCase):
     async def test_tracking_consumer(self):
-        doctor_identifier = "1"
-        patient_identifier = "1"
+        with mock.patch.object(settings, 'CHANNEL_LAYERS', {
+            "default": {
+                "BACKEND": "channels.layers.InMemoryChannelLayer",
+            },
+        }):
+            from config.asgi import application
 
-        communicator = WebsocketCommunicator(
-            application,
-            f"/ws/tracking/channel/doctor/{doctor_identifier}/patient/{patient_identifier}"
-        )
+            doctor_identifier = "1"
+            patient_identifier = "1"
 
-        is_communicator_connected, _ = await communicator.connect()
-        self.assertTrue(is_communicator_connected)
+            communicator = WebsocketCommunicator(
+                application,
+                f"/ws/tracking/channel/doctor/{doctor_identifier}/patient/{patient_identifier}"
+            )
 
-        message = {
-            'latitude': 40.7128,
-            'longitude': -74.0060
-        }
+            is_communicator_connected, _ = await communicator.connect()
+            self.assertTrue(is_communicator_connected)
 
-        await communicator.send_json_to(message)
+            message = {
+                'latitude': 40.7128,
+                'longitude': -74.0060
+            }
 
-        response = await communicator.receive_json_from()
-        self.assertEqual(response['latitude'], message['latitude'])
-        self.assertEqual(response['longitude'], message['longitude'])
+            await communicator.send_json_to(message)
 
-        await communicator.disconnect()
+            response = await communicator.receive_json_from()
+            self.assertEqual(response['latitude'], message['latitude'])
+            self.assertEqual(response['longitude'], message['longitude'])
+
+            await communicator.disconnect()

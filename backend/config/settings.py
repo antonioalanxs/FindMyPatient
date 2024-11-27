@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import sys
 
 from datetime import timedelta
 from pathlib import Path
@@ -34,7 +35,7 @@ DEBUG = True  # Set to False for production
 
 ALLOWED_HOSTS = []  # Should be populated with your domain names in production
 
-ROOT_URLCONF = 'config.urls' # URL configuration file
+ROOT_URLCONF = 'config.urls'  # URL configuration file
 
 # CORS settings
 ALLOWED_HOSTS = ['*']
@@ -98,20 +99,28 @@ CHANNEL_LAYERS = {
         'CONFIG': {
             'hosts': [(os.getenv('REDIS_HOST'), 6379)],
         },
-    },
+    }
 }
 
 # Database settings
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_ROOT_USER'),
-        'PASSWORD': os.getenv('DATABASE_ROOT_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': 3306,
-    },
-}
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DATABASE_NAME'),
+            'USER': os.getenv('DATABASE_ROOT_USER'),
+            'PASSWORD': os.getenv('DATABASE_ROOT_PASSWORD'),
+            'HOST': os.getenv('DATABASE_HOST'),
+            'PORT': 3306,
+        },
+    }
 
 # Custom user model
 AUTH_USER_MODEL = 'base.User'
