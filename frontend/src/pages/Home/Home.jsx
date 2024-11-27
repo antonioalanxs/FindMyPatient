@@ -1,31 +1,13 @@
-import { useEffect } from "react";
-
 import { usePrivateRouteGuard } from "@/hooks/guards/usePrivateRouteGuard";
 import { useTitle } from "@/hooks/useTitle";
 import Layout from "@/layouts/Layout/Layout";
 import Map from "@/components/Map/Map";
+import { ROLES } from "@/constants";
 
 function Home() {
   const user = usePrivateRouteGuard();
 
   useTitle({ title: "Home" });
-
-  useEffect(() => {
-    const f = () => {
-      const url = `ws://localhost:8000/ws/WebSocket-server`;
-
-      console.log(url);
-
-      const webSocket = new WebSocket(url);
-
-      webSocket.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log(data);
-      };
-    };
-
-    f();
-  }, []);
 
   /**
    * Get the greeting message based on the current time.
@@ -53,7 +35,9 @@ function Home() {
         <p className="text-success text-truncate">{JSON.stringify(user)}</p>
       )}
 
-      <Map />
+      {user?.role === ROLES.DOCTOR && (
+        <Map patientIdentifier={5} doctorIdentifier={4} />
+      )}
     </Layout>
   );
 }

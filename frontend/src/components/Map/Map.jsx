@@ -8,22 +8,22 @@ import {
   useMap,
 } from "react-leaflet";
 
-const Map = () => {
+const Map = ({ patientIdentifier, doctorIdentifier }) => {
   const [position, setPosition] = useState(null);
   const [path, setPath] = useState([]);
   const [zoom, setZoom] = useState(17);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (location) => {
-        const { latitude, longitude } = location.coords;
-        setPosition([latitude, longitude]);
-      },
-      (error) => {
-        alert(error);
-      }
-    );
-  }, []);
+  // useEffect(() => {
+  //   navigator.geolocation.getCurrentPosition(
+  //     (location) => {
+  //       const { latitude, longitude } = location.coords;
+  //       setPosition([latitude, longitude]);
+  //     },
+  //     (error) => {
+  //       alert(error);
+  //     }
+  //   );
+  // }, []);
 
   /**
    * Move the map to the center prop when it changes.
@@ -74,6 +74,22 @@ const Map = () => {
 
   //   return () => clearInterval(interval);
   // }, []);
+
+  useEffect(() => {
+    const webSocket = new WebSocket(
+      `ws://localhost:8000/ws/tracking/channel/doctor/${doctorIdentifier}/patient/${patientIdentifier}`
+    );
+
+    webSocket.onmessage = (event) => {
+      const { latitude, longitude } = JSON.parse(event.data);
+
+      console.log(latitude, longitude);
+
+      setPosition([latitude, longitude]);
+
+      setPath((previousPath) => [...previousPath, [latitude, longitude]]);
+    };
+  }, []);
 
   return (
     <div className="card border-0">
