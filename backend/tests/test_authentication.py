@@ -1,34 +1,32 @@
 from datetime import timedelta
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
 from django.utils import timezone
 
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
 
 from rest_framework_simplejwt.tokens import AccessToken
 
-from users.models import Administrator
+from .tests_helper import TestSetUp
 from utilities.functions import save
 
 
-class LoginTestCase(APITestCase):
+User = get_user_model()
+
+
+class LoginTestCase(TestSetUp):
     def setUp(self):
+        super().setUp()
+
         self.url = reverse("login")
 
         self.credentials = {
             "username": "root",
             "password": "root"
         }
-
-        self.user = Administrator.objects.create(
-            username=self.credentials["username"],
-            birth_date="2024-07-04"
-        )
-        self.user.set_password(self.credentials["password"])
-        self.user.save()
 
     def test_login_with_valid_credentials(self):
         response = self.client.post(self.url, self.credentials, format="json")
@@ -40,47 +38,39 @@ class LoginTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PasswordResetRequestTestCase(APITestCase):
+class PasswordResetRequestTestCase(TestSetUp):
     def setUp(self):
+        super().setUp()
+
         self.url = reverse("reset_password_request")
+
         self.existing_email = "test@test.com"
-        self.user = Administrator.objects.create(
-            email=self.existing_email,
-            username="test",
-            password="test",
-            birth_date="2024-07-04"
-        )
+
+        save(self.user,"email", self.existing_email)
 
     def test_password_reset_request_existing_email(self):
         response = self.client.post(self.url, {"email": self.existing_email}, format="json")
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_password_reset_request_non_existing_email(self):
         response = self.client.post(self.url, {"email": "test2@test.com"}, format="json")
-
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_password_reset_request_blank_email(self):
         response = self.client.post(self.url, {"email": ""}, format="json")
-
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-class PasswordResetTestCase(APITestCase):
+class PasswordResetTestCase(TestSetUp):
     def setUp(self):
-        self.user = Administrator.objects.create(
-            username="test",
-            password="test",
-            birth_date="2024-07-04"
-        )
+        super().setUp()
         self.new_password = "test2"
         self.token = default_token_generator.make_token(self.user)
         save(self.user, "reset_password_token", self.token)
 
     def test_password_reset_valid_url(self):
         self.assertTrue(
-            Administrator.objects.get(pk=self.user.pk).reset_password_token
+            User.objects.get(pk=self.user.pk).reset_password_token
         )
 
         url = reverse("reset_password", kwargs={"token": self.token})
@@ -88,10 +78,10 @@ class PasswordResetTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(
-            Administrator.objects.get(pk=self.user.pk).check_password(self.new_password)
+            User.objects.get(pk=self.user.pk).check_password(self.new_password)
         )
         self.assertIsNone(
-            Administrator.objects.get(pk=self.user.pk).reset_password_token
+            User.objects.get(pk=self.user.pk).reset_password_token
         )
 
     def test_password_reset_non_valid_url(self):
@@ -100,7 +90,7 @@ class PasswordResetTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertFalse(
-            Administrator.objects.get(pk=self.user.pk).check_password(self.new_password)
+            User.objects.get(pk=self.user.pk).check_password(self.new_password)
         )
 
     def test_password_reset_with_used_url(self):
@@ -113,14 +103,12 @@ class PasswordResetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-class LogoutTestCase(APITestCase):
+class LogoutTestCase(TestSetUp):
     def setUp(self):
+        super().setUp()
+
         self.url = reverse("logout")
-        self.user = Administrator.objects.create(
-            username="test",
-            password="test",
-            birth_date="2024-07-04"
-        )
+
         self.access_token = AccessToken.for_user(self.user)
 
     def test_logout_authenticated_user(self):
@@ -149,16 +137,14 @@ class LogoutTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class ChangePasswordTestCase(APITestCase):
+class ChangePasswordTestCase(TestSetUp):
     def setUp(self):
+        super().setUp()
+
         self.url = reverse("change_password")
-        self.old_password = "test"
-        self.user = Administrator.objects.create(
-            username="test",
-            birth_date="2024-07-04"
-        )
-        self.user.set_password(self.old_password)
-        self.new_password = "test2"
+
+        self.old_password = "root"
+        self.new_password = "test"
 
     def test_change_password_with_correct_old_password(self):
         self.client.force_authenticate(user=self.user)
@@ -173,7 +159,7 @@ class ChangePasswordTestCase(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(
-            Administrator.objects.get(pk=self.user.pk).check_password(self.new_password)
+            User.objects.get(pk=self.user.pk).check_password(self.new_password)
         )
 
     def test_change_password_with_non_correct_old_password(self):

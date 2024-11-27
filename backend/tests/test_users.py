@@ -1,17 +1,11 @@
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
 
-from users.models import Patient
+from .tests_helper import TestSetUp
 
-class UsersTestCase(APITestCase):
+class UsersTestCase(TestSetUp):
     def setUp(self):
-        self.user = Patient.objects.create(
-            username="test",
-            password="test",
-            birth_date="2024-07-04"
-        )
-        self.user.save()
+        super().setUp()
 
         self.change_address_url = reverse("address")
 
