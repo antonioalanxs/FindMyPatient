@@ -13,7 +13,8 @@ User = get_user_model()
 
 class URIEmailMixin:
     """
-        Mixin for generating exclusive URIs for the user for operations like activating its account, resetting its password, etc.
+        Mixin for generating exclusive URIs for the user for operations like activating its account, resetting its
+        password, etc.
 
         It also sends an email to the user with the URI for the operation.
     """
