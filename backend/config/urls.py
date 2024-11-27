@@ -41,5 +41,4 @@ urlpatterns = [
     include_api_path('authentication'),
     include_api_path('jwt_', 'tokens'),
     include_api_path('users'),
-    include_api_path('tracking'),
 ]
