@@ -11,39 +11,37 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import sys
 
 from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
 
-from constants import BRAND_NAME
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Path configurations
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
+
+# Load environment variables
+load_dotenv(ROOT_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-luqps-bc0@qc_j85h!34v8qa0^77976jm2v%*&)1xzrzm0h2bs'
+SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')  # Replace with .env or secure key management
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # Set to False for production
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # Should be populated with your domain names in production
 
-load_dotenv(ROOT_DIR / '.env')
+ROOT_URLCONF = 'config.urls'  # URL configuration file
 
-APPEND_SLASH=False
-
-# CORS configuration
-ALLOWED_HOSTS = ["*"]
+# CORS settings
+ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
 
-# Application definition
-
+# Apps settings
 BASE_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,37 +57,19 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
+    'channels',
 ]
 
 LOCAL_APPS = [
     'authentication',
     'base',
     'users',
+    'tracking',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-SWAGGER_SETTINGS = {
-    "DOC_EXPANSION": "none",
-    "DEFAULT_INFO": "swagger.urls.swagger_information",
-}
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
-}
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
-    'REFRESH_TOKEN_LIFETIME': timedelta(hours=2),
-    'ROTATE_REFRESH_TOKENS': True,
-    'TOKEN_BLACKLIST_ENABLED': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'TOKEN_REFRESH_SERIALIZER': "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
-
+# Middleware settings
 BASE_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -108,24 +88,82 @@ LOCAL_MIDDLEWARE = []
 
 MIDDLEWARE = BASE_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE + LOCAL_MIDDLEWARE
 
-# Mail sending configuration w/ Mailtrap
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+# WSGI and ASGI application settings
+WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 
-RESET_PASSWORD_CLIENT_URL = os.getenv("RESET_PASSWORD_CLIENT_URL")
-BRAND_NAME = "FindMyPatient"
+# Channels settings for real-time features
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(os.getenv('REDIS_HOST'), 6379)],
+        },
+    }
+}
 
-ROOT_URLCONF = 'config.urls'
+# Database settings
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('DATABASE_NAME'),
+            'USER': os.getenv('DATABASE_ROOT_USER'),
+            'PASSWORD': os.getenv('DATABASE_ROOT_PASSWORD'),
+            'HOST': os.getenv('DATABASE_HOST'),
+            'PORT': 3306,
+        },
+    }
 
+# Custom user model
+AUTH_USER_MODEL = 'base.User'
+
+# Password validation
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+# Rest framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=2),
+    'ROTATE_REFRESH_TOKENS': True,
+    'TOKEN_BLACKLIST_ENABLED': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'TOKEN_REFRESH_SERIALIZER': 'rest_framework_simplejwt.serializers.TokenRefreshSerializer',
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# Swagger API documentation settings
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'none',
+    'DEFAULT_INFO': 'swagger.urls.swagger_information',
+}
+
+# Static files directories
+STATIC_URL = 'static/'
+
+# Template settings
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,61 +176,28 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("DATABASE_NAME"),
-        "USER": os.getenv("DATABASE_ROOT_USER"),
-        "PASSWORD": os.getenv("DATABASE_ROOT_PASSWORD"),
-        "HOST": os.getenv("DATABASE_HOST"),
-        "PORT": 3306,
-    },
-}
-
-AUTH_USER_MODEL = 'base.User'
-
+# Fixture directories
 FIXTURE_DIRS = [os.path.join(BASE_DIR, 'fixture')]
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
+# Sending emails settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+# Reset password email settings
+RESET_PASSWORD_CLIENT_URL = os.getenv('RESET_PASSWORD_CLIENT_URL')
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
+# Internationalization settings
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Appending slash control
+APPEND_SLASH = False

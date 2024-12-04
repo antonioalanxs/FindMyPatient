@@ -1,5 +1,6 @@
 import { IonContent } from "@ionic/react";
 
+import { useLocation } from "@/hooks/useLocation";
 import SideBar from "@/components/SideBar/SideBar";
 
 import "@/layouts/Layout/Layout.styles.scss";
@@ -12,6 +13,8 @@ import "@/layouts/Layout/Layout.styles.scss";
  * @param {React.ReactNode} children - The children to render.
  */
 function Layout({ title, subtitle, children }) {
+  useLocation();
+
   return (
     <IonContent fullscreen={true}>
       <main>
