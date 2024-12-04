@@ -1,4 +1,4 @@
-import { axiosInstanceWithTokens } from "@/services/AxiosInstanceService";
+import { axiosInstanceWithTokens } from "@/core/services/AxiosInstanceService";
 
 /**
  * User service. It is used to related operations with the user.

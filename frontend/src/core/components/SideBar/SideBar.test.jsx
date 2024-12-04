@@ -1,6 +1,6 @@
-import { customRender } from "@/utilities/tests/customRender";
+import { customRender } from "@/core/utilities/tests/customRender";
 
-import SideBar from "@/components/SideBar/SideBar";
+import SideBar from "@/core/components/SideBar/SideBar";
 
 describe("SideBar", () => {
   it("should create", () => {

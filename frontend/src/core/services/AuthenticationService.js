@@ -1,7 +1,7 @@
 import {
   axiosInstance,
   axiosInstanceWithTokens,
-} from "@/services/AxiosInstanceService";
+} from "@/core/services/AxiosInstanceService";
 
 /**
  * Authentication service. It is used to related operations with the authentication.

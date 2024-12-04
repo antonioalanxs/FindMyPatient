@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 import { Link, useHistory } from "react-router-dom";
 
-import { storageService } from "@/services/StorageService";
-import SunIcon from "@/icons/SunIcon/SunIcon";
-import MoonIcon from "@/icons/MoonIcon/MoonIcon";
-import { BRAND_NAME, THEMES } from "@/constants";
+import { storageService } from "@/core/services/StorageService";
+import SunIcon from "@/core/icons/SunIcon/SunIcon";
+import MoonIcon from "@/core/icons/MoonIcon/MoonIcon";
+import { BRAND_NAME, THEMES } from "@/core/constants";
 
 // Links to the pages.
 const LINKS = {
@@ -107,13 +107,6 @@ function SideBar() {
               </div>
             </div>
           </div>
-
-          {/* <div className="card">
-      <div className="card-content">
-        <div className="card-body">
-        </div>
-      </div>
-    </div> */}
 
           <div className="sidebar-menu">
             <ul className="menu">

@@ -1,4 +1,4 @@
-import "@/icons/MoonIcon/MoonIcon.styles.scss";
+import "@/core/icons/MoonIcon/MoonIcon.styles.scss";
 
 function MoonIcon() {
   return (

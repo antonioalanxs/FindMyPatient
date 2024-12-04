@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 
-import FormErrorText from "@/components/FormErrorText/FormErrorText";
+import FormErrorText from "@/core/components/FormErrorText/FormErrorText";
 
 describe("FormErrorText", () => {
   it("should create", () => {

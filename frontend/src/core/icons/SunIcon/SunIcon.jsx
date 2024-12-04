@@ -1,4 +1,4 @@
-import "@/icons/SunIcon/SunIcon.styles.scss";
+import "@/core/icons/SunIcon/SunIcon.styles.scss";
 
 function SunIcon() {
   return (

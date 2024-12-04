@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import { storageService } from "@/services/StorageService";
-import { ROLES, DEFAULT_DURATION } from "@/constants";
+import { storageService } from "@/core/services/StorageService";
+import { ROLES, DEFAULT_DURATION } from "@/core/constants";
 
 /**
  * Custom hook to send the location of a patient to the server recurrently.

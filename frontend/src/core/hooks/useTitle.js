@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { BRAND_NAME } from "@/constants";
+import { BRAND_NAME } from "@/core/constants";
 
 /**
  * Sets the title of the page.
