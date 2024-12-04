@@ -1,7 +1,7 @@
-import { Storage } from "@ionic/storage";
+import { Preferences } from "@capacitor/preferences";
 
 /**
- * A service that provides methods to interact with the `@ionic/storage` API.
+ * A service that provides methods to interact with the `@capacitor/preferences` API.
  *
  * It is a singleton class that can be accessed using the `instance` property.
  */
@@ -20,18 +20,14 @@ class StorageService {
       return StorageService.instance;
     }
 
-    this.storage = new Storage();
+    this.storage = Preferences;
 
-    Promise.resolve(this.storage.create())
-      .then(() => {
-        this.ACCESS_TOKEN = "accessToken";
-        this.REFRESH_TOKEN = "refreshToken";
-        this.USER = "user";
-        this.THEME = "theme";
+    this.ACCESS_TOKEN = "accessToken";
+    this.REFRESH_TOKEN = "refreshToken";
+    this.USER = "user";
+    this.THEME = "theme";
 
-        StorageService.instance = this;
-      })
-      .catch((error) => console.error(error));
+    StorageService.instance = this;
   }
 
   /**
@@ -43,7 +39,9 @@ class StorageService {
   save = async (key, value) => {
     value = JSON.stringify(value);
 
-    await this.storage.set(key, value).catch((error) => console.error(error));
+    await this.storage
+      .set({ key: key, value: value })
+      .catch((error) => console.error(error));
   };
 
   /**
@@ -56,7 +54,9 @@ class StorageService {
   get = async (key) => {
     let item;
 
-    await this.storage.get(key).then((value) => (item = JSON.parse(value)));
+    await this.storage
+      .get({ key: key })
+      .then((value) => (item = JSON.parse(value)));
 
     return item;
   };
@@ -67,7 +67,9 @@ class StorageService {
    * @param {string} key - The key to remove the value.
    */
   remove = async (key) => {
-    await this.storage.remove(key).catch((error) => console.error(error));
+    await this.storage
+      .remove({ key: key })
+      .catch((error) => console.error(error));
   };
 }
 
