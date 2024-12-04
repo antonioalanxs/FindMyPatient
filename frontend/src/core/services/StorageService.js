@@ -54,7 +54,9 @@ class StorageService {
 
     await this.storage
       .get(key)
-      .then((value) => (item = JSON.parse(value)))
+      .then(({ value }) => {
+        item = JSON.parse(value);
+      })
       .catch((error) => console.error(error));
 
     return item;

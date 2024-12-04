@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { Navigate } from "react-router-dom";
 
 import { storageService } from "@/core/services/StorageService";
@@ -12,9 +14,18 @@ import { storageService } from "@/core/services/StorageService";
  * @returns {ReactNode} - Either the child components if the user is authenticated, or a `<Navigate>` component redirecting to the index page.
  */
 const PrivateRoute = async ({ children }) => {
-  const user = await storageService.get(storageService.USER);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  return !!user ? children : <Navigate to="/" replace />;
+  useEffect(() => {
+    const invoke = async () => {
+      const user = await storageService.get(storageService.USER);
+      setIsAuthenticated(!!user);
+    };
+
+    invoke();
+  }, []);
+
+  return isAuthenticated ? children : <Navigate to="/in/home" replace />;
 };
 
 export default PrivateRoute;
