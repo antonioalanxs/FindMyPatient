@@ -25,12 +25,12 @@
     "jwt-decode": "4.0.0",
     "leaflet": "1.9.4",
     "react": "18.3.1",
+    "react-router-dom": "6.22.1",
     "react-apexcharts": "1.4.1",
     "react-bootstrap": "2.10.4",
     "react-dom": "18.3.1",
     "react-hook-form": "7.51.0",
     "react-leaflet": "4.2.1",
-    "react-router-dom": "5.3.4",
     "sass": "1.64.1",
     "sweetalert2": "11.10.8",
     "sweetalert2-react-content": "5.0.7"
