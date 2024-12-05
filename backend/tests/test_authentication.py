@@ -102,6 +102,29 @@ class PasswordResetTestCase(TestSetUp):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_is_reset_password_token_valid_with_valid_token(self):
+        url = reverse("reset_password", kwargs={"token": self.token})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(response.data["is_reset_password_token_valid"])
+
+    def test_is_reset_password_token_valid_with_non_valid_token(self):
+        url = reverse("reset_password", kwargs={"token": "test"})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["is_reset_password_token_valid"])
+
+    def test_is_reset_password_token_valid_with_used_token(self):
+        self.test_password_reset_valid_url()
+
+        url = reverse("reset_password", kwargs={"token": self.token})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(response.data["is_reset_password_token_valid"])
+
 
 class LogoutTestCase(TestSetUp):
     def setUp(self):
