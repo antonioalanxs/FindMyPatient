@@ -5,11 +5,8 @@ import PrivateRoute from "@/core/guards/PrivateRoute";
 
 import FlowRouter from "@/modules/flow/Router";
 
-/**
- * Main router.
- *
- * @returns {JSX.Element} - The router.
- */
+import Error from "@/modules/error/Error";
+
 const Router = () => {
   return (
     <>
@@ -25,6 +22,9 @@ const Router = () => {
               </PublicRoute>
             }
           />
+          <Route path="/flow" element={<Error />} />
+
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </>
