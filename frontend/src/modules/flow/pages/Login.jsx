@@ -5,11 +5,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
+
 import { authenticationService } from "@/core/services/AuthenticationService";
 import { storageService } from "@/core/services/StorageService";
+
 import FormErrorText from "@/core/components/FormErrorText/FormErrorText";
 import Spinner from "@/core/components/Spinner/Spinner";
+
 import { decode } from "@/core/utilities/functions";
+
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
 
 function Login() {
@@ -53,12 +57,13 @@ function Login() {
 
   return (
     <>
-      <h2 className="text-primary fs-1">Log in</h2>
-      <p className="text-secondary fs-5 mb-4">
-        Introduce your credentials to access to the system.
+      <h2 className="fs-1 text-primary">Log in</h2>
+      <p className="fs-5 mb-4 text-secondary">
+        Introduce your credentials to access the system.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* Username Field */}
         <div className="form-group position-relative has-icon-left mb-4">
           <input
             type="text"
@@ -75,7 +80,8 @@ function Login() {
           {<FormErrorText message={errors?.username?.message} />}
         </div>
 
-        <div className="password-form-group form-group position-relative has-icon-left mb-4">
+        {/* Password Field */}
+        <div className="form-group position-relative has-icon-left mb-4 password-form-group">
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
@@ -97,8 +103,9 @@ function Login() {
           {<FormErrorText message={errors?.password?.message} />}
         </div>
 
+        {/* Error Message */}
         {errorMessage && (
-          <div className="alert alert-danger alert-dismissible show fade">
+          <div className="alert alert-danger alert-dismissible fade show">
             <span className="ms-1">{errorMessage}</span>
             <button
               type="button"
@@ -110,14 +117,16 @@ function Login() {
           </div>
         )}
 
-        <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
+        {/* Submit Button */}
+        <button className="btn btn-primary btn-lg btn-block shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
           {isSubmittingForm ? <Spinner /> : "Enter"}
         </button>
       </form>
 
+      {/* Forgot Password Link */}
       <Link
-        to="/reset"
-        className="d-block text-center fw-bold fs-5 text-decoration-none"
+        to="/flow/reset"
+        className="d-block text-center fs-5 fw-bold text-decoration-none"
       >
         Did you forget your password?
       </Link>
