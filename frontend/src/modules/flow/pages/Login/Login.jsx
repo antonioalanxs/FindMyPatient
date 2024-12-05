@@ -63,7 +63,6 @@ function Login() {
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* Username Field */}
         <div className="form-group position-relative has-icon-left mb-4">
           <input
             type="text"
@@ -80,7 +79,6 @@ function Login() {
           {<FormErrorText message={errors?.username?.message} />}
         </div>
 
-        {/* Password Field */}
         <div className="form-group position-relative has-icon-left mb-4 password-form-group">
           <input
             type={showPassword ? "text" : "password"}
@@ -103,7 +101,6 @@ function Login() {
           {<FormErrorText message={errors?.password?.message} />}
         </div>
 
-        {/* Error Message */}
         {errorMessage && (
           <div className="alert alert-danger alert-dismissible fade show">
             <span className="ms-1">{errorMessage}</span>
@@ -117,13 +114,11 @@ function Login() {
           </div>
         )}
 
-        {/* Submit Button */}
         <button className="btn btn-primary btn-lg btn-block shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
           {isSubmittingForm ? <Spinner /> : "Enter"}
         </button>
       </form>
 
-      {/* Forgot Password Link */}
       <Link
         to="/flow/reset"
         className="d-block text-center fs-5 fw-bold text-decoration-none"
