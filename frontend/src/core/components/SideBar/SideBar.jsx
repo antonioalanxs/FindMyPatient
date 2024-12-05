@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 
-import { Link, useHistory } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { storageService } from "@/core/services/StorageService";
+
 import SunIcon from "@/core/icons/SunIcon/SunIcon";
 import MoonIcon from "@/core/icons/MoonIcon/MoonIcon";
+
 import { BRAND_NAME, THEMES } from "@/core/constants";
 
-// Links to the pages.
 const LINKS = {
   HOME: "/home",
   SETTINGS: "/settings",
 };
 
 function SideBar() {
-  const history = useHistory();
-
   const [isChecked, setIsChecked] = useState(
     document.documentElement.getAttribute("data-bs-theme") === THEMES.DARK
   );
@@ -74,7 +73,7 @@ function SideBar() {
         <i className="bi bi-justify fs-3 text-primary"></i>
       </button>
 
-      <aside id="sidebar" className="sidebar-desktop">
+      <div id="sidebar" className="sidebar-desktop">
         <div className="sidebar-wrapper active">
           <div className="sidebar-header position-relative">
             <div className="d-flex justify-content-between align-items-center gap-1 mt-3">
@@ -99,7 +98,7 @@ function SideBar() {
 
               <div className="sidebar-toggler x">
                 <button
-                  className="sidebar-hide d-xl-none d-block cursor-pointer border-0 bg-transparent p-0 cursor-pointer"
+                  className="sidebar-hide d-xl-none d-block cursor-pointer border-0 bg-transparent p-0"
                   onClick={() => toggleSidebar()}
                 >
                   <i className="bi bi-x bi-middle text-primary"></i>
@@ -109,32 +108,27 @@ function SideBar() {
           </div>
 
           <div className="sidebar-menu">
-            <ul className="menu">
-              <li
-                className={`sidebar-item ${
-                  history.location.pathname === LINKS.HOME && "active"
-                }`}
+            <div className="menu">
+              <NavLink
+                to={LINKS.HOME}
+                className={`sidebar-item sidebar-link ${({ isActive }) =>
+                  isActive && "active"}`}
               >
-                <Link to={LINKS.HOME} className="sidebar-link">
-                  <i className="bi bi-grid-fill"></i>
-                  <span>Home</span>
-                </Link>
-              </li>
-
-              <li
-                className={`sidebar-item ${
-                  history.location.pathname === LINKS.SETTINGS && "active"
-                }`}
+                <i className="bi bi-grid-fill"></i>
+                <span>Home</span>
+              </NavLink>
+              <NavLink
+                to={LINKS.SETTINGS}
+                className={`sidebar-item sidebar-link ${({ isActive }) =>
+                  isActive && "active"}`}
               >
-                <Link to={LINKS.SETTINGS} className="sidebar-link">
-                  <i className="bi bi-gear-fill"></i>
-                  <span>Settings</span>
-                </Link>
-              </li>
-            </ul>
+                <i className="bi bi-gear-fill"></i>
+                <span>Settings</span>
+              </NavLink>
+            </div>
           </div>
         </div>
-      </aside>
+      </div>
     </>
   );
 }
