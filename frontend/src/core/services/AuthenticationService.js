@@ -30,14 +30,14 @@ class AuthenticationService {
   };
 
   /**
-   * Requests to reset the password. It sends an mail to the user with a reset password link.
+   * Requests to reset the password. It sends an email to the user with a reset password link.
    *
-   * @param {String} mail - The mail of the user.
+   * @param {String} email - The email of the user.
    *
    * @returns {Promise} - The promise object representing the completion of the request.
    */
-  resetPasswordRequest = (mail) => {
-    return axiosInstance.post(`${this._prefix}reset`, { email: mail });
+  resetPasswordRequest = (email) => {
+    return axiosInstance.post(`${this._prefix}reset`, { email: email });
   };
 
   /**

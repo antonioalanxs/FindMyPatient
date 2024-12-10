@@ -31,7 +31,7 @@ function PasswordResetRequest() {
     setIsSubmittingForm(true);
 
     authenticationService
-      .resetPasswordRequest(data.mail)
+      .resetPasswordRequest(data.email)
       .then(() => {
         notificationService.showModal(
           "Email sent successfully. Check your inbox.",
@@ -61,17 +61,19 @@ function PasswordResetRequest() {
         <div className="form-group position-relative has-icon-left mb-4">
           <input
             type="email"
-            placeholder="Mail"
+            placeholder="Email"
             autoComplete="off"
             className={`form-control form-control-xl ${
-              isSubmittedForm && errors?.mail && "is-invalid"
+              isSubmittedForm && errors?.email && "is-invalid"
             }`}
-            {...register("mail", { required: "Mail is required." })}
+            {...register("email", { required: "Email is required." })}
           />
           <div className="form-control-icon">
             <i className="bi bi-envelope"></i>
           </div>
-          {isSubmittedForm && <FormErrorText message={errors?.mail?.message} />}
+          {isSubmittedForm && (
+            <FormErrorText message={errors?.email?.message} />
+          )}
         </div>
 
         {errorMessage && (

@@ -10,8 +10,6 @@ import LogoIcon from "@/core/icons/LogoIcon/LogoIcon";
  * It displays the layout for the flow module.
  *
  * A flow page is a page that is used to guide the user through a multi-step process. It is typically used for onboarding, account creation, etc.
- *
- * @returns {JSX.Element} - The component.
  */
 function Flow() {
   return (
@@ -23,6 +21,7 @@ function Flow() {
               <LogoIcon />
             </h1>
           </Link>
+
           <Outlet />
         </div>
 

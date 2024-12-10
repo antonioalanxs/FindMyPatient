@@ -14,6 +14,7 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/flow/login" />} />
 
+          <Route path="/flow" element={<Error />} />
           <Route
             path="/flow/*"
             element={
@@ -22,7 +23,6 @@ const Router = () => {
               </PublicRoute>
             }
           />
-          <Route path="/flow" element={<Error />} />
 
           <Route path="*" element={<Error />} />
         </Routes>
