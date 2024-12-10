@@ -35,7 +35,7 @@ class LoginTestCase(TestSetUp):
     def test_login_with_non_valid_credentials(self):
         self.credentials["username"] = "test"
         response = self.client.post(self.url, self.credentials, format="json")
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordResetRequestTestCase(TestSetUp):

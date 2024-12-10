@@ -42,7 +42,7 @@ class LoginView(TokenObtainPairView):
                 description='Bad Request.',
                 examples={
                     'application/json': {
-                        'message': 'Invalid credentials.'
+                        'detail': 'Username or password is incorrect.'
                     }
                 }
             )
@@ -50,7 +50,10 @@ class LoginView(TokenObtainPairView):
     )
     def post(self, request, **kwargs):
         serializer = CustomTokenObtainPairSerializer(data=request.data)
-        if serializer.is_valid():
+
+        try:
+            serializer.is_valid(raise_exception=True)
+
             return Response(
                 {
                     'access_token': serializer.validated_data.get('access'),
@@ -58,10 +61,14 @@ class LoginView(TokenObtainPairView):
                 },
                 status=status.HTTP_200_OK
             )
-        return Response(
-            {'message': 'Invalid credentials.'},
-            status=status.HTTP_401_UNAUTHORIZED
-        )
+        except Exception as exception:
+            return Response(
+                {
+                    'detail': 'Username or password is incorrect.',
+                    'exception': str(exception)
+                 },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class PasswordResetRequestView(APIView, URIEmailMixin):
