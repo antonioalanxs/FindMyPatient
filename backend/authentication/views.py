@@ -155,7 +155,7 @@ class PasswordResetView(APIView, URICertifierMixin):
                 description='Invalid token.',
                 examples={
                     'application/json': {
-                        'detail': 'Invalid token.'
+                        'detail': 'Expired credentials. Please, request a new password reset.'
                     }
                 }
             )
@@ -174,7 +174,7 @@ class PasswordResetView(APIView, URICertifierMixin):
             )
 
         return Response(
-            {'message': 'Invalid token.'},
+            {'detail': 'Expired credentials. Please, request a new password reset.'},
             status=status.HTTP_400_BAD_REQUEST
         )
 
