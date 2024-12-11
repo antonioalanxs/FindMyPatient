@@ -12,6 +12,7 @@ import Button from "@/modules/flow/components/Form/Button/Button";
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 import { decode } from "@/core/utilities/functions";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
+import { ROUTES } from "@/core/constants/routes";
 
 function Login() {
   useTitle({});
@@ -102,7 +103,10 @@ function Login() {
         <Button loading={isSubmittingForm} />
       </form>
 
-      <Anchor link="/flow/reset" text="Did you forget your password?" />
+      <Anchor
+        link={ROUTES.FLOW.RESET_PASSWORD_REQUEST}
+        text="Did you forget your password?"
+      />
     </>
   );
 }

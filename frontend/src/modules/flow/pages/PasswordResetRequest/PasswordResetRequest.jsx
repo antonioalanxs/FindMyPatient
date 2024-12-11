@@ -10,6 +10,7 @@ import Alert from "@/core/components/Form/Alert/Alert";
 import Button from "@/modules/flow/components/Form/Button/Button";
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
+import { ROUTES } from "@/core/constants/routes";
 
 function PasswordResetRequest() {
   useTitle({ title: "Password reset request" });
@@ -71,7 +72,7 @@ function PasswordResetRequest() {
         <Button loading={isSubmittingForm} />
       </form>
 
-      <Anchor link="/flow/login" text="Did you remember your password?" />
+      <Anchor link={ROUTES.FLOW.LOGIN} text="Did you remember your password?" />
     </>
   );
 }

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 import { useTitle } from "@/core/hooks/useTitle";
-
 import ErrorIcon from "@/core/icons/ErrorIcon/ErrorIcon";
+import { ROUTES } from "@/core/constants/routes";
 
 function Error() {
   useTitle({ title: "Error" });
@@ -18,7 +18,7 @@ function Error() {
               The page or the resource you are interacting with is not
               available. Please, check the URI or try again later.
             </p>
-            <Link to="/" className="btn btn-primary btn-lg mt-2">
+            <Link to={ROUTES.ROOT} className="btn btn-primary btn-lg mt-2">
               Go Home
             </Link>
           </div>
