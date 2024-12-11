@@ -5,11 +5,11 @@ import { useTitle } from "@/core/hooks/useTitle";
 import ErrorIcon from "@/core/icons/ErrorIcon/ErrorIcon";
 
 function Error() {
-  useTitle({});
+  useTitle({ title: "Error" });
 
   return (
-    <div id="error">
-      <div className="container error-page">
+    <>
+      <div className="container error-page p-3">
         <div className="col-12 col-md-8 offset-md-2">
           <div className="text-center">
             <ErrorIcon />
@@ -18,13 +18,13 @@ function Error() {
               The page or the resource you are interacting with is not
               available. Please, check the URI or try again later.
             </p>
-            <Link to="/" className="btn btn-lg btn-outline-primary mt-3">
+            <Link to="/" className="btn btn-primary btn-lg mt-2">
               Go Home
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
