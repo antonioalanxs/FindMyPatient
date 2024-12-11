@@ -8,22 +8,27 @@ import { ROUTES } from "@/core/constants/routes";
 
 const Router = () => {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Navigate to={ROUTES.FLOW.LOGIN} />} />
-          <Route
-            path={ROUTES.FLOW.ANYWHERE}
-            element={
-              <PublicRoute>
-                <FlowRouter />
-              </PublicRoute>
-            }
-          />
-          <Route path={ROUTES.ANYWHERE} element={<Error />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Navigate to={ROUTES.FLOW.LOGIN} />} />
+
+        <Route
+          path={ROUTES.FLOW.ANYWHERE}
+          element={
+            <PublicRoute>
+              <FlowRouter />
+            </PublicRoute>
+          }
+        />
+
+        <Route path={ROUTES.ERROR} element={<Error />} />
+
+        <Route
+          path={ROUTES.ANYWHERE}
+          element={<Navigate to={ROUTES.ERROR} />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

@@ -1,5 +1,6 @@
 export const ROUTES = {
   ANYWHERE: "*",
+  ERROR: "/error",
   ROOT: "/",
   FLOW: {
     BASE: "/flow",
@@ -7,7 +8,6 @@ export const ROUTES = {
       LOGIN: "login",
       RESET_PASSWORD_REQUEST: "reset",
       RESET_PASSWORD: (token = ":token") => `reset/${token}`,
-      ANYWHERE: "*",
     },
     get LOGIN() {
       return `${this.BASE}/${this.RELATIVE.LOGIN}`;
