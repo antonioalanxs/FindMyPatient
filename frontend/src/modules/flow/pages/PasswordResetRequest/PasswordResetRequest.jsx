@@ -1,25 +1,21 @@
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
-
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
-
 import { authenticationService } from "@/core/services/AuthenticationService";
 import { notificationService } from "@/core/services/NotificationService";
-
-import FormErrorText from "@/core/components/FormErrorText/FormErrorText";
-import Spinner from "@/core/components/Spinner/Spinner";
-
+import Header from "@/modules/flow/components/Header/Header";
+import InvalidFeedback from "@/core/components/Form/InvalidFeedback/InvalidFeedback";
+import Alert from "@/core/components/Form/Alert/Alert";
+import Button from "@/modules/flow/components/Form/Button/Button";
+import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
 
 function PasswordResetRequest() {
   useTitle({ title: "Password reset request" });
 
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const {
     register,
@@ -37,25 +33,21 @@ function PasswordResetRequest() {
           "Email sent successfully. Check your inbox.",
           notificationService.ICONS.SUCCESS
         );
-        setErrorMessage(null);
       })
       .catch((error) => {
-        setErrorMessage(
-          error.response?.data?.message ?? UNAVAILABLE_SERVICE_MESSAGE
-        );
+        setError(error.response?.data?.message ?? UNAVAILABLE_SERVICE_MESSAGE);
       })
       .finally(() => {
         setIsSubmittingForm(false);
-        setIsSubmittedForm(true);
       });
   };
 
   return (
     <>
-      <h2 className="fs-1 text-primary">Password reset request</h2>
-      <p className="fs-5 mb-4 text-secondary">
-        We will send you a link to recover your password.
-      </p>
+      <Header
+        title="Password reset request"
+        subtitle="We will send you a link to recover your password."
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group position-relative has-icon-left mb-4">
@@ -64,42 +56,22 @@ function PasswordResetRequest() {
             placeholder="Email"
             autoComplete="off"
             className={`form-control form-control-xl ${
-              isSubmittedForm && errors?.email && "is-invalid"
+              errors?.email && "is-invalid"
             }`}
             {...register("email", { required: "Email is required." })}
           />
           <div className="form-control-icon">
             <i className="bi bi-envelope"></i>
           </div>
-          {isSubmittedForm && (
-            <FormErrorText message={errors?.email?.message} />
-          )}
+          <InvalidFeedback message={errors?.email?.message} />
         </div>
 
-        {errorMessage && (
-          <div className="alert alert-danger alert-dismissible show fade">
-            <span className="ms-1">{errorMessage}</span>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              onClick={() => setErrorMessage(null)}
-            ></button>
-          </div>
-        )}
+        <Alert content={error} onClose={() => setError(null)} />
 
-        <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
-          {isSubmittingForm ? <Spinner /> : "Send"}
-        </button>
+        <Button loading={isSubmittingForm} />
       </form>
 
-      <Link
-        to="/flow/login"
-        className="d-block text-center fw-bold fs-5 text-decoration-none"
-      >
-        Did you remember your password?
-      </Link>
+      <Anchor link="/flow/login" text="Did you remember your password?" />
     </>
   );
 }

@@ -1,16 +1,15 @@
-import { useState } from "react";
-
-import { useParams, useNavigate, Link } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
 import { authenticationService } from "@/core/services/AuthenticationService";
 import { notificationService } from "@/core/services/NotificationService";
-
-import Spinner from "@/core/components/Spinner/Spinner";
-import FormErrorText from "@/core/components/FormErrorText/FormErrorText";
-
+import Header from "@/modules/flow/components/Header/Header";
+import InvalidFeedback from "@/core/components/Form/InvalidFeedback/InvalidFeedback";
+import Alert from "@/core/components/Form/Alert/Alert";
+import Button from "@/modules/flow/components/Form/Button/Button";
+import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
 
 function PasswordReset() {
@@ -19,10 +18,22 @@ function PasswordReset() {
   const { token } = useParams();
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+
+  //   authenticationService
+  //     .isResetPasswordTokenValid(token)
+  //     .then((response) => {
+  //       flag = response.data.is_reset_password_token_valid;
+  //     })
+  //     .catch((error) => {});
+  // }, [token]);
+
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [isSubmittedForm, setIsSubmittedForm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const {
     register,
@@ -30,33 +41,40 @@ function PasswordReset() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = ({ password }) => {
     setIsSubmittingForm(true);
 
     authenticationService
-      .resetPassword(token, data.password)
-      .then(() => {
+      .resetPassword(token, password)
+      .then((response) => {
+        navigate("/");
         notificationService.showToast(
-          "Password reset successfully.",
+          response.data.message,
           notificationService.ICONS.SUCCESS
         );
-        navigate.push("/");
       })
       .catch((error) => {
-        setErrorMessage(
-          error.response?.data?.message ?? UNAVAILABLE_SERVICE_MESSAGE
-        );
+        setError(error.response?.data?.detail || UNAVAILABLE_SERVICE_MESSAGE);
       })
       .finally(() => {
         setIsSubmittingForm(false);
-        setIsSubmittedForm(true);
       });
   };
 
-  return (
+  return isLoading ? (
+    <div className="d-flex flex-column align-items-center justify-content-center gap-3 mt-5">
+      <Spinner large primary />
+
+      <p className="fs-5 text-secondary text-center">
+        Checking your credentials. Please wait...
+      </p>
+    </div>
+  ) : (
     <>
-      <h2 className="fs-1 text-primary">Reset your password</h2>
-      <p className="fs-5 mb-4 text-secondary">Enter your new password below.</p>
+      <Header
+        title="Reset your password"
+        subtitle="Enter your new password below."
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="password-form-group form-group position-relative has-icon-left mb-4">
@@ -65,7 +83,7 @@ function PasswordReset() {
             placeholder="Password"
             autoComplete="off"
             className={`form-control form-control-xl form-password ${
-              isSubmittedForm && errors?.username && "is-invalid"
+              errors?.password && "is-invalid"
             }`}
             {...register("password", { required: "Password is required." })}
           />
@@ -78,35 +96,15 @@ function PasswordReset() {
           >
             <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
           </div>
-          {isSubmittedForm && (
-            <FormErrorText message={errors?.password?.message} />
-          )}
+          <InvalidFeedback message={errors?.password?.message} />
         </div>
 
-        {errorMessage && (
-          <div className="alert alert-danger alert-dismissible show fade">
-            <span className="ms-1">{errorMessage}</span>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              onClick={() => setErrorMessage(null)}
-            ></button>
-          </div>
-        )}
+        <Alert content={error} onClose={() => setError(null)} />
 
-        <button className="btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
-          {isSubmittingForm ? <Spinner /> : "Save"}
-        </button>
+        <Button loading={isSubmittingForm} />
       </form>
 
-      <Link
-        to="/flow/login"
-        className="d-block text-center fw-bold fs-5 text-decoration-none"
-      >
-        Did you remember your password?
-      </Link>
+      <Anchor link="/flow/login" text="Did you remember your password?" />
     </>
   );
 }

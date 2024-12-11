@@ -1,19 +1,16 @@
 import { useState } from "react";
-
-import { Link, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
-
 import { authenticationService } from "@/core/services/AuthenticationService";
 import { storageService } from "@/core/services/StorageService";
-
-import FormErrorText from "@/core/components/FormErrorText/FormErrorText";
-import Spinner from "@/core/components/Spinner/Spinner";
-
+import Header from "@/modules/flow/components/Header/Header";
+import InvalidFeedback from "@/core/components/Form/InvalidFeedback/InvalidFeedback";
+import Alert from "@/core/components/Form/Alert/Alert";
+import Button from "@/modules/flow/components/Form/Button/Button";
+import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 import { decode } from "@/core/utilities/functions";
-
 import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
 
 function Login() {
@@ -29,26 +26,25 @@ function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   const onSubmit = (data) => {
     setIsSubmittingForm(true);
 
     authenticationService
       .login(data)
-      .then((response) => {
+      .then(async (response) => {
         const { access_token, refresh_token } = response.data;
         const user = decode(access_token);
 
-        storageService.save(storageService.ACCESS_TOKEN, access_token);
-        storageService.save(storageService.REFRESH_TOKEN, refresh_token);
-        storageService.save(storageService.USER, user);
+        await storageService.save(storageService.ACCESS_TOKEN, access_token);
+        await storageService.save(storageService.REFRESH_TOKEN, refresh_token);
+        await storageService.save(storageService.USER, user);
 
-        navigate.push("/in/home");
+        navigate("/in/home");
       })
       .catch((error) => {
-        const detail = error.response?.data?.detail;
-        setErrorMessage(detail ? `${detail}.` : UNAVAILABLE_SERVICE_MESSAGE);
+        setError(error.response?.data?.detail || UNAVAILABLE_SERVICE_MESSAGE);
       })
       .finally(() => {
         setIsSubmittingForm(false);
@@ -57,10 +53,10 @@ function Login() {
 
   return (
     <>
-      <h2 className="fs-1 text-primary">Log in</h2>
-      <p className="fs-5 mb-4 text-secondary">
-        Introduce your credentials to access the system.
-      </p>
+      <Header
+        title="Log in"
+        subtitle="Introduce your credentials to access the system."
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group position-relative has-icon-left mb-4">
@@ -76,7 +72,7 @@ function Login() {
           <div className="form-control-icon">
             <i className="bi bi-person"></i>
           </div>
-          {<FormErrorText message={errors?.username?.message} />}
+          <InvalidFeedback message={errors?.username?.message} />
         </div>
 
         <div className="form-group position-relative has-icon-left mb-4 password-form-group">
@@ -98,33 +94,15 @@ function Login() {
           >
             <i className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"}`}></i>
           </div>
-          {<FormErrorText message={errors?.password?.message} />}
+          <InvalidFeedback message={errors?.password?.message} />
         </div>
 
-        {errorMessage && (
-          <div className="alert alert-danger alert-dismissible fade show">
-            <span className="ms-1">{errorMessage}</span>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-              onClick={() => setErrorMessage(null)}
-            ></button>
-          </div>
-        )}
+        <Alert content={error} onClose={() => setError(null)} />
 
-        <button className="btn btn-primary btn-lg btn-block shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center">
-          {isSubmittingForm ? <Spinner /> : "Enter"}
-        </button>
+        <Button loading={isSubmittingForm} />
       </form>
 
-      <Link
-        to="/flow/reset"
-        className="d-block text-center fs-5 fw-bold text-decoration-none"
-      >
-        Did you forget your password?
-      </Link>
+      <Anchor link="/flow/reset" text="Did you forget your password?" />
     </>
   );
 }
