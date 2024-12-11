@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
@@ -16,39 +16,24 @@ import { ROUTES } from "@/core/constants/routes";
 function PasswordReset() {
   useTitle({ title: "Reset your password" });
 
-  const { token } = useParams();
   const navigate = useNavigate();
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  //   setIsLoading(true);
-
-  //   authenticationService
-  //     .isResetPasswordTokenValid(token)
-  //     .then((response) => {
-  //       flag = response.data.is_reset_password_token_valid;
-  //     })
-  //     .catch((error) => {});
-  // }, [token]);
-
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const { token } = useParams();
 
   const onSubmit = ({ password }) => {
-    setIsSubmittingForm(true);
+    setLoadingForm(true);
 
     authenticationService
       .resetPassword(token, password)
       .then((response) => {
-        navigate("/");
+        navigate(ROUTES.ROOT);
         notificationService.showToast(
           response.data.message,
           notificationService.ICONS.SUCCESS
@@ -58,19 +43,11 @@ function PasswordReset() {
         setError(error.response?.data?.detail || DEFAULT_MESSAGE);
       })
       .finally(() => {
-        setIsSubmittingForm(false);
+        setLoadingForm(false);
       });
   };
 
-  return isLoading ? (
-    <div className="d-flex flex-column align-items-center justify-content-center gap-3 mt-5">
-      <Spinner large primary />
-
-      <p className="fs-5 text-secondary text-center">
-        Checking your credentials. Please wait...
-      </p>
-    </div>
-  ) : (
+  return (
     <>
       <Header
         title="Reset your password"
@@ -102,7 +79,7 @@ function PasswordReset() {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={isSubmittingForm} />
+        <Button loading={loadingForm} />
       </form>
 
       <Anchor link={ROUTES.FLOW.LOGIN} text="Did you remember your password?" />

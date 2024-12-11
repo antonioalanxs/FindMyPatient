@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-
 import { Navigate } from "react-router-dom";
 
 import { storageService } from "@/core/services/StorageService";
+import { ROUTES } from "@/core/constants/routes";
 
 /**
  * Wraps around child components to restrict access to authenticated users.
@@ -16,7 +16,7 @@ import { storageService } from "@/core/services/StorageService";
  * @returns {ReactNode} - Either the child components if the user is unauthenticated, or a `<Navigate>` component redirecting to the home page.
  */
 const PublicRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const invoke = async () => {
@@ -27,7 +27,7 @@ const PublicRoute = ({ children }) => {
     invoke();
   }, []);
 
-  return isAuthenticated ? <Navigate to="/in/home" replace /> : children;
+  return isAuthenticated ? <Navigate to={ROUTES.IN.HOME} replace /> : children;
 };
 
 export default PublicRoute;
