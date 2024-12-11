@@ -11,7 +11,7 @@ import Alert from "@/core/components/Form/Alert/Alert";
 import Button from "@/modules/flow/components/Form/Button/Button";
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 import { decode } from "@/core/utilities/functions";
-import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
+import { DEFAULT_MESSAGE } from "@/core/constants/messages";
 import { ROUTES } from "@/core/constants/routes";
 
 function Login() {
@@ -45,7 +45,7 @@ function Login() {
         navigate("/in/home");
       })
       .catch((error) => {
-        setError(error.response?.data?.detail || UNAVAILABLE_SERVICE_MESSAGE);
+        setError(error.response?.data?.detail || DEFAULT_MESSAGE);
       })
       .finally(() => {
         setIsSubmittingForm(false);

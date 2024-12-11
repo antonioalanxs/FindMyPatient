@@ -3,7 +3,7 @@ import axios from "axios";
 import { storageService } from "@/core/services/StorageService";
 import { notificationService } from "@/core/services/NotificationService";
 import { decode } from "@/core/utilities/functions";
-import { API_URL } from "@/core/constants";
+import { API_URL } from "@/core/constants/general";
 
 /**
  * Axios instance specifically for making requests to the API defined by `API_URL` constant.

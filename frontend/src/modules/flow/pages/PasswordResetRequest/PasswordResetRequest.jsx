@@ -9,7 +9,7 @@ import InvalidFeedback from "@/core/components/Form/InvalidFeedback/InvalidFeedb
 import Alert from "@/core/components/Form/Alert/Alert";
 import Button from "@/modules/flow/components/Form/Button/Button";
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
-import { UNAVAILABLE_SERVICE_MESSAGE } from "@/core/constants";
+import { DEFAULT_MESSAGE } from "@/core/constants/messages";
 import { ROUTES } from "@/core/constants/routes";
 
 function PasswordResetRequest() {
@@ -36,7 +36,7 @@ function PasswordResetRequest() {
         );
       })
       .catch((error) => {
-        setError(error.response?.data?.message ?? UNAVAILABLE_SERVICE_MESSAGE);
+        setError(error.response?.data?.message ?? DEFAULT_MESSAGE);
       })
       .finally(() => {
         setIsSubmittingForm(false);

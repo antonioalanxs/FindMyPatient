@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { DEFAULT_DURATION } from "@/core/constants";
+import { DEFAULT_DURATION } from "@/core/constants/general";
 
 /**
  * Service class for showing notifications.
