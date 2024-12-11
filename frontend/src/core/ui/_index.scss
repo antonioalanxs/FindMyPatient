@@ -101,3 +101,12 @@ textarea {
   object-fit: contain;
   padding: 3rem 0;
 }
+
+.h-100 {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.mw-65ch {
+  max-width: 65ch;
+}

@@ -3,6 +3,7 @@ import { Link, Outlet } from "react-router-dom";
 import "@/modules/flow/Flow.styles.scss";
 
 import LogoIcon from "@/core/icons/LogoIcon/LogoIcon";
+import { ROUTES } from "@/core/constants/routes";
 
 /**
  * Layout used for flow-related pages.
@@ -16,11 +17,11 @@ function Flow() {
     <div id="authentication">
       <div className="row h-100">
         <div id="authentication-left" className="col-12 col-lg-6 col-xl-5">
-          <Link to="/">
-            <h1 className="authentication-logo">
+          <h1>
+            <Link to={ROUTES.ROOT} className="d-flex justify-content-center">
               <LogoIcon />
-            </h1>
-          </Link>
+            </Link>
+          </h1>
 
           <Outlet />
         </div>
