@@ -90,7 +90,7 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
                 description='Email successfully sent.',
                 examples={
                     'application/json': {
-                        'message': 'Email successfully sent.'
+                        'message': 'Email sent successfully. Check your inbox.'
                     }
                 }
             ),
@@ -98,7 +98,7 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
                 description='Introduced email not found.',
                 examples={
                     'application/json': {
-                        'email': 'Introduced email does not exist.'
+                        'detail': 'Introduced email does not exist.'
                     }
                 }
             )
@@ -117,12 +117,12 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
             )
 
             return Response(
-                {'message': 'Email successfully sent.'},
+                {'message': 'Email sent successfully. Check your inbox.'},
                 status=status.HTTP_200_OK
             )
 
         return Response(
-            {'message': 'Introduced email does not exist.'},
+            {'detail': 'Introduced email does not exist.'},
             status=status.HTTP_404_NOT_FOUND
         )
 

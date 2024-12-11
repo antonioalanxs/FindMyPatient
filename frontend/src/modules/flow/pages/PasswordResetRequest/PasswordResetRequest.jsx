@@ -15,31 +15,30 @@ import { ROUTES } from "@/core/constants/routes";
 function PasswordResetRequest() {
   useTitle({ title: "Password reset request" });
 
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
+  const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    setIsSubmittingForm(true);
+  const onSubmit = ({ email }) => {
+    setLoadingForm(true);
 
     authenticationService
-      .resetPasswordRequest(data.email)
-      .then(() => {
+      .resetPasswordRequest(email)
+      .then((response) => {
         notificationService.showModal(
-          "Email sent successfully. Check your inbox.",
+          response.data.message,
           notificationService.ICONS.SUCCESS
         );
       })
       .catch((error) => {
-        setError(error.response?.data?.message ?? DEFAULT_MESSAGE);
+        setError(error.response?.data?.detail || DEFAULT_MESSAGE);
       })
       .finally(() => {
-        setIsSubmittingForm(false);
+        setLoadingForm(false);
       });
   };
 
@@ -69,7 +68,7 @@ function PasswordResetRequest() {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={isSubmittingForm} />
+        <Button loading={loadingForm} />
       </form>
 
       <Anchor link={ROUTES.FLOW.LOGIN} text="Did you remember your password?" />
