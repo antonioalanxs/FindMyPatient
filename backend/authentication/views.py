@@ -232,7 +232,7 @@ class LogoutView(APIView):
                 description="User successfully logged out.",
                 examples={
                     "application/json": {
-                        "message": "User successfully logged out."
+                        "message": "You have been logged out successfully."
                     }
                 }
             ),
@@ -263,7 +263,7 @@ class LogoutView(APIView):
         RefreshToken.for_user(request.user).blacklist()
 
         return Response(
-            {"message": "User successfully logged out."},
+            {"message": "You have been logged out successfully."},
             status=status.HTTP_200_OK
         )
 
@@ -293,7 +293,7 @@ class ChangePasswordView(APIView):
                 description='Password successfully changed.',
                 examples={
                     'application/json': {
-                        'message': 'Password successfully changed!'
+                        'message': 'Password successfully changed.'
                     }
                 }
             ),
@@ -341,6 +341,6 @@ class ChangePasswordView(APIView):
         user.save()
 
         return Response(
-            {'message': 'Password successfully changed!'},
+            {'message': 'Password successfully changed.'},
             status=status.HTTP_200_OK
         )
