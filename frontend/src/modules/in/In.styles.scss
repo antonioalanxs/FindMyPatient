@@ -1,0 +1,11 @@
+main {
+    margin-left: 0;
+    padding: 2em;
+}
+
+@media screen and (min-width: 1200px) {
+    main {
+        margin-left: 300px;
+        padding-block: 2.85em;
+    }
+}

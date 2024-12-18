@@ -14,13 +14,6 @@ class UserService {
 
   _prefix = "/users/";
 
-  /**
-   * Change the address of the user.
-   *
-   * @param {String} address - The new address.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   changeAddress = (address) => {
     return axiosInstanceWithTokens.patch(`${this._prefix}address`, {
       ...address,

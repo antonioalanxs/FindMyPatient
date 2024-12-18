@@ -1,10 +1,11 @@
-function Spinner({ large, primary }) {
+function Spinner({ large, small, primary }) {
   return (
     <div
       className={`spinner-border ${primary && "text-primary"}`}
       style={{
-        width: large && "3rem",
-        height: large && "3rem",
+        width: large && "2.75rem",
+        height: large && "2.75rem",
+        scale: small && ".5",
       }}
       role="status"
     >

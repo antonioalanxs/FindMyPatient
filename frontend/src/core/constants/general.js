@@ -1,11 +1,11 @@
 export const BRAND_NAME = "FindMyPatient";
 
+export const API_URL = import.meta.env.VITE_API_URL;
+
 /**
  * Constant for the default duration of an action.
  */
 export const DEFAULT_DURATION = 3000;
-
-export const API_URL = import.meta.env.VITE_API_URL;
 
 export const THEMES = {
   LIGHT: "light",

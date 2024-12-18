@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import { authenticationService } from "@/core/services/AuthenticationService";
 import { notificationService } from "@/core/services/NotificationService";
-import Spinner from "@/core/components/Spinner/Spinner";
+import Loading from "@/modules/loading/Loading";
 import { ROUTES } from "@/core/constants/routes";
-import { DEFAULT_MESSAGE } from "@/core/constants/messages";
+import { MESSAGES } from "@/core/constants/messages";
 
 const TokenRoute = ({ children }) => {
   const { token } = useParams();
@@ -21,7 +21,7 @@ const TokenRoute = ({ children }) => {
       .catch(() => {
         navigate(ROUTES.ERROR);
         notificationService.showToast(
-          DEFAULT_MESSAGE,
+          MESSAGES.DEFAULT,
           notificationService.ICONS.ERROR
         );
       })
@@ -30,16 +30,7 @@ const TokenRoute = ({ children }) => {
       });
   }, [token]);
 
-  return loading ? (
-    <div className="d-flex flex-column align-items-center justify-content-center gap-3 mt-5">
-      <Spinner large primary />
-      <p className="fs-5 text-secondary text-center">
-        Checking your credentials. Please wait...
-      </p>
-    </div>
-  ) : (
-    children
-  );
+  return loading ? <Loading /> : children;
 };
 
 export default TokenRoute;

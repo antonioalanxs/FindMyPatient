@@ -1,12 +1,13 @@
-function LogoIcon({ small }) {
+function LogoIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1"
       viewBox="0 0 375 375"
       style={{
-        maxWidth: small ? "165px" : "325px",
-        maxHeight: small ? "165px" : "325px",
+        width: "100%",
+        maxWidth: "325px",
+        maxHeight: "325px",
       }}
     >
       <defs>

@@ -7,6 +7,7 @@ function Button({ loading }) {
       className={`btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center ${
         loading && "disabled"
       }`}
+      disabled={loading}
     >
       {loading ? <Spinner /> : "Submit"}
     </button>

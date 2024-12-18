@@ -10,7 +10,7 @@ import InvalidFeedback from "@/core/components/Form/InvalidFeedback/InvalidFeedb
 import Alert from "@/core/components/Form/Alert/Alert";
 import Button from "@/modules/flow/components/Form/Button/Button";
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
-import { DEFAULT_MESSAGE } from "@/core/constants/messages";
+import { MESSAGES } from "@/core/constants/messages";
 import { ROUTES } from "@/core/constants/routes";
 
 function PasswordReset() {
@@ -40,7 +40,7 @@ function PasswordReset() {
         );
       })
       .catch((error) => {
-        setError(error.response?.data?.detail || DEFAULT_MESSAGE);
+        setError(error.response?.data?.detail || MESSAGES.DEFAULT);
       })
       .finally(() => {
         setLoadingForm(false);

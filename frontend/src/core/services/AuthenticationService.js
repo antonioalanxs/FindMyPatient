@@ -17,69 +17,26 @@ class AuthenticationService {
 
   _prefix = "/authentication/";
 
-  /**
-   * Logs in the user.
-   *
-   * @param {string} username - The username.
-   * @param {string} password - The password of the user.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   login = ({ username, password }) => {
     return axiosInstance.post(`${this._prefix}login`, { username, password });
   };
 
-  /**
-   * Requests to reset the password. It sends an email to the user with a reset password link.
-   *
-   * @param {String} email - The email of the user.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   resetPasswordRequest = (email) => {
     return axiosInstance.post(`${this._prefix}reset`, { email: email });
   };
 
-  /**
-   * Checks if the reset password token is valid.
-   *
-   * @param {String} token - The reset password token.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   isResetPasswordTokenValid = (token) => {
     return axiosInstance.get(`${this._prefix}reset/${token}`);
   };
 
-  /**
-   * Resets the password using the reset password token.
-   *
-   * @param {String} token - The reset password token.
-   * @param {String} password - The new password.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   resetPassword = (token, password) => {
     return axiosInstance.put(`${this._prefix}reset/${token}`, { password });
   };
 
-  /**
-   * Logs out the user.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   logout = () => {
     return axiosInstanceWithTokens.post(`${this._prefix}logout`);
   };
 
-  /**
-   * Changes the password of the user. It requires the old password and the new password.
-   *
-   * @param {String} old_password - The old password.
-   * @param {String} new_password - The new password.
-   *
-   * @returns {Promise} - The promise object representing the completion of the request.
-   */
   changePassword = ({ old_password, new_password }) => {
     return axiosInstanceWithTokens.put(`${this._prefix}password`, {
       old_password,

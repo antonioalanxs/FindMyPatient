@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react";
 
+import { AuthenticationProvider } from "@/core/contexts/AuthenticationContext";
 import { MemoryRouter } from "react-router-dom";
 
 /**
@@ -10,5 +11,14 @@ import { MemoryRouter } from "react-router-dom";
  * @returns {ReactNode} - The component.
  */
 export const customRender = (component) => {
-  return render(<MemoryRouter>{component}</MemoryRouter>);
+  return render(
+    <AuthenticationProvider
+      value={{
+        user: {},
+        setUser: () => {},
+      }}
+    >
+      <MemoryRouter>{component}</MemoryRouter>
+    </AuthenticationProvider>
+  );
 };

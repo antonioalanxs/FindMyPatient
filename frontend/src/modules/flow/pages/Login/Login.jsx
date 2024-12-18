@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useState, useContext } from "react";
+import { set, useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
 import { authenticationService } from "@/core/services/AuthenticationService";
 import { storageService } from "@/core/services/StorageService";
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import Header from "@/modules/flow/components/Header/Header";
 import InvalidFeedback from "@/core/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/core/components/Form/Alert/Alert";
 import Button from "@/modules/flow/components/Form/Button/Button";
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
-import { decode } from "@/core/utilities/functions";
-import { DEFAULT_MESSAGE } from "@/core/constants/messages";
+import { decode } from "@/core/utilities/tokens";
+import { MESSAGES } from "@/core/constants/messages";
 import { ROUTES } from "@/core/constants/routes";
 
 function Login() {
   useTitle({});
 
-  const navigate = useNavigate();
+  const { setUser } = useContext(AuthenticationContext);
   const [showPassword, setShowPassword] = useState(false);
   const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
@@ -40,10 +40,10 @@ function Login() {
         await storageService.save(storageService.REFRESH_TOKEN, refresh_token);
         await storageService.save(storageService.USER, user);
 
-        navigate(ROUTES.IN.HOME);
+        setUser(user);
       })
       .catch((error) => {
-        setError(error.response?.data?.detail || DEFAULT_MESSAGE);
+        setError(error.response?.data?.detail || MESSAGES.DEFAULT);
       })
       .finally(() => {
         setLoadingForm(false);

@@ -1,4 +1,5 @@
 export const ROUTES = {
+  REFRESH_TOKENS: "/tokens/refresh/",
   ANYWHERE: "*",
   ERROR: "/error",
   ROOT: "/",
@@ -17,6 +18,22 @@ export const ROUTES = {
     },
     RESET_PASSWORD(token = ":token") {
       return `${this.BASE}/${this.RELATIVE.RESET_PASSWORD(token)}`;
+    },
+    get ANYWHERE() {
+      return `${this.BASE}/${ROUTES.ANYWHERE}`;
+    },
+  },
+  IN: {
+    BASE: "/in",
+    RELATIVE: {
+      HOME: "home",
+      SETTINGS: "settings",
+    },
+    get HOME() {
+      return `${this.BASE}/${this.RELATIVE.HOME}`;
+    },
+    get SETTINGS() {
+      return `${this.BASE}/${this.RELATIVE.SETTINGS}`;
     },
     get ANYWHERE() {
       return `${this.BASE}/${ROUTES.ANYWHERE}`;
