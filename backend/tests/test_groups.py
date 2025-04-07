@@ -134,3 +134,35 @@ class CreateGroupTestCase(TestSetUp):
         self.client.force_authenticate(user=self.administrator)
         response = self.client.post(self.url, data={"name": ""})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class GroupDestroyTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = lambda id: reverse("groups-detail", kwargs={"pk": id})
+
+        self.group_id = self.group_ids[0]
+
+    def test_destroy_group(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.delete(self.url(self.group_id))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_destroy_non_existing_group(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.delete(self.url(self.non_existing_id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_destroy_group_with_patient(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.delete(self.url(self.group_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_destroy_group_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.delete(self.url(self.group_id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_destroy_group_with_non_authenticated_user(self):
+        response = self.client.delete(self.url(self.group_id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
