@@ -96,3 +96,41 @@ class GroupUpdateTestCase(TestSetUp):
         self.client.force_authenticate(user=self.administrator)
         response = self.client.patch(self.url(self.group_id), data={"name": ""})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class CreateGroupTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("groups-list")
+
+    def test_create_group(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.post(self.url, data={"name": "test"})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_existing_group(self):
+        self.client.force_authenticate(user=self.administrator)
+
+        self.client.post(self.url, data={"name": "test"})
+        response = self.client.post(self.url, data={"name": "test"})
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_group_with_patient(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.url, data={})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_group_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.post(self.url, data={})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_group_with_non_authenticated_user(self):
+        response = self.client.post(self.url, data={})
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def create_group_with_malformed_input(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.post(self.url, data={"name": ""})
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
