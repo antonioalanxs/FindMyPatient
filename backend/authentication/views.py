@@ -1,9 +1,6 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
-
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -14,7 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from jwt_.serializers import CustomTokenObtainPairSerializer
 
-from .mixins import URIEmailMixin, URICertifierMixin
+from mixins.uris import URIMixin
 
 User = get_user_model()
 
@@ -23,31 +20,6 @@ User = get_user_model()
 
 
 class LoginView(TokenObtainPairView):
-    @swagger_auto_schema(
-        operation_summary='Handles user login.',
-        operation_description='Provides access and refresh tokens for an user.',
-        request_body=CustomTokenObtainPairSerializer,
-        manual_parameters=[],
-        responses={
-            200: openapi.Response(
-                description='User successfully logged in.',
-                examples={
-                    'application/json': {
-                        'accessToken': 'accessTokenExample',
-                        'refreshToken': 'refreshTokenExample',
-                    }
-                }
-            ),
-            400: openapi.Response(
-                description='Bad Request.',
-                examples={
-                    'application/json': {
-                        'detail': 'Username or password is incorrect.'
-                    }
-                }
-            )
-        }
-    )
     def post(self, request, **kwargs):
         serializer = CustomTokenObtainPairSerializer(data=request.data)
 
@@ -66,54 +38,23 @@ class LoginView(TokenObtainPairView):
                 {
                     'detail': 'Username or password is incorrect.',
                     'exception': str(exception)
-                 },
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
 
 
-class PasswordResetRequestView(APIView, URIEmailMixin):
-    @swagger_auto_schema(
-        operation_summary='Handles password reset request.',
-        operation_description='Sends an email to the user with a link to reset the password.',
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'email': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='The user email.'
-                )
-            }
-        ),
-        manual_parameters=[],
-        responses={
-            200: openapi.Response(
-                description='Email successfully sent.',
-                examples={
-                    'application/json': {
-                        'message': 'Email sent successfully. Check your inbox.'
-                    }
-                }
-            ),
-            404: openapi.Response(
-                description='Introduced email not found.',
-                examples={
-                    'application/json': {
-                        'detail': 'Introduced email does not exist.'
-                    }
-                }
-            )
-        }
-    )
+class PasswordResetRequestView(APIView, URIMixin):
     def post(self, request):
         user = User.objects.filter(email=request.data['email']).first()
 
         if user:
-            self.send_email(
-                user,
-                'reset_password_token',
-                settings.RESET_PASSWORD_CLIENT_URL,
+            self.send(
                 'Password reset request',
-                'emails/password_reset_request_email_template.html'
+                {
+                    'user': user,
+                    'token_name': 'reset_password_token',
+                    'link': settings.RESET_PASSWORD_CLIENT_URL
+                }
             )
 
             return Response(
@@ -123,53 +64,13 @@ class PasswordResetRequestView(APIView, URIEmailMixin):
 
         return Response(
             {'detail': 'Introduced email does not exist.'},
-            status=status.HTTP_404_NOT_FOUND
+            status=status.HTTP_400_BAD_REQUEST
         )
 
 
-class PasswordResetView(APIView, URICertifierMixin):
-    @swagger_auto_schema(
-        operation_summary='Handles password reset.',
-        operation_description='Resets the user password.',
-        manual_parameters=[
-            openapi.Parameter(
-                name='token',
-                in_=openapi.IN_PATH,
-                type=openapi.TYPE_STRING,
-                required=True,
-                description='The password reset token.',
-            ),
-        ],
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'password': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='The new password.'
-                )
-            }
-        ),
-        responses={
-            200: openapi.Response(
-                description='Password successfully reset.',
-                examples={
-                    'application/json': {
-                        'message': 'Password successfully reset.'
-                    }
-                }
-            ),
-            400: openapi.Response(
-                description='Invalid token.',
-                examples={
-                    'application/json': {
-                        'detail': 'Expired credentials. Please, request a new password reset.'
-                    }
-                }
-            )
-        }
-    )
+class PasswordResetView(APIView, URIMixin):
     def put(self, request, token):
-        user = self.is_legal('reset_password_token', token)
+        user = self.is_legal(token)
 
         if user:
             user.set_password(request.data['password'])
@@ -185,85 +86,23 @@ class PasswordResetView(APIView, URICertifierMixin):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    @swagger_auto_schema(
-        operation_summary="Checks if the password reset token is valid.",
-        operation_description="Checks if the password reset token is valid.",
-        request_body=None,
-        manual_parameters=[
-            openapi.Parameter(
-                name="token",
-                in_=openapi.IN_PATH,
-                type=openapi.TYPE_STRING,
-                required=True,
-                description="The password reset token.",
-            ),
-        ],
-        responses={
-            200: openapi.Response(
-                description="If the password reset token is valid or not.",
-                examples={
-                    "application/json": {
-                        "is_reset_password_token_valid": True
-                    }
-                }
-            )
-        }
-    )
     def get(self, request, token):
-        user = self.is_legal("reset_password_token", token, caducate=False)
+        user = self.is_legal(token, caducate=False)
 
-        return Response(
-            data={"is_reset_password_token_valid": bool(user)},
-            status=status.HTTP_200_OK
-        )
+        if user:
+            return Response(status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_summary="Handles user logout.",
-        operation_description="Invalidates the refresh token and waits for the access token expiration.\n\nThe refresh token is automatically invalidated and added to the blacklist when `RefreshToken.for_user(user)` is called. This process also generates a new one, but it is not provided and expires over time.\n\nThe access token must be provided in the request header.",
-        request_body=None,
-        manual_parameters=[],
-        security=[{"Bearer": []}],
-        responses={
-            200: openapi.Response(
-                description="User successfully logged out.",
-                examples={
-                    "application/json": {
-                        "message": "You have been logged out successfully."
-                    }
-                }
-            ),
-            401: openapi.Response(
-                description="Unauthorized.",
-                examples={
-                    "application/json": [
-                        {
-                            "detail": "Authentication credentials were not provided."
-                        },
-                        {
-                            "detail": "Given token not valid for any token type",
-                            "code": "token_not_valid",
-                            "messages": [
-                                {
-                                    "token_class": "AccessToken",
-                                    "token_type": "access",
-                                    "message": "Token is invalid or expired"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            )
-        }
-    )
     def post(self, request):
         RefreshToken.for_user(request.user).blacklist()
 
         return Response(
-            {"message": "You have been logged out successfully."},
+            {'message': 'You have been logged out successfully.'},
             status=status.HTTP_200_OK
         )
 
@@ -271,63 +110,6 @@ class LogoutView(APIView):
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @swagger_auto_schema(
-        operation_summary='Handles password change.',
-        operation_description='Changes the user password. The old password must be provided to change it.',
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                'old_password': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='The old password.'
-                ),
-                'new_password': openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description='The new password.'
-                )
-            }
-        ),
-        manual_parameters=[],
-        responses={
-            200: openapi.Response(
-                description='Password successfully changed.',
-                examples={
-                    'application/json': {
-                        'message': 'Password successfully changed.'
-                    }
-                }
-            ),
-            401: openapi.Response(
-                description="Unauthorized.",
-                examples={
-                    "application/json": [
-                        {
-                            "detail": "Authentication credentials were not provided."
-                        },
-                        {
-                            "detail": "Given token not valid for any token type",
-                            "code": "token_not_valid",
-                            "messages": [
-                                {
-                                    "token_class": "AccessToken",
-                                    "token_type": "access",
-                                    "message": "Token is invalid or expired"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ),
-            400: openapi.Response(
-                description='Old password is incorrect.',
-                examples={
-                    'application/json': {
-                        'detail': 'Old password is incorrect.'
-                    }
-                }
-            )
-        }
-    )
     def put(self, request):
         user = request.user
 

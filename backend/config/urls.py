@@ -37,8 +37,12 @@ def include_api_path(application_name, resource_name=None):
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    include_api_path('swagger'),
+    include_api_path('base'),
     include_api_path('authentication'),
     include_api_path('jwt_', 'tokens'),
-    include_api_path('users'),
+    include_api_path('patients'),
+    include_api_path('medical_specialties'),
+    include_api_path('clinical_history'),
+    include_api_path('doctors'),
+    include_api_path('administrators'),
 ]

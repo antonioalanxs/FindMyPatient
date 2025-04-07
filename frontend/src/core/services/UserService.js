@@ -1,23 +1,24 @@
-import { axiosInstanceWithTokens } from "@/core/services/AxiosInstanceService";
+import { axiosInstance } from "@/core/services/AxiosService";
 
-/**
- * User service. It is used to related operations with the user.
- *
- * This class is a singleton, so it should be instantiated only once.
- *
- * @class
- * @category Services
- * @subcategory UserService
- */
 class UserService {
   static instance = new UserService();
 
-  _prefix = "/users/";
+  _prefix = "/base/users";
 
-  changeAddress = (address) => {
-    return axiosInstanceWithTokens.patch(`${this._prefix}address`, {
-      ...address,
-    });
+  constructor() {
+    if (UserService.instance) {
+      return UserService.instance;
+    }
+
+    UserService.instance = this;
+  }
+
+  user = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  };
+
+  update = (id, data) => {
+    return axiosInstance.patch(`${this._prefix}/${id}/`, data);
   };
 }
 

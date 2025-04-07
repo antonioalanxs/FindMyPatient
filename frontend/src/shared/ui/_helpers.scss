@@ -1,0 +1,60 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+  
+.img-error {
+  max-height: 435px;
+  object-fit: contain;
+  padding: 3rem 0;
+}
+
+.h-100 {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.mw-65ch {
+  max-width: 65ch;  
+}
+
+.fs-5_5 {
+  font-size: 1.125rem !important;
+}
+
+.mt-7 {
+  margin-top: 7rem;
+}
+
+.px-4_5 {
+  padding-inline: 2rem;
+}
+
+.py-4_5 {
+  padding-block: 2rem;
+}
+
+.mt-4_5 {
+  margin-top: 2rem;
+}
+
+.mb-4_75 {
+  margin-bottom: 2.2rem;
+}
+
+.gap-2_5 {
+  gap: .75rem;
+}
+
+.fw-650 {
+  font-weight: 650;
+}
+
+.truncate {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.opacity-90 {
+  opacity: 0.9 !important;
+}

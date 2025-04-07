@@ -1,43 +1,33 @@
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-import { DEFAULT_DURATION } from "@/core/constants/general";
+import { DEFAULT_DURATION } from "@/core/constants/default";
 
-/**
- * Service class for showing notifications.
- *
- * This class is a singleton, so it should be instantiated only once.
- *
- * @class
- * @category Services
- * @subcategory NotificationService
- */
 class NotificationService {
   static instance = new NotificationService();
 
   constructor() {
+    if (NotificationService.instance) {
+      return NotificationService.instance;
+    }
+
     this._swal = withReactContent(Swal);
 
-    this.ICONS = {
+    this.TYPE = {
       SUCCESS: "success",
       ERROR: "error",
       WARNING: "warning",
       INFO: "info",
       QUESTION: "question",
     };
+
+    NotificationService.instance = this;
   }
 
-  /**
-   * Show a toast notification.
-   *
-   * @param {string} html - HTML content of the notification.
-   * @param {string} icon - Icon of the notification. Possible values are "success", "error", "warning", "info" and "question". Default is "info".
-   * @param {number} timer - Timeout of the notification. If not provided, it will use the default timeout.
-   */
   showToast(html, icon, timer = DEFAULT_DURATION) {
     this._swal.fire({
       html: html,
-      icon: icon || this.ICONS.INFO,
+      icon: icon || this.TYPE.INFO,
       toast: true,
       showConfirmButton: false,
       position: "top-end",
@@ -50,17 +40,19 @@ class NotificationService {
     });
   }
 
-  /**
-   * Show a modal notification.
-   *
-   * @param {string} html - HTML content of the notification.
-   * @param {string} icon - Icon of the notification. Possible values are "success", "error", "warning", "info" and "question". Default is "info".
-   */
-  showModal(html, icon) {
-    this._swal.fire({
-      html: html,
-      icon: icon || this.ICONS.INFO,
-    });
+  showConfirmDialog(title, text, function_) {
+    this._swal
+      .fire({
+        title: title,
+        text: text,
+        icon: this.TYPE.WARNING,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+      })
+      .then((result) => {
+        result.isConfirmed && function_();
+      });
   }
 }
 

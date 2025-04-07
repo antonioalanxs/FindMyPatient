@@ -1,0 +1,45 @@
+import { useTitle } from "@/core/hooks/useTitle";
+import { patientService } from "@/core/services/PatientService";
+import { patientAdapter } from "@/core/adapters/PatientAdapter";
+import Header from "@/modules/in/components/Header/Header";
+import GenericList from "@/shared/components/GenericList/GenericList";
+import { ROUTES } from "@/core/constants/routes";
+
+function PatientsPage() {
+  useTitle({ title: "Patients" });
+
+  return (
+    <>
+      <Header
+        title="Patients"
+        subtitle="All of your patients are listed here."
+      />
+
+      <GenericList
+        fetchService={patientService.patients}
+        adapter={patientAdapter}
+        actions={{
+          search: {
+            label: "Search a patient",
+          },
+          view: {
+            path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
+          },
+          create: {
+            label: "Create a patient",
+            path: ROUTES.IN.PATIENTS.ABSOLUTE.CREATE,
+            icon: "bi-person-fill-add",
+          },
+          edit: {
+            path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
+          },
+          delete: {
+            action: (id) => patientService.destroy(id),
+          },
+        }}
+      />
+    </>
+  );
+}
+
+export default PatientsPage;

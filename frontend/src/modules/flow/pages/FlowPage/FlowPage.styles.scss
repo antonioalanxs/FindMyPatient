@@ -1,0 +1,30 @@
+@import "@/shared/ui/variables";
+
+#authentication {
+  height: 100vh;
+  height: 100dvh;
+
+  overflow: hidden;
+
+  #authentication-right {
+    height: 100%;
+
+    background: $page-auth-right-bg;
+  }
+
+  #authentication-left {
+    position: relative;
+    
+    #theme-wrapper {
+      position: absolute;
+      top: 16px;
+      right: 32px;
+    }
+
+    padding: 1rem 5rem;
+    
+    @media screen and (max-width: 576px) {
+      padding-inline: 3rem;
+    }
+  }
+}

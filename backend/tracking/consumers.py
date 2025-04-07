@@ -27,7 +27,6 @@ class TrackingConsumer(AsyncWebsocketConsumer):
         """
         self.doctor_identifier = self.scope['url_route']['kwargs']['doctor_identifier']
         self.patient_identifier = self.scope['url_route']['kwargs']['patient_identifier']
-
         self.group_name = f'doctor_{self.doctor_identifier}_patient_{self.patient_identifier}'
 
         await self.channel_layer.group_add(

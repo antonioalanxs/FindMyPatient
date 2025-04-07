@@ -1,1 +1,0 @@
-BRAND_NAME = "FindMyPatient"

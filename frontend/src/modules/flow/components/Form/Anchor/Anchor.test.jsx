@@ -1,4 +1,4 @@
-import { customRender } from "@/core/utilities/tests/customRender";
+import { customRender } from "@/tests/customRender";
 
 import Anchor from "@/modules/flow/components/Form/Anchor/Anchor";
 

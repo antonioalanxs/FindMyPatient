@@ -1,0 +1,38 @@
+.custom-tooltip {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+
+  margin-top: 3px;
+  padding: 5px 9px;
+
+  background-color: $black;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 475;
+
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+
+  &::before {
+    position: absolute;
+    top: -8px;
+    left: calc(50% - 8px);
+    width: 0;
+    height: 0;
+    content: "";
+    
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid $black;
+  }
+}

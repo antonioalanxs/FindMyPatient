@@ -1,42 +1,42 @@
+const absoluteRoutes = (base, routes) =>
+  Object.entries(routes).reduce((accumulator, [key, value]) => {
+    accumulator[key] =
+      typeof value === "function"
+        ? (...args) => `${base}/${value(...args)}`
+        : `${base}/${value}`;
+    return accumulator;
+  }, {});
+
+const anywhere = (base) => `${base.split("/").pop()}/*`;
+
+const createModuleRoutes = (base, routes) => ({
+  BASE: base,
+  RELATIVE: { ...routes },
+  ABSOLUTE: { ...absoluteRoutes(base, routes) },
+  ANYWHERE: anywhere(base),
+});
+
 export const ROUTES = {
-  REFRESH_TOKENS: "/tokens/refresh/",
   ANYWHERE: "*",
-  ERROR: "/error",
   ROOT: "/",
-  FLOW: {
-    BASE: "/flow",
-    RELATIVE: {
-      LOGIN: "login",
-      RESET_PASSWORD_REQUEST: "reset",
-      RESET_PASSWORD: (token = ":token") => `reset/${token}`,
-    },
-    get LOGIN() {
-      return `${this.BASE}/${this.RELATIVE.LOGIN}`;
-    },
-    get RESET_PASSWORD_REQUEST() {
-      return `${this.BASE}/${this.RELATIVE.RESET_PASSWORD_REQUEST}`;
-    },
-    RESET_PASSWORD(token = ":token") {
-      return `${this.BASE}/${this.RELATIVE.RESET_PASSWORD(token)}`;
-    },
-    get ANYWHERE() {
-      return `${this.BASE}/${ROUTES.ANYWHERE}`;
-    },
-  },
+  ERROR: createModuleRoutes("/error", {
+    403: "403",
+    404: "404",
+  }),
+
+  FLOW: createModuleRoutes("/flow", {
+    LOGIN: "login",
+    RESET_PASSWORD_REQUEST: "reset",
+    RESET_PASSWORD: (token = ":token") => `reset/${token}`,
+  }),
   IN: {
-    BASE: "/in",
-    RELATIVE: {
+    ...createModuleRoutes("/in", {
       HOME: "home",
-      SETTINGS: "settings",
-    },
-    get HOME() {
-      return `${this.BASE}/${this.RELATIVE.HOME}`;
-    },
-    get SETTINGS() {
-      return `${this.BASE}/${this.RELATIVE.SETTINGS}`;
-    },
-    get ANYWHERE() {
-      return `${this.BASE}/${ROUTES.ANYWHERE}`;
-    },
+      PROFILE: "profile",
+    }),
+    PATIENTS: createModuleRoutes("/in/patients", {
+      DETAIL: (id = ":id") => id,
+      CREATE: "new",
+    }),
   },
 };

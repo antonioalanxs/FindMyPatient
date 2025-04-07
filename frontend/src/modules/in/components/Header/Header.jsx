@@ -1,10 +1,29 @@
-import "@/modules/in/components/Header/Header.styles.scss";
+import { Link } from "react-router-dom";
 
-function Header({ title, subtitle }) {
+import TooltipTrigger from "@/shared/components/Tooltip/TooltipTrigger/TooltipTrigger";
+
+function Header({ title, subtitle, link }) {
   return (
     <>
-      <h2 className="fs-3 text-primary">{title}</h2>
-      <p className="text-secondary">{subtitle}</p>
+      <header className="ms-1 mb-4_75 d-flex gap-4 align-items-center">
+        {link && (
+          <TooltipTrigger tooltip="Go back">
+            <Link to={link} className="text-decoration-none">
+              <i className="bi bi-arrow-left fs-4"></i>
+            </Link>
+          </TooltipTrigger>
+        )}
+
+        <div>
+          <h3 className="fs-3" dangerouslySetInnerHTML={{ __html: title }}></h3>
+
+          {subtitle && (
+            <p className={`${!link && "mt-1"} text-subtitle text-muted`}>
+              {subtitle}
+            </p>
+          )}
+        </div>
+      </header>
     </>
   );
 }

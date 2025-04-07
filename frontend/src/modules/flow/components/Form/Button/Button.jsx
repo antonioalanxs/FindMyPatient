@@ -1,15 +1,13 @@
-import Spinner from "@/core/components/Spinner/Spinner";
-
-function Button({ loading }) {
+function Button({ loading, text = "Next" }) {
   return (
     <button
       type="submit"
-      className={`btn btn-primary btn-block btn-lg shadow-lg mt-1 mb-4 d-flex justify-content-center align-items-center ${
-        loading && "disabled"
-      }`}
+      className="mt-1 mb-4 d-flex justify-content-center align-items-center btn btn-block btn-lg btn-primary shadow-lg"
       disabled={loading}
+      aria-busy={loading}
+      aria-label="Submit form"
     >
-      {loading ? <Spinner /> : "Submit"}
+      {text}
     </button>
   );
 }

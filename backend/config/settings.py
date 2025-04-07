@@ -29,7 +29,7 @@ load_dotenv(ROOT_DIR / '.env')
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')  # Replace with .env or secure key management
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DEBUG = True  # Set to False for production
 
@@ -53,18 +53,23 @@ BASE_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
-    'drf_yasg',
     'rest_framework_simplejwt',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
     'channels',
+    'django_extensions',
 ]
 
 LOCAL_APPS = [
     'authentication',
     'base',
-    'users',
+    'patients',
+    'doctors',
+    'administrators',
     'tracking',
+    'clinical_history',
+    'medical_specialties',
+    'addresses',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -97,7 +102,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [(os.getenv('REDIS_HOST'), 6379)],
+            'hosts': [(os.getenv('REDIS_HOST'), os.getenv('REDIS_PORT'))],
         },
     }
 }
@@ -118,12 +123,15 @@ else:
             'USER': os.getenv('DATABASE_ROOT_USER'),
             'PASSWORD': os.getenv('DATABASE_ROOT_PASSWORD'),
             'HOST': os.getenv('DATABASE_HOST'),
-            'PORT': 3306,
+            'PORT': os.getenv('DATABASE_PORT'),
         },
     }
 
 # Custom user model
 AUTH_USER_MODEL = 'base.User'
+
+# Defined roles
+ROLES = {role.upper(): role for role in os.getenv('VITE_ROLES').split(',')}
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -138,22 +146,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=25),
-    'REFRESH_TOKEN_LIFETIME': timedelta(hours=2),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=45),
+    "REFRESH_TOKEN_LIFETIME": timedelta(hours=3),
     'ROTATE_REFRESH_TOKENS': True,
     'TOKEN_BLACKLIST_ENABLED': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'TOKEN_REFRESH_SERIALIZER': 'rest_framework_simplejwt.serializers.TokenRefreshSerializer',
     'AUTH_HEADER_TYPES': ('Bearer',),
-}
-
-# Swagger API documentation settings
-SWAGGER_SETTINGS = {
-    'DOC_EXPANSION': 'none',
-    'DEFAULT_INFO': 'swagger.urls.swagger_information',
 }
 
 # Static files directories
@@ -190,6 +195,21 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 # Reset password email settings
 RESET_PASSWORD_CLIENT_URL = os.getenv('RESET_PASSWORD_CLIENT_URL')
 
+# Tracking settings
+WEB_SOCKET_TRACKING_PATH = os.getenv('VITE_WEB_SOCKET_TRACKING_PATH')
+
+# Pagination settings
+PAGINATION_PARAMETER = os.getenv('VITE_PAGINATION_PARAMETER')
+PAGINATION_PAGE_SIZE_PARAMETER = os.getenv('VITE_PAGINATION_PAGE_SIZE_PARAMETER')
+DEFAULT_PAGINATION_SIZE = os.getenv('VITE_DEFAULT_PAGINATION_SIZE')
+PAGINATION_OPTIONAL_PARAMETER = os.getenv('VITE_PAGINATION_OPTIONAL_PARAMETER')
+
+# Search settings
+SEARCH_PARAMETER = os.getenv('VITE_SEARCH_PARAMETER')
+
+# Brand settings
+BRAND_NAME = os.getenv('VITE_BRAND_NAME')
+
 # Internationalization settings
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
@@ -198,6 +218,3 @@ USE_TZ = True
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Appending slash control
-APPEND_SLASH = False

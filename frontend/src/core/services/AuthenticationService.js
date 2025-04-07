@@ -1,21 +1,27 @@
-import {
-  axiosInstance,
-  axiosInstanceWithTokens,
-} from "@/core/services/AxiosInstanceService";
+import { axiosInstance } from "@/core/services/AxiosService";
 
-/**
- * Authentication service. It is used to related operations with the authentication.
- *
- * This class is a singleton, so it should be instantiated only once.
- *
- * @class
- * @category Services
- * @subcategory AuthenticationService
- */
+import { storageService } from "@/core/services/StorageService/StorageService";
+
 class AuthenticationService {
   static instance = new AuthenticationService();
 
   _prefix = "/authentication/";
+
+  constructor() {
+    if (AuthenticationService.instance) {
+      return AuthenticationService.instance;
+    }
+
+    AuthenticationService.instance = this;
+  }
+
+  refreshToken = async () => {
+    const refreshToken = await storageService.get(storageService.REFRESH_TOKEN);
+
+    return axiosInstance.post("tokens/refresh", {
+      refresh: refreshToken,
+    });
+  };
 
   login = ({ username, password }) => {
     return axiosInstance.post(`${this._prefix}login`, { username, password });
@@ -34,11 +40,11 @@ class AuthenticationService {
   };
 
   logout = () => {
-    return axiosInstanceWithTokens.post(`${this._prefix}logout`);
+    return axiosInstance.post(`${this._prefix}logout`);
   };
 
   changePassword = ({ old_password, new_password }) => {
-    return axiosInstanceWithTokens.put(`${this._prefix}password`, {
+    return axiosInstance.put(`${this._prefix}password`, {
       old_password,
       new_password,
     });

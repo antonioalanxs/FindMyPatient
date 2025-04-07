@@ -1,201 +1,872 @@
 [
   {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "patient"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "doctor"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "administrator"
+    }
+  },
+  {
     "model": "base.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
-      "username": "root",
-      "email": "aj.alanis.2020@alumnos.urjc.es",
-      "is_active": true,
-      "first_name": "Antonio José",
-      "last_name": "Alanís Bernal",
+      "last_login": null,
+      "username": "12345678A",
+      "first_name": "Juan",
+      "last_name": "García",
+      "email": "juan.garcia@example.com",
       "reset_password_token": null,
-      "birth_date": "2002-07-04",
-      "identity_card_number": "ID123456789",
+      "birth_date": "1985-05-15",
+      "identity_card_number": "12345678A",
       "gender": "M",
-      "phone_number": "+123456789",
-      "nationality": "Spanish"
-    }
-  },
-  {
-    "model": "users.administrator",
-    "pk": 1,
-    "fields": {
-      "user_ptr_id": 1
-    }
-  },
-  {
-    "model": "base.user",
-    "pk": 2,
-    "fields": {
-      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
-      "username": "NEU1234567",
-      "email": "doctor.neuro@example.com",
+      "phone_number": "+34600123456",
+      "nationality": "ES",
       "is_active": true,
-      "first_name": "Alice",
-      "last_name": "Neuro",
-      "reset_password_token": null,
-      "birth_date": "1980-07-15",
-      "identity_card_number": "ID123456780",
-      "gender": "F",
-      "phone_number": "+987654321",
-      "nationality": "American"
-    }
-  },
-  {
-    "model": "users.doctor",
-    "pk": 2,
-    "fields": {
-      "user_ptr_id": 2,
-      "collegiate_code": "NEU1234567",
-      "medical_specialties": [
+      "groups": [
         1
       ]
     }
   },
   {
     "model": "base.user",
-    "pk": 4,
+    "pk": 2,
     "fields": {
       "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
-      "username": "NEU9876543",
-      "email": "doctor.smith@example.com",
+      "last_login": null,
+      "username": "87654321B",
+      "first_name": "María",
+      "last_name": "López",
+      "email": "maria.lopez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1990-08-25",
+      "identity_card_number": "87654321B",
+      "gender": "F",
+      "phone_number": "+34611223344",
+      "nationality": "ES",
       "is_active": true,
-      "first_name": "John",
-      "last_name": "Smith",
+      "groups": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "11223344C",
+      "first_name": "Carlos",
+      "last_name": "Martínez",
+      "email": "carlos.martinez@example.com",
       "reset_password_token": null,
       "birth_date": "1975-12-10",
-      "identity_card_number": "ID987654322",
+      "identity_card_number": "11223344C",
       "gender": "M",
-      "phone_number": "+111222333",
-      "nationality": "British"
+      "phone_number": "+34622334455",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        3
+      ]
     }
   },
   {
-    "model": "users.doctor",
+    "model": "base.user",
     "pk": 4,
     "fields": {
-      "user_ptr_id": 4,
-      "collegiate_code": "NEU9876543",
-      "medical_specialties": [
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "22334455D",
+      "first_name": "Ana",
+      "last_name": "Fernández",
+      "email": "ana.fernandez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1988-03-20",
+      "identity_card_number": "22334455D",
+      "gender": "F",
+      "phone_number": "+34633445566",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
         1
       ]
     }
   },
   {
     "model": "base.user",
-    "pk": 3,
+    "pk": 5,
     "fields": {
       "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
-      "username": "SS987654321",
-      "email": "jane.doe@example.com",
-      "is_active": true,
-      "first_name": "Jane",
-      "last_name": "Doe",
+      "last_login": null,
+      "username": "33445566E",
+      "first_name": "Luis",
+      "last_name": "Gómez",
+      "email": "luis.gomez@example.com",
       "reset_password_token": null,
-      "birth_date": "1960-05-20",
-      "identity_card_number": "ID987654323",
-      "gender": "F",
-      "phone_number": "+123456789",
-      "nationality": "Spanish"
+      "birth_date": "1980-07-12",
+      "identity_card_number": "33445566E",
+      "gender": "M",
+      "phone_number": "+34644556677",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        2
+      ]
     }
   },
   {
-    "model": "users.patient",
+    "model": "base.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "44556677F",
+      "first_name": "Laura",
+      "last_name": "Sánchez",
+      "email": "laura.sanchez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1982-11-30",
+      "identity_card_number": "44556677F",
+      "gender": "F",
+      "phone_number": "+34655667788",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        3
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "55667788G",
+      "first_name": "Sofía",
+      "last_name": "Pérez",
+      "email": "sofia.perez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1995-04-18",
+      "identity_card_number": "55667788G",
+      "gender": "F",
+      "phone_number": "+34666778899",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "66778899H",
+      "first_name": "Pablo",
+      "last_name": "Ruiz",
+      "email": "pablo.ruiz@example.com",
+      "reset_password_token": null,
+      "birth_date": "1987-09-22",
+      "identity_card_number": "66778899H",
+      "gender": "M",
+      "phone_number": "+34677889900",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "77889900I",
+      "first_name": "Lucía",
+      "last_name": "Díaz",
+      "email": "lucia.diaz@example.com",
+      "reset_password_token": null,
+      "birth_date": "1992-06-14",
+      "identity_card_number": "77889900I",
+      "gender": "F",
+      "phone_number": "+34688990011",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "88990011J",
+      "first_name": "Miguel",
+      "last_name": "Hernández",
+      "email": "miguel.hernandez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1983-02-28",
+      "identity_card_number": "88990011J",
+      "gender": "M",
+      "phone_number": "+34699001122",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "99001122K",
+      "first_name": "Elena",
+      "last_name": "Moreno",
+      "email": "elena.moreno@example.com",
+      "reset_password_token": null,
+      "birth_date": "1998-10-05",
+      "identity_card_number": "99001122K",
+      "gender": "F",
+      "phone_number": "+34700112233",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 12,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "00112233L",
+      "first_name": "Javier",
+      "last_name": "Jiménez",
+      "email": "javier.jimenez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1978-12-15",
+      "identity_card_number": "00112233L",
+      "gender": "M",
+      "phone_number": "+34711223344",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 13,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "10203040M",
+      "first_name": "Carmen",
+      "last_name": "Vega",
+      "email": "carmen.vega@example.com",
+      "reset_password_token": null,
+      "birth_date": "1986-07-20",
+      "identity_card_number": "10203040M",
+      "gender": "F",
+      "phone_number": "+34722334455",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 14,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "20304050N",
+      "first_name": "Alberto",
+      "last_name": "Romero",
+      "email": "alberto.romero@example.com",
+      "reset_password_token": null,
+      "birth_date": "1991-03-25",
+      "identity_card_number": "20304050N",
+      "gender": "M",
+      "phone_number": "+34733445566",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 15,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "30405060O",
+      "first_name": "Isabel",
+      "last_name": "Torres",
+      "email": "isabel.torres@example.com",
+      "reset_password_token": null,
+      "birth_date": "1984-11-10",
+      "identity_card_number": "30405060O",
+      "gender": "F",
+      "phone_number": "+34744556677",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 16,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "40506070P",
+      "first_name": "Raúl",
+      "last_name": "Molina",
+      "email": "raul.molina@example.com",
+      "reset_password_token": null,
+      "birth_date": "1979-08-30",
+      "identity_card_number": "40506070P",
+      "gender": "M",
+      "phone_number": "+34755667788",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 17,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "50607080Q",
+      "first_name": "Patricia",
+      "last_name": "Castro",
+      "email": "patricia.castro@example.com",
+      "reset_password_token": null,
+      "birth_date": "1993-05-12",
+      "identity_card_number": "50607080Q",
+      "gender": "F",
+      "phone_number": "+34766778899",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 18,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "60708090R",
+      "first_name": "David",
+      "last_name": "Navarro",
+      "email": "david.navarro@example.com",
+      "reset_password_token": null,
+      "birth_date": "1989-01-22",
+      "identity_card_number": "60708090R",
+      "gender": "M",
+      "phone_number": "+34777889900",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 19,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "70809010S",
+      "first_name": "Sara",
+      "last_name": "Gil",
+      "email": "sara.gil@example.com",
+      "reset_password_token": null,
+      "birth_date": "1996-09-08",
+      "identity_card_number": "70809010S",
+      "gender": "F",
+      "phone_number": "+34788990011",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 20,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "80901020T",
+      "first_name": "Fernando",
+      "last_name": "Ortega",
+      "email": "fernando.ortega@example.com",
+      "reset_password_token": null,
+      "birth_date": "1981-04-17",
+      "identity_card_number": "80901020T",
+      "gender": "M",
+      "phone_number": "+34799001122",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "medical_specialties.medicalspecialty",
+    "pk": 1,
+    "fields": {
+      "name": "Cardiología",
+      "description": "Especialidad médica que se ocupa de las enfermedades del corazón y del sistema circulatorio."
+    }
+  },
+  {
+    "model": "medical_specialties.medicalspecialty",
+    "pk": 2,
+    "fields": {
+      "name": "Dermatología",
+      "description": "Especialidad médica que se ocupa de las enfermedades de la piel."
+    }
+  },
+  {
+    "model": "medical_specialties.medicalspecialty",
     "pk": 3,
     "fields": {
-      "user_ptr_id": 3,
-      "social_security_code": "SS987654321",
-      "assigned_doctor": 2,
-      "clinical_history": [
+      "name": "Pediatría",
+      "description": "Especialidad médica que se ocupa de la salud de los niños."
+    }
+  },
+  {
+    "model": "medical_specialties.medicalspecialty",
+    "pk": 4,
+    "fields": {
+      "name": "Ginecología",
+      "description": "Especialidad médica que se ocupa de la salud del sistema reproductor femenino."
+    }
+  },
+  {
+    "model": "doctors.doctor",
+    "pk": 1,
+    "fields": {
+      "collegiate_code": "123456",
+      "medical_specialties": [
         1,
         2
       ],
-      "street": "Serrano Street",
+      "user_ptr_id": 2
+    }
+  },
+  {
+    "model": "doctors.doctor",
+    "pk": 2,
+    "fields": {
+      "collegiate_code": "654321",
+      "medical_specialties": [
+        3,
+        4
+      ],
+      "user_ptr_id": 5
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 1,
+    "fields": {
+      "street": "Calle Falsa 123",
       "city": "Madrid",
-      "state": "Madrid",
-      "country": "Spain",
+      "number": "1",
+      "country": "ES",
       "zip_code": "28001"
     }
   },
   {
-    "model": "base.user",
-    "pk": 5,
-    "fields": {
-      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
-      "username": "SS123456789",
-      "email": "marty.mcfly@example.com",
-      "is_active": true,
-      "first_name": "Marty",
-      "last_name": "McFly Johnson",
-      "reset_password_token": null,
-      "birth_date": "1965-11-22",
-      "identity_card_number": "ID123456781",
-      "gender": "M",
-      "phone_number": "+987654321",
-      "nationality": "American"
-    }
-  },
-  {
-    "model": "users.patient",
-    "pk": 5,
-    "fields": {
-      "user_ptr_id": 5,
-      "social_security_code": "SS123456789",
-      "assigned_doctor": 4,
-      "clinical_history": [
-        3,
-        4
-      ],
-      "street": "Hill Valley",
-      "city": "California",
-      "state": "California",
-      "country": "United States",
-      "zip_code": "95420"
-    }
-  },
-  {
-    "model": "base.medicalspecialty",
-    "pk": 1,
-    "fields": {
-      "name": "Neurology",
-      "description": "Specialty focused on disorders of the nervous system, including neurodegenerative diseases like Alzheimer's and Parkinson's."
-    }
-  },
-  {
-    "model": "base.clinicalhistory",
-    "pk": 1,
-    "fields": {
-      "title": "Early Alzheimer's symptoms",
-      "description": "Patient reported memory loss and difficulty in concentrating. MRI suggested early signs of Alzheimer's disease.",
-      "created_at": "2023-07-01T09:00:00Z"
-    }
-  },
-  {
-    "model": "base.clinicalhistory",
+    "model": "addresses.address",
     "pk": 2,
     "fields": {
-      "title": "Mild cognitive impairment",
-      "description": "Patient showing mild cognitive impairment (MCI) but still able to perform daily tasks. Advised regular monitoring.",
-      "created_at": "2023-08-15T11:00:00Z"
+      "street": "Avenida Real 456",
+      "city": "Barcelona",
+      "number": "2B",
+      "country": "ES",
+      "zip_code": "08001"
     }
   },
   {
-    "model": "base.clinicalhistory",
+    "model": "addresses.address",
     "pk": 3,
     "fields": {
-      "title": "Parkinson's disease diagnosis",
-      "description": "Patient presented with tremors, stiffness, and slow movement. Diagnosed with early-stage Parkinson's disease.",
-      "created_at": "2023-06-20T08:30:00Z"
+      "street": "Calle Nueva 789",
+      "city": "Valencia",
+      "number": "3",
+      "country": "ES",
+      "zip_code": "46001"
     }
   },
   {
-    "model": "base.clinicalhistory",
+    "model": "addresses.address",
     "pk": 4,
     "fields": {
-      "title": "Progressive motor symptoms",
-      "description": "Motor symptoms of Parkinson's have progressed, with increased tremors and difficulty walking. Adjusted medication.",
-      "created_at": "2023-09-05T12:45:00Z"
+      "street": "Calle Vieja 101",
+      "city": "Sevilla",
+      "number": "4",
+      "country": "ES",
+      "zip_code": "41001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 5,
+    "fields": {
+      "street": "Calle Mayor 202",
+      "city": "Zaragoza",
+      "number": "5",
+      "country": "ES",
+      "zip_code": "50001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 6,
+    "fields": {
+      "street": "Calle Ancha 303",
+      "city": "Málaga",
+      "number": "6",
+      "country": "ES",
+      "zip_code": "29001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 7,
+    "fields": {
+      "street": "Calle Estrecha 404",
+      "city": "Bilbao",
+      "number": "7",
+      "country": "ES",
+      "zip_code": "48001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 8,
+    "fields": {
+      "street": "Calle Larga 505",
+      "city": "Murcia",
+      "number": "8",
+      "country": "ES",
+      "zip_code": "30001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 9,
+    "fields": {
+      "street": "Calle Corta 606",
+      "city": "Palma",
+      "number": "9",
+      "country": "ES",
+      "zip_code": "07001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 10,
+    "fields": {
+      "street": "Calle Ancha 707",
+      "city": "Las Palmas",
+      "number": "10",
+      "country": "ES",
+      "zip_code": "35001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 11,
+    "fields": {
+      "street": "Calle Nueva 808",
+      "city": "Valladolid",
+      "number": "11",
+      "country": "ES",
+      "zip_code": "47001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 12,
+    "fields": {
+      "street": "Calle Vieja 909",
+      "city": "Vigo",
+      "number": "12",
+      "country": "ES",
+      "zip_code": "36201"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 13,
+    "fields": {
+      "street": "Calle Principal 1010",
+      "city": "Gijón",
+      "number": "13",
+      "country": "ES",
+      "zip_code": "33201"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 14,
+    "fields": {
+      "street": "Calle Secundaria 1111",
+      "city": "Alicante",
+      "number": "14",
+      "country": "ES",
+      "zip_code": "03001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 15,
+    "fields": {
+      "street": "Calle Peatonal 1212",
+      "city": "Córdoba",
+      "number": "15",
+      "country": "ES",
+      "zip_code": "14001"
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 16,
+    "fields": {
+      "street": "Calle Comercial 1313",
+      "city": "Vitoria",
+      "number": "16",
+      "country": "ES",
+      "zip_code": "01001"
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 1,
+    "fields": {
+      "social_security_code": "123456789012",
+      "primary_doctor": 5,
+      "address": 1,
+      "user_ptr_id": 1
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 2,
+    "fields": {
+      "social_security_code": "987654321098",
+      "primary_doctor": 2,
+      "clinical_history": [
+        2
+      ],
+      "address": 2,
+      "user_ptr_id": 4
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 3,
+    "fields": {
+      "social_security_code": "112233445566",
+      "primary_doctor": 2,
+      "address": 3,
+      "user_ptr_id": 7
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 4,
+    "fields": {
+      "social_security_code": "998877665544",
+      "primary_doctor": 5,
+      "address": 4,
+      "user_ptr_id": 8
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 5,
+    "fields": {
+      "social_security_code": "554433221100",
+      "primary_doctor": 5,
+      "address": 5,
+      "user_ptr_id": 9
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 6,
+    "fields": {
+      "social_security_code": "667788990012",
+      "primary_doctor": 2,
+      "address": 6,
+      "user_ptr_id": 10
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 7,
+    "fields": {
+      "social_security_code": "778899001122",
+      "primary_doctor": 5,
+      "address": 7,
+      "user_ptr_id": 11
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 8,
+    "fields": {
+      "social_security_code": "889900112233",
+      "primary_doctor": 2,
+      "address": 8,
+      "user_ptr_id": 12
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 9,
+    "fields": {
+      "social_security_code": "990011223344",
+      "primary_doctor": 5,
+      "address": 9,
+      "user_ptr_id": 13
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 10,
+    "fields": {
+      "social_security_code": "001122334455",
+      "primary_doctor": 2,
+      "address": 10,
+      "user_ptr_id": 14
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 11,
+    "fields": {
+      "social_security_code": "112233445567",
+      "primary_doctor": 5,
+      "address": 11,
+      "user_ptr_id": 15
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 12,
+    "fields": {
+      "social_security_code": "223344556677",
+      "primary_doctor": 2,
+      "address": 12,
+      "user_ptr_id": 16
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 13,
+    "fields": {
+      "social_security_code": "334455667788",
+      "primary_doctor": 5,
+      "address": 13,
+      "user_ptr_id": 17
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 14,
+    "fields": {
+      "social_security_code": "445566778899",
+      "primary_doctor": 2,
+      "address": 14,
+      "user_ptr_id": 18
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 15,
+    "fields": {
+      "social_security_code": "556677889900",
+      "primary_doctor": 5,
+      "address": 15,
+      "user_ptr_id": 19
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 16,
+    "fields": {
+      "social_security_code": "667788990011",
+      "primary_doctor": 2,
+      "address": 16,
+      "user_ptr_id": 20
+    }
+  },
+  {
+    "model": "administrators.administrator",
+    "pk": 1,
+    "fields": {
+      "user_ptr_id": 3
+    }
+  },
+  {
+    "model": "administrators.administrator",
+    "pk": 2,
+    "fields": {
+      "user_ptr_id": 6
     }
   }
 ]

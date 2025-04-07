@@ -1,35 +1,41 @@
-from django.contrib.auth import get_user_model
-
 from rest_framework import serializers
 
-
-User = get_user_model()
+from doctors.serializers import DoctorSerializer
+from patients.serializers import PatientSerializer
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    role = serializers.SerializerMethodField()
+    patient = PatientSerializer(required=False)
+    doctor = DoctorSerializer(required=False)
+
     class Meta:
         model = User
-        fields = "__all__"
+        fields = [
+            "id",
+            "identity_card_number",
+            "first_name",
+            "last_name",
+            "birth_date",
+            "phone_number",
+            "email",
+            "gender",
+            "nationality",
+            "role",
+            "patient",
+            "doctor",
+        ]
+
+    def get_role(self, obj):
+        return obj.groups.values_list("name", flat=True).first()
 
     def to_representation(self, instance):
-        from users.models import Administrator, Doctor, Patient
+        representation = super().to_representation(instance)
 
-        id_ = instance.id
+        keys_to_delete = [key for key, value in representation.items() if value is None]
 
-        object_ = (Administrator.objects.filter(id=id_) or
-                   Doctor.objects.filter(id=id_) or
-                   Patient.objects.filter(id=id_))
-        data = object_.values().first()
+        for key in keys_to_delete:
+            del representation[key]
 
-        data["date_joined"] = instance.date_joined.isoformat()
-        data["birth_date"] = instance.birth_date.isoformat()
-        data["role"] = instance.role
-
-        data.pop("id")
-        data.pop("user_ptr_id")
-        data.pop("password")
-        data.pop("reset_password_token")
-        data.pop("is_active")
-        data.pop("last_login")
-
-        return data
+        return representation

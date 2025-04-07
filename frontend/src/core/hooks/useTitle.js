@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { BRAND_NAME } from "@/core/constants/general";
+import { BRAND_NAME } from "@/core/constants/brand";
 
 export const useTitle = ({ title }) => {
   useEffect(() => {
