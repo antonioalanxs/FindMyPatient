@@ -24,6 +24,10 @@ class GroupsService {
       `${this._prefix}/?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
     );
   };
+
+  group = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  };
 }
 
 export const groupsService = GroupsService.instance;
