@@ -16,11 +16,11 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_DATABASE: ${{ secrets.DATABASE_NAME }}
-          MYSQL_USER: ${{ secrets.DATABASE_USER }}
-          MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          MYSQL_ROOT_USER: ${{ secrets.DATABASE_ROOT_USER }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_ROOT_PASSWORD }}
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_USER: root
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - 3306:3306
 
@@ -36,15 +36,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Set up environment variables
-        run: |
-          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> $GITHUB_ENV
-          echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> $GITHUB_ENV
-          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> $GITHUB_ENV
-          echo "DATABASE_ROOT_USER=${{ secrets.DATABASE_ROOT_USER }}" >> $GITHUB_ENV
-          echo "DATABASE_ROOT_PASSWORD=${{ secrets.DATABASE_ROOT_PASSWORD }}" >> $GITHUB_ENV
-          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
