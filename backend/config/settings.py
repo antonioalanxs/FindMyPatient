@@ -108,7 +108,7 @@ CHANNEL_LAYERS = {
 }
 
 # Database settings
-if 'test' in sys.argv:
+if 'test' in sys.argv or os.getenv('USE_SQLITE_IN_CI') == 'true':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -120,8 +120,8 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.getenv('DATABASE_NAME'),
-            'USER': os.getenv('DATABASE_ROOT_USER'),
-            'PASSWORD': os.getenv('DATABASE_ROOT_PASSWORD'),
+            'USER': os.getenv('DATABASE_USER'),
+            'PASSWORD': os.getenv('DATABASE_PASSWORD'),
             'HOST': os.getenv('DATABASE_HOST'),
             'PORT': os.getenv('DATABASE_PORT'),
         },
