@@ -26,9 +26,11 @@ function PatientsPage() {
             path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
           },
           create: {
-            label: "Create a patient",
-            path: ROUTES.IN.PATIENTS.ABSOLUTE.CREATE,
-            icon: "bi-person-fill-add",
+            link: {
+              label: "Create a patient",
+              path: ROUTES.IN.PATIENTS.ABSOLUTE.CREATE,
+              icon: "bi-person-fill-add",
+            },
           },
           edit: {
             path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),

@@ -36,6 +36,10 @@ class GroupsService {
   update = (id, data) => {
     return axiosInstance.patch(`${this._prefix}/${id}/`, data);
   };
+
+  create = (data) => {
+    return axiosInstance.post(`${this._prefix}/`, data);
+  };
 }
 
 export const groupsService = GroupsService.instance;
