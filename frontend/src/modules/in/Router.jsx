@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import InPage from "@/modules/in/pages/InPage/InPage";
 import HomePage from "@/modules/in/submodules/Home/pages/HomePage";
 import PatientsRouter from "@/modules/in/submodules/Patients/Router";
+import GroupsRouter from "@/modules/in/submodules/Groups/Router";
 import ProfilePage from "@/modules/in/submodules/Profile/pages/ProfilePage";
 import { ROUTES } from "@/core/constants/routes";
 
@@ -21,6 +22,8 @@ const InRouter = () => {
           path={ROUTES.IN.PATIENTS.ANYWHERE}
           element={<PatientsRouter />}
         />
+
+        <Route path={ROUTES.IN.GROUPS.ANYWHERE} element={<GroupsRouter />} />
 
         <Route path={ROUTES.IN.RELATIVE.PROFILE} element={<ProfilePage />} />
 

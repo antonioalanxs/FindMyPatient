@@ -14,7 +14,12 @@ import {
 } from "@/core/constants/api";
 import { DEFAULT_PAGINATION_SIZE } from "@/core/constants/default";
 
-const GenericList = ({ fetchService, adapter, actions = null }) => {
+const GenericList = ({
+  fetchService,
+  adapter,
+  showID = false,
+  actions = null,
+}) => {
   const [searchParameters, setSearchParameters] = useSearchParams();
 
   const initialSearchTerm =
@@ -78,6 +83,7 @@ const GenericList = ({ fetchService, adapter, actions = null }) => {
 
         <Table
           data={data?.results}
+          showID={showID}
           actions={actions}
           onDelete={fetchData}
           striped
