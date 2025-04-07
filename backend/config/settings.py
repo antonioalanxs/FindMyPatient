@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
 
 # Load environment variables
-load_dotenv(ROOT_DIR / '.env')
+load_dotenv(ROOT_DIR / '.env.local')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/

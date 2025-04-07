@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     envCompatible({
       envPrefix: "VITE_",
-      envFile: path.resolve(__dirname, "../env/.env"),
+      envFile: path.resolve(__dirname, "../env/.env.local"),
     }),
   ],
   resolve: {
