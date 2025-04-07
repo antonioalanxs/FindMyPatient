@@ -56,7 +56,7 @@ function EditGroupPage() {
   return (
     <>
       <Header
-        title="Edit a group"
+        title="Edit a group (role)"
         subtitle="Here you can edit a group (role)."
         link={ROUTES.IN.GROUPS.BASE}
       />

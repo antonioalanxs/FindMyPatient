@@ -33,7 +33,7 @@ function GroupPage() {
   return (
     <>
       <Header
-        title="Visualize a group"
+        title="Visualize a group (role)"
         subtitle="Here you can visualize a group (role)."
         link={ROUTES.IN.GROUPS.BASE}
       />
