@@ -60,3 +60,16 @@ class GroupViewSet(
             )
 
         return self.handle_serializer_is_not_valid_response(serializer)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {'message': 'Group created successfully.'},
+                status=status.HTTP_201_CREATED
+            )
+
+        return self.handle_serializer_is_not_valid_response(serializer)
