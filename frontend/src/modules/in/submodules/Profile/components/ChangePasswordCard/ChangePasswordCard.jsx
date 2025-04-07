@@ -69,9 +69,9 @@ function ChangePasswordCard() {
             />
             <InvalidFeedback message={errors?.new_password?.message} />
           </div>
-
-          <Alert content={error} onClose={() => setError(null)} />
         </div>
+
+        <Alert content={error} onClose={() => setError(null)} />
 
         <Button loading={loading} clear text="Change password" />
       </form>

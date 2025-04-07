@@ -28,6 +28,14 @@ class GroupsService {
   group = (id) => {
     return axiosInstance.get(`${this._prefix}/${id}/`);
   };
+
+  destroy = (id) => {
+    return axiosInstance.delete(`${this._prefix}/${id}/`);
+  };
+
+  update = (id, data) => {
+    return axiosInstance.patch(`${this._prefix}/${id}/`, data);
+  };
 }
 
 export const groupsService = GroupsService.instance;
