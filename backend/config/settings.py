@@ -70,6 +70,7 @@ LOCAL_APPS = [
     'clinical_history',
     'medical_specialties',
     'addresses',
+    'groups',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
