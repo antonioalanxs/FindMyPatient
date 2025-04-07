@@ -52,7 +52,7 @@ function SideBar() {
       roles: [ROLES.DOCTOR],
     },
     {
-      link: null,
+      link: ROUTES.IN.GROUPS.BASE,
       icon: <i className="bi bi-key-fill"></i>,
       label: "Authorization",
       roles: [ROLES.ADMINISTRATOR],

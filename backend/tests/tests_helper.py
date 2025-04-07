@@ -17,8 +17,11 @@ class TestSetUp(APITestCase):
     """
 
     def __set_users(self):
+        self.group_ids = []
+
         for key, value in ROLES.items():
             group = Group.objects.create(name=value)
+            self.group_ids.append(group.id)
             group.save()
 
         self.user = User.objects.create(

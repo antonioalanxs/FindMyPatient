@@ -14,7 +14,12 @@ import {
 } from "@/core/constants/api";
 import { DEFAULT_PAGINATION_SIZE } from "@/core/constants/default";
 
-const GenericList = ({ fetchService, adapter, actions = null }) => {
+const GenericList = ({
+  fetchService,
+  adapter,
+  showID = false,
+  actions = null,
+}) => {
   const [searchParameters, setSearchParameters] = useSearchParams();
 
   const initialSearchTerm =
@@ -50,52 +55,59 @@ const GenericList = ({ fetchService, adapter, actions = null }) => {
   return loading ? (
     <Load center />
   ) : (
-    <BaseCard>
-      <div className="d-flex gap-2 flex-column">
-        <div className="row gx-0 gy-3 align-items-start justify-content-md-between">
-          {actions?.create && (
-            <Link
-              to={actions?.create?.path}
-              className="col-12 col-md-4 order-md-1 py-1 text-center btn btn-primary"
-            >
-              <i className={`me-2 bi ${actions?.create?.icon} fs-5`}></i>
-              <span>{actions?.create?.label}</span>
-            </Link>
-          )}
+    <>
+      {actions?.create?.component?.(fetchData)}
 
-          {actions?.search && (
-            <div className="col-12 col-md-5 order-md-0">
-              <SearchBar
-                onSearchSubmitted={(term) => {
-                  setSearchTerm(term);
-                  setPage(1);
-                }}
-                placeholder={actions?.search?.label}
-              />
-            </div>
-          )}
+      <BaseCard>
+        <div className="d-flex gap-2 flex-column">
+          <div className="row gx-0 gy-3 align-items-start justify-content-md-between">
+            {actions?.create?.link && (
+              <Link
+                to={actions?.create?.link?.path}
+                className="col-12 col-md-4 order-md-1 py-1 text-center btn btn-primary"
+              >
+                <i
+                  className={`me-2 bi ${actions?.create?.link?.icon} fs-5`}
+                ></i>
+                <span>{actions?.create?.label}</span>
+              </Link>
+            )}
+
+            {actions?.search && (
+              <div className="col-12 col-md-5 order-md-0">
+                <SearchBar
+                  onSearchSubmitted={(term) => {
+                    setSearchTerm(term);
+                    setPage(1);
+                  }}
+                  placeholder={actions?.search?.label}
+                />
+              </div>
+            )}
+          </div>
+
+          <Table
+            data={data?.results}
+            showID={showID}
+            actions={actions}
+            onDelete={fetchData}
+            striped
+          />
+
+          <ElementsPerPage
+            totalElements={data?.count}
+            initialElementsPerPage={pageSize}
+            onElementsPerPageChange={(newPageSize) => setPageSize(newPageSize)}
+          />
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
         </div>
-
-        <Table
-          data={data?.results}
-          actions={actions}
-          onDelete={fetchData}
-          striped
-        />
-
-        <ElementsPerPage
-          totalElements={data?.count}
-          initialElementsPerPage={pageSize}
-          onElementsPerPageChange={(newPageSize) => setPageSize(newPageSize)}
-        />
-
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
-      </div>
-    </BaseCard>
+      </BaseCard>
+    </>
   );
 };
 

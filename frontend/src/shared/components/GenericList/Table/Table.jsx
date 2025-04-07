@@ -13,11 +13,17 @@ const ORDER = {
   DESCENDENT: "\t▼",
 };
 
-const Table = ({ data = [], actions = null, onDelete, striped = false }) => {
+const Table = ({
+  data = [],
+  showID = false,
+  actions = null,
+  onDelete,
+  striped = false,
+}) => {
   const columns =
     data.length > 0
       ? Object.keys(data[0])
-          .filter((key) => !/^id$/i.test(key))
+          .filter((key) => showID || !/^id$/i.test(key))
           .map((key) => ({
             header: key,
             field: key,
@@ -34,6 +40,7 @@ const Table = ({ data = [], actions = null, onDelete, striped = false }) => {
     const sorted = [...data].sort((a, b) =>
       sort(a[sortedColumn], b[sortedColumn])
     );
+
     return order === ORDER.ASCENDENT ? sorted : sorted.reverse();
   }, [data, sortedColumn, order]);
 
@@ -113,7 +120,7 @@ const Table = ({ data = [], actions = null, onDelete, striped = false }) => {
                   >
                     {actions?.view && (
                       <TooltipTrigger tooltip="View">
-                        <Link to={actions?.view?.path(item?.id)}>
+                        <Link to={actions?.view?.path(item?.id || item?.ID)}>
                           <EyeIcon />
                         </Link>
                       </TooltipTrigger>
@@ -121,7 +128,7 @@ const Table = ({ data = [], actions = null, onDelete, striped = false }) => {
 
                     {actions?.edit && (
                       <TooltipTrigger tooltip="Edit">
-                        <Link to={actions?.edit?.path(item?.id)}>
+                        <Link to={actions?.edit?.path(item?.id || item?.ID)}>
                           <PencilIcon />
                         </Link>
                       </TooltipTrigger>
@@ -131,7 +138,9 @@ const Table = ({ data = [], actions = null, onDelete, striped = false }) => {
                       <TooltipTrigger tooltip="Delete">
                         <div
                           role="button"
-                          onClick={() => handleDeleteClick(item?.id)}
+                          onClick={() =>
+                            handleDeleteClick(item?.id || item?.ID)
+                          }
                         >
                           <TrashIcon />
                         </div>
