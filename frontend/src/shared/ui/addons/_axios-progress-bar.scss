@@ -1,0 +1,10 @@
+#nprogress .bar {
+    height: 3px !important;
+    
+    background: $primary !important;
+}
+
+#nprogress .spinner-icon {
+    border-top-color: $primary !important;
+    border-left-color: $primary !important;
+}

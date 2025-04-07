@@ -1,0 +1,28 @@
+from rest_framework.permissions import BasePermission
+
+from permissions.users import is_administrator, is_self
+from patients.models import Patient
+
+
+def is_patient_assigned_doctor(view, request):
+    patient_id = view.kwargs.get('id')
+    doctor_id = request.user.id
+
+    return Patient.objects.filter(
+        id=patient_id,
+        primary_doctor_id=doctor_id
+    ).exists()
+
+
+def is_administrator_or_is_patient_assigned_doctor(view, request):
+    return is_administrator(request.user) or is_patient_assigned_doctor(view, request)
+
+
+class IsAdministratorOrIsPatientAssignedDoctor(BasePermission):
+    def has_permission(self, request, view):
+        return is_administrator_or_is_patient_assigned_doctor(view, request)
+
+
+class IsAdministratorOrIsPatientAssignedDoctorOrIsSelf(BasePermission):
+    def has_permission(self, request, view):
+        return is_administrator_or_is_patient_assigned_doctor(view, request) or is_self(request, view)

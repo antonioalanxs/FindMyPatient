@@ -12,18 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: ${{ secrets.DATABASE_NAME }}
-          MYSQL_USER: ${{ secrets.DATABASE_USER }}
-          MYSQL_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          MYSQL_ROOT_USER: ${{ secrets.DATABASE_ROOT_USER }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DATABASE_ROOT_PASSWORD }}
-        ports:
-          - 3306:3306
-
     strategy:
       matrix:
         python-version: [3.10.x]
@@ -37,14 +25,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Set up environment variables
-        run: |
-          echo "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" >> $GITHUB_ENV
-          echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> $GITHUB_ENV
-          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> $GITHUB_ENV
-          echo "DATABASE_ROOT_USER=${{ secrets.DATABASE_ROOT_USER }}" >> $GITHUB_ENV
-          echo "DATABASE_ROOT_PASSWORD=${{ secrets.DATABASE_ROOT_PASSWORD }}" >> $GITHUB_ENV
-          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> $GITHUB_ENV
+      - name: Load .env.local into GitHub Actions environment
+        run: grep -v '^#' ./.env.local | xargs >> $GITHUB_ENV
+
+      - name: Set SQLite fallback
+        run: echo "USE_SQLITE_IN_CI=true" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |

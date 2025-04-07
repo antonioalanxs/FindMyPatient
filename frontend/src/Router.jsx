@@ -1,27 +1,54 @@
-import { Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import { IonReactRouter } from "@ionic/react-router";
-import { IonRouterOutlet } from "@ionic/react";
+import { AuthenticationProvider } from "@/core/contexts/AuthenticationContext";
+import { AxiosInterceptorProvider } from "@/core/contexts/AxiosInterceptorContext";
+import PublicRoute from "@/core/guards/PublicRoute";
+import PrivateRoute from "@/core/guards/PrivateRoute";
+import FlowRouter from "@/modules/flow/Router";
+import InRouter from "@/modules/in/Router";
+import ErrorRouter from "@/modules/error/Router";
+import { ROUTES } from "@/core/constants/routes";
 
-import Index from "@/pages/Index/Index";
-import Home from "@/pages/Home/Home";
-import PasswordResetRequest from "@/pages/PasswordResetRequest/PasswordResetRequest";
-import PasswordReset from "@/pages/PasswordReset/PasswordReset";
-import Settings from "@/pages/Settings/Settings";
-
-function Router() {
+const Router = () => {
   return (
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/" exact component={Index} />
-        <Route path="/reset" exact component={PasswordResetRequest} />
-        <Route path="/reset/:token" exact component={PasswordReset} />
+    <AuthenticationProvider>
+      <BrowserRouter>
+        <AxiosInterceptorProvider>
+          <Routes>
+            <Route
+              index
+              element={<Navigate to={ROUTES.FLOW.ABSOLUTE.LOGIN} replace />}
+            />
 
-        <Route path="/home" exact component={Home} />
-        <Route path="/settings" exact component={Settings} />
-      </IonRouterOutlet>
-    </IonReactRouter>
+            <Route
+              path={ROUTES.FLOW.ANYWHERE}
+              element={
+                <PublicRoute>
+                  <FlowRouter />
+                </PublicRoute>
+              }
+            />
+
+            <Route
+              path={ROUTES.IN.ANYWHERE}
+              element={
+                <PrivateRoute>
+                  <InRouter />
+                </PrivateRoute>
+              }
+            />
+
+            <Route path={ROUTES.ERROR.ANYWHERE} element={<ErrorRouter />} />
+
+            <Route
+              path={ROUTES.ANYWHERE}
+              element={<Navigate to={ROUTES.ERROR.ABSOLUTE["404"]} replace />}
+            />
+          </Routes>
+        </AxiosInterceptorProvider>
+      </BrowserRouter>
+    </AuthenticationProvider>
   );
-}
+};
 
 export default Router;

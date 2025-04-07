@@ -19,11 +19,10 @@ class TrackingConsumerTest(TransactionTestCase):
 
             doctor_identifier = "1"
             patient_identifier = "1"
-
-            communicator = WebsocketCommunicator(
-                application,
-                f"/ws/tracking/channel/doctor/{doctor_identifier}/patient/{patient_identifier}"
-            )
+            route = settings.WEB_SOCKET_TRACKING_PATH \
+                .replace('{doctor}', doctor_identifier) \
+                .replace('{patient}', patient_identifier)
+            communicator = WebsocketCommunicator(application, route)
 
             is_communicator_connected, _ = await communicator.connect()
             self.assertTrue(is_communicator_connected)

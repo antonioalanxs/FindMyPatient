@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     envCompatible({
       envPrefix: "VITE_",
-      envFile: path.resolve(__dirname, "../env/.env"),
+      envFile: path.resolve(__dirname, "../env/.env.local"),
     }),
   ],
   resolve: {
@@ -25,7 +25,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    setupFiles: "./src/setUpTests.js",
+    setupFiles: "./src/tests/setUpTests.js",
     css: true,
   },
 });
