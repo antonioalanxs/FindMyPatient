@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, mixins
 
 from .serializers import GroupSerializer
 from mixins.search import SearchMixin
@@ -15,6 +15,7 @@ from permissions.users import IsAdministrator
 
 class GroupViewSet(
     viewsets.GenericViewSet,
+    mixins.DestroyModelMixin,
     SearchMixin,
     PaginationMixin,
     SerializerValidationErrorResponseMixin
@@ -73,3 +74,9 @@ class GroupViewSet(
             )
 
         return self.handle_serializer_is_not_valid_response(serializer)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
