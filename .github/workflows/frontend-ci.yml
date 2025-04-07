@@ -21,8 +21,13 @@ jobs:
         with:
           node-version: '22.7.0'
 
+      - name: Clean up node_modules and package-lock.json
+        run: |
+          rm -rf frontend/node_modules
+          rm -f frontend/package-lock.json
+
       - name: Install dependencies
-        run: | 
+        run: |
           npm install --legacy-peer-deps
         working-directory: frontend
 
