@@ -62,7 +62,7 @@ function CreateGroupCard({ onCreate }) {
                 disabled={loading}
               >
                 <i className="me-2 bi bi-person-fill-add fs-5"></i>{" "}
-                <span>Create group</span>
+                <span>Create a group</span>
               </button>
             </div>
           </div>

@@ -27,7 +27,7 @@ function GroupsPage() {
           create: {
             component: (onCreate) => (
               <div className="row gx-0">
-                <div className="col-lg-8 col-xl-6">
+                <div className="col-lg-8 col-xl-7">
                   <CreateGroupCard onCreate={onCreate} />
                 </div>
               </div>
