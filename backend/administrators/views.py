@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -28,6 +30,9 @@ class AdministratorViewSet(
     queryset = None
     list_serializer_class = AdministratorPreviewSerializer
     serializer_class = AdministratorSerializer
+
+    def get_object(self):
+        return get_object_or_404(self.model, id=self.kwargs['id'])
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def list(self, request, *args, **kwargs):
@@ -67,3 +72,10 @@ class AdministratorViewSet(
             )
 
         return self.handle_serializer_is_not_valid_response(serializer)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def retrieve(self, request, *args, **kwargs):
+        return Response(
+            self.serializer_class(self.get_object()).data,
+            status=status.HTTP_200_OK
+        )
