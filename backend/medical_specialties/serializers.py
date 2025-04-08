@@ -13,4 +13,4 @@ class MedicalSpecialtyPreviewSerializer(serializers.ModelSerializer):
 class MedicalSpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalSpecialty
-        exclude = ['id']
+        fields = '__all__'
