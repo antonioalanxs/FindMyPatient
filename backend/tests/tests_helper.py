@@ -9,6 +9,7 @@ from patients.models import Patient
 from addresses.models import Address
 from doctors.models import Doctor
 from administrators.models import Administrator
+from medical_specialties.models import MedicalSpecialty
 
 
 class TestSetUp(APITestCase):
@@ -90,8 +91,26 @@ class TestSetUp(APITestCase):
         self.administrator.save()
         self.another_doctor.save()
 
-        self.non_existing_id = 999999
+    def __set_medical_specialties(self):
+        self.medical_specialty_input = {
+            "name": "test",
+            "description": "test",
+        }
+
+        self.medical_specialty = MedicalSpecialty.objects.create(
+            **self.medical_specialty_input
+        )
+        self.medical_specialty.save()
+
+        self.doctor.medical_specialties.add(self.medical_specialty)
+        self.doctor.save()
+
+        self.another_doctor.medical_specialties.add(self.medical_specialty)
+        self.another_doctor.save()
 
     def setUp(self):
+        self.non_existing_id = 999999
         self.__set_users()
+        self.__set_medical_specialties()
+
         return super().setUp()
