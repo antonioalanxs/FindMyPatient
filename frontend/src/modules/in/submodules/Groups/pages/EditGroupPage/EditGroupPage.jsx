@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
-import { groupsService } from "@/core/services/GroupsService";
+import { groupService } from "@/core/services/GroupService";
 import { notificationService } from "@/core/services/NotificationService";
 import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
@@ -23,7 +23,7 @@ function EditGroupPage() {
 
   useEffect(() => {
     setLoading(true);
-    groupsService
+    groupService
       .group(id)
       .then(({ data }) => {
         setGroup(data);
@@ -45,7 +45,7 @@ function EditGroupPage() {
   async function onSubmit(data) {
     setLoadingForm(true);
 
-    groupsService
+    groupService
       .update(id, data)
       .catch(({ message }) => {
         setError(message);
@@ -119,7 +119,7 @@ function EditGroupPage() {
                     "Really delete this role (group)?",
                     "This action could be irreversible.",
                     async () =>
-                      await groupsService.destroy(id).then(() => {
+                      await groupService.destroy(id).then(() => {
                         navigate(ROUTES.IN.GROUPS.BASE);
                       })
                   );

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
-import { medicalSpecialtiesService } from "@/core/services/MedicalSpecialtiesService";
+import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
 import { notificationService } from "@/core/services/NotificationService";
 import { textPipe } from "@/core/pipes/textPipe";
 import Load from "@/shared/components/Load/Load";
@@ -28,7 +28,7 @@ function CreateMedicalSpecialtyPage() {
 
   async function onSubmit(data) {
     setLoading(true);
-    medicalSpecialtiesService
+    medicalSpecialtyService
       .create(data)
       .then(() => {
         navigate(ROUTES.IN.MEDICAL_SPECIALTIES.BASE);

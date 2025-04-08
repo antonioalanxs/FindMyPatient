@@ -58,7 +58,7 @@ function SideBar() {
       roles: [ROLES.ADMINISTRATOR],
     },
     {
-      link: null,
+      link: ROUTES.IN.ADMINISTRATORS.BASE,
       icon: <i className="bi bi-people-fill"></i>,
       label: "Administrators",
       roles: [ROLES.ADMINISTRATOR],

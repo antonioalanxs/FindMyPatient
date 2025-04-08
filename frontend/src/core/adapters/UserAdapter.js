@@ -3,12 +3,12 @@ import { datePipe } from "@/core/pipes/datePipe";
 import { phoneNumberPipe } from "@/core/pipes/phoneNumberPipe";
 import { textPipe } from "@/core/pipes/textPipe";
 
-class PatientAdapter {
-  static instance = new PatientAdapter();
+class UserAdapter {
+  static instance = new UserAdapter();
 
   constructor() {
-    if (PatientAdapter.instance) {
-      return PatientAdapter.instance;
+    if (UserAdapter.instance) {
+      return UserAdapter.instance;
     }
 
     this._KEYS = {
@@ -26,7 +26,7 @@ class PatientAdapter {
       phone_number: (value) => phoneNumberPipe.transform(value),
     };
 
-    PatientAdapter.instance = this;
+    UserAdapter.instance = this;
   }
 
   _adapt(entity) {
@@ -56,4 +56,4 @@ class PatientAdapter {
   }
 }
 
-export const patientAdapter = PatientAdapter.instance;
+export const userAdapter = UserAdapter.instance;

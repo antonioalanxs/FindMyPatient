@@ -1,6 +1,6 @@
 import { useTitle } from "@/core/hooks/useTitle";
-import { medicalSpecialtiesService } from "@/core/services/MedicalSpecialtiesService";
-import { medicalSpecialtiesAdapter } from "@/core/adapters/MedicalSpecialtiesAdapter";
+import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
+import { medicalSpecialtyAdapter } from "@/core/adapters/MedicalSpecialtyAdapter";
 import Header from "@/modules/in/components/Header/Header";
 import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
@@ -16,11 +16,11 @@ function MedicalSpecialtiesPage() {
       />
 
       <GenericList
-        fetchService={medicalSpecialtiesService.medicalSpecialties}
-        adapter={medicalSpecialtiesAdapter}
+        fetchService={medicalSpecialtyService.medicalSpecialties}
+        adapter={medicalSpecialtyAdapter}
         actions={{
           search: {
-            label: "Search a specialty",
+            label: "Search for a specialty",
           },
           create: {
             link: {
@@ -36,7 +36,7 @@ function MedicalSpecialtiesPage() {
             path: (id) => ROUTES.IN.MEDICAL_SPECIALTIES.ABSOLUTE.EDIT(id),
           },
           delete: {
-            action: (id) => medicalSpecialtiesService.destroy(id),
+            action: (id) => medicalSpecialtyService.destroy(id),
           },
         }}
       />

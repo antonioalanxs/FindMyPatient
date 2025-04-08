@@ -6,31 +6,27 @@ import {
 } from "@/core/constants/api";
 import { DEFAULT_PAGINATION_SIZE } from "@/core/constants/default";
 
-class MedicalSpecialtiesService {
-  static instance = new MedicalSpecialtiesService();
+class GroupService {
+  static instance = new GroupService();
 
-  _prefix = "/medical_specialties";
+  _prefix = "/groups";
 
   constructor() {
-    if (MedicalSpecialtiesService.instance) {
-      return MedicalSpecialtiesService.instance;
+    if (GroupService.instance) {
+      return GroupService.instance;
     }
 
-    MedicalSpecialtiesService.instance = this;
+    GroupService.instance = this;
   }
 
-  medicalSpecialties = (query, page, pageSize = DEFAULT_PAGINATION_SIZE) => {
+  groups = (query, page, pageSize = DEFAULT_PAGINATION_SIZE) => {
     return axiosInstance.get(
       `${this._prefix}/?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
     );
   };
 
-  medicalSpecialty = (id) => {
+  group = (id) => {
     return axiosInstance.get(`${this._prefix}/${id}/`);
-  };
-
-  doctorsByMedicalSpecialty = (id) => {
-    return axiosInstance.get(`${this._prefix}/${id}/doctors`);
   };
 
   destroy = (id) => {
@@ -46,4 +42,4 @@ class MedicalSpecialtiesService {
   };
 }
 
-export const medicalSpecialtiesService = MedicalSpecialtiesService.instance;
+export const groupService = GroupService.instance;

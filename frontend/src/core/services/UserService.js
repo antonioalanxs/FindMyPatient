@@ -20,6 +20,10 @@ class UserService {
   update = (id, data) => {
     return axiosInstance.patch(`${this._prefix}/${id}/`, data);
   };
+
+  destroy = (id) => {
+    return axiosInstance.delete(`${this._prefix}/${id}/`);
+  };
 }
 
 export const userService = UserService.instance;

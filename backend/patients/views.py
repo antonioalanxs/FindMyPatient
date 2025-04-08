@@ -73,12 +73,6 @@ class PatientViewSet(
 
         return self.handle_serializer_is_not_valid_response(serializer)
 
-    @method_permission_classes([IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctor])
-    def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
-        self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
     @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministrator])
     def create(self, request, *args, **kwargs):
         serializer = PatientCreateSerializer(data=request.data)

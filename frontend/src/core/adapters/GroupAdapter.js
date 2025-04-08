@@ -1,14 +1,14 @@
 import { textPipe } from "@/core/pipes/textPipe";
 
-class GroupsAdapter {
-  static instance = new GroupsAdapter();
+class GroupAdapter {
+  static instance = new GroupAdapter();
 
   constructor() {
-    if (GroupsAdapter.instance) {
-      return GroupsAdapter.instance;
+    if (GroupAdapter.instance) {
+      return GroupAdapter.instance;
     }
 
-    GroupsAdapter.instance = this;
+    GroupAdapter.instance = this;
   }
 
   _adapt(entity) {
@@ -41,4 +41,4 @@ class GroupsAdapter {
   }
 }
 
-export const groupsAdapter = GroupsAdapter.instance;
+export const groupAdapter = GroupAdapter.instance;

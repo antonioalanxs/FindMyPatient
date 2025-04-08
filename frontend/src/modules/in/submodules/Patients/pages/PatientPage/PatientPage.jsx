@@ -75,8 +75,8 @@ function PatientPage() {
   ) : (
     <>
       <Header
-        title={`${user?.first_name} ${user?.last_name}`}
-        subtitle="Here you can manage your patient."
+        title="Patient"
+        subtitle="Here you can manage a patient."
         link={ROUTES.IN.PATIENTS.BASE}
       />
 

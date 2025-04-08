@@ -6,32 +6,32 @@ import {
 } from "@/core/constants/api";
 import { DEFAULT_PAGINATION_SIZE } from "@/core/constants/default";
 
-class PatientService {
-  static instance = new PatientService();
+class AdministratorService {
+  static instance = new AdministratorService();
 
-  _prefix = "/patients";
+  _prefix = "/administrators";
 
   constructor() {
-    if (PatientService.instance) {
-      return PatientService.instance;
+    if (AdministratorService.instance) {
+      return AdministratorService.instance;
     }
 
-    PatientService.instance = this;
+    AdministratorService.instance = this;
   }
 
-  patients = (query, page, pageSize = DEFAULT_PAGINATION_SIZE) => {
+  administrators = (query, page, pageSize = DEFAULT_PAGINATION_SIZE) => {
     return axiosInstance.get(
       `${this._prefix}/?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
     );
   };
 
-  update = (id, data) => {
-    return axiosInstance.patch(`${this._prefix}/${id}/`, data);
-  };
-
   create = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };
+
+  administrator = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  };
 }
 
-export const patientService = PatientService.instance;
+export const administratorService = AdministratorService.instance;

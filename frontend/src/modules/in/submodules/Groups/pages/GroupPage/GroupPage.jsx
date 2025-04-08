@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useTitle } from "@/core/hooks/useTitle";
-import { groupsService } from "@/core/services/GroupsService";
+import { groupService } from "@/core/services/GroupService";
 import { notificationService } from "@/core/services/NotificationService";
 import { textPipe } from "@/core/pipes/textPipe";
 import Load from "@/shared/components/Load/Load";
@@ -20,7 +20,7 @@ function GroupPage() {
 
   useEffect(() => {
     setLoading(true);
-    groupsService
+    groupService
       .group(id)
       .then(({ data }) => {
         setGroup(data);
@@ -86,7 +86,7 @@ function GroupPage() {
                       "Really delete this role (group)?",
                       "This action could be irreversible.",
                       async () =>
-                        await groupsService.destroy(id).then(() => {
+                        await groupService.destroy(id).then(() => {
                           navigate(ROUTES.IN.GROUPS.BASE);
                         })
                     );
