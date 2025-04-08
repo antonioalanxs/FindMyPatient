@@ -4,7 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status, viewsets, mixins, views
 
-from .serializers import MedicalSpecialtySerializer
+from .serializers import (
+    MedicalSpecialtySerializer,
+    MedicalSpecialtyUpsetSerializer
+)
 from doctors.serializers import DoctorPreviewSerializer
 from .models import MedicalSpecialty
 from doctors.models import Doctor
@@ -51,6 +54,7 @@ class MedicalSpecialtyViewSet(
     model = MedicalSpecialty
     queryset = None
     serializer_class = MedicalSpecialtySerializer
+    serializer_upset_class = MedicalSpecialtyUpsetSerializer
 
     def get_object(self):
         return get_object_or_404(
@@ -72,3 +76,20 @@ class MedicalSpecialtyViewSet(
         medical_specialty = self.get_object()
         serializer = self.serializer_class(medical_specialty)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def partial_update(self, request, *args, **kwargs):
+        serializer = self.serializer_upset_class(
+            self.get_object(),
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {'message': 'Changes saved.'},
+                status=status.HTTP_200_OK
+            )
+
+        return self.handle_serializer_is_not_valid_response(serializer)
