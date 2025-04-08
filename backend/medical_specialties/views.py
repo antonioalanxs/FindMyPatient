@@ -99,3 +99,16 @@ class MedicalSpecialtyViewSet(
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_upset_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {'message': 'Medical specialty created.'},
+                status=status.HTTP_201_CREATED
+            )
+
+        return self.handle_serializer_is_not_valid_response(serializer)
