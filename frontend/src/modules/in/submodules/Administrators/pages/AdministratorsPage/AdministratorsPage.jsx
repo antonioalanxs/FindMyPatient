@@ -1,5 +1,6 @@
 import { useTitle } from "@/core/hooks/useTitle";
 import { administratorService } from "@/core/services/AdministratorService";
+import { userService } from "@/core/services/UserService";
 import { userAdapter } from "@/core/adapters/UserAdapter";
 import Header from "@/modules/in/components/Header/Header";
 import GenericList from "@/shared/components/GenericList/GenericList";
@@ -33,10 +34,10 @@ function AdministratorsPage() {
             },
           },
           edit: {
-            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.EDIT(id),
+            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.DETAIL(id),
           },
           delete: {
-            action: (id) => patientService.destroy(id),
+            action: (id) => userService.destroy(id),
           },
         }}
       />

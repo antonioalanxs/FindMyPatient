@@ -4,11 +4,12 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useTitle } from "@/core/hooks/useTitle";
 import { administratorService } from "@/core/services/AdministratorService";
 import { userService } from "@/core/services/UserService";
-import { userAdapter } from "@/core/adapters/UserAdapter";
 import { notificationService } from "@/core/services/NotificationService";
 import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
+import BasicInformationCard from "@/modules/in/components/BasicInformationCard/BasicInformationCard";
+import ContactInformationCard from "@/modules/in/components/ContactInformationCard/ContactInformationCard";
 import { ROUTES } from "@/core/constants/routes";
 
 function AdministratorPage() {
@@ -20,8 +21,7 @@ function AdministratorPage() {
 
   useEffect(() => {
     administratorService.administrator(id).then(({ data }) => {
-      console.log(data);
-      setAdministratorData(userAdapter.run(data));
+      setAdministratorData(data);
     });
   }, [id]);
 
@@ -30,78 +30,48 @@ function AdministratorPage() {
   return (
     <>
       <Header
-        title="Visualize an administrator"
-        subtitle="Here you can visualize an administrator and its properties."
+        title="Administrator"
+        subtitle="Here you can manage an administrator."
         link={ROUTES.IN.ADMINISTRATORS.BASE}
       />
 
       {administratorData ? (
         <div className="row">
           <div className="col-xxl-8">
-            <BaseCard
-              title="Basic Information"
-              subtitle="Information through which an administrator may be identified."
-            >
-              <div className="row">
-                {Object?.entries(administratorData)
-                  ?.filter(([label]) => !["Email", "Phone"]?.includes(label))
-                  ?.map(([label, value]) => (
-                    <div className="col-md-6 form-group" key={label}>
-                      <label className="form-label">{label}</label>
-                      <p className="form-control-static">{value}</p>
-                    </div>
-                  ))}
-              </div>
-            </BaseCard>
-
-            <BaseCard
-              title="Contact Information"
-              subtitle="Information through which an administrator may be contacted."
-            >
-              <div className="row">
-                {Object?.entries(administratorData)
-                  ?.filter(([label]) => ["Email", "Phone"]?.includes(label))
-                  ?.map(([label, value]) => (
-                    <div className="col-md-6 form-group" key={label}>
-                      <label className="form-label">{label}</label>
-                      <p className="form-control-static">{value}</p>
-                    </div>
-                  ))}
-              </div>
-            </BaseCard>
+            <BasicInformationCard data={administratorData} />
+            <ContactInformationCard user={administratorData} />
           </div>
 
-          <div className="col-xxl-4">
+          <div className="col-md-7 col-xxl-4">
             <BaseCard
-              title="Actions"
-              subtitle="You can edit or delete this administrator."
+              title="Extra actions"
+              subtitle="Additional actions for this administrator."
             >
-              <div className="pb-2 d-flex flex-xxl-column gap-3">
-                <Link
-                  to={ROUTES.IN.ADMINISTRATORS.ABSOLUTE.EDIT(id)}
-                  className="btn btn-primary"
-                >
-                  <i className="bi bi-pencil-square me-2"></i>
-                  <span>Edit administrator</span>
-                </Link>
-
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={() => {
-                    notificationService.showConfirmDialog(
-                      "Really delete this administrator?",
-                      "This action could be irreversible.",
-                      async () =>
-                        await userService.destroy(id).then(() => {
+              <button
+                className="w-100 btn btn-outline-danger"
+                onClick={() => {
+                  notificationService.showConfirmDialog(
+                    "Really delete this administrator?",
+                    "This action could be irreversible.",
+                    async () =>
+                      await userService
+                        .destroy(id)
+                        .then(() => {
                           navigate(ROUTES.IN.ADMINISTRATORS.BASE);
                         })
-                    );
-                  }}
-                >
-                  <i className="bi bi-trash me-2"></i>
-                  <span>Delete administrator</span>
-                </button>
-              </div>
+                        .catch((error) => {
+                          notificationService.showToast(
+                            error?.response?.data?.detail ||
+                              "Something went wrong.",
+                            notificationService.TYPE.ERROR
+                          );
+                        })
+                  );
+                }}
+              >
+                <i className="bi bi-trash me-2"></i>
+                <span>Delete administrator</span>
+              </button>
             </BaseCard>
           </div>
         </div>
