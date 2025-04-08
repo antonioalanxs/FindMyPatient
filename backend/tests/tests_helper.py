@@ -93,8 +93,8 @@ class TestSetUp(APITestCase):
 
     def __set_medical_specialties(self):
         self.medical_specialty_input = {
-            "name": "test",
-            "description": "test",
+            "name": "testtest",
+            "description": "testtesttesttesttesttesttesttest",
         }
 
         self.medical_specialty = MedicalSpecialty.objects.create(
