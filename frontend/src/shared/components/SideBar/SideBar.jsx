@@ -76,7 +76,7 @@ function SideBar() {
       roles: [ROLES.DOCTOR, ROLES.ADMINISTRATOR],
     },
     {
-      link: null,
+      link: ROUTES.IN.MEDICAL_SPECIALTIES.BASE,
       icon: <i className="bi bi-diagram-2-fill"></i>,
       label: "Specialties",
       roles: [ROLES.DOCTOR, ROLES.ADMINISTRATOR],

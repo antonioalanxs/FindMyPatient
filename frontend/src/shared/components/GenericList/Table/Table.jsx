@@ -87,37 +87,36 @@ const Table = ({
   return (
     <div ref={containerReference} className="table-responsive border rounded">
       <table className={`table table-hover mb-0 ${striped && "table-striped"}`}>
-        <thead className="align-middle text-center text-nowrap cursor-pointer">
+        <thead className="text-nowrap cursor-pointer">
           <tr>
             {columns.map((column, index) => (
               <th
+                className="px-4"
                 key={index}
                 onClick={() => handleSort(column.field)}
-                style={{ minWidth: "117px" }}
               >
                 {column.header}
                 {sortedColumn === column.field && <span>{order}</span>}
               </th>
             ))}
 
-            {hasData && actions && (
-              <th style={{ minWidth: "127px" }}>Actions</th>
+            {hasData && (actions?.view || actions?.edit || actions?.delete) && (
+              <th className="px-4">Actions</th>
             )}
           </tr>
         </thead>
-        <tbody className="align-middle text-center text-nowrap">
+        <tbody className="text-nowrap">
           {hasData ? (
             sortedData.map((item, index) => (
               <tr key={index}>
                 {columns.map(({ field }, index_) => (
-                  <td key={index_}>{item[field]}</td>
+                  <td className="px-4" key={index_}>
+                    {item[field]}
+                  </td>
                 ))}
 
-                {actions && (
-                  <td
-                    className="d-flex gap-4 align-items-center justify-content-center"
-                    style={{ minWidth: "160px" }}
-                  >
+                {(actions?.view || actions?.edit || actions?.delete) && (
+                  <td className="px-4 d-flex gap-4 align-items-center">
                     {actions?.view && (
                       <TooltipTrigger tooltip="View">
                         <Link to={actions?.view?.path(item?.id || item?.ID)}>

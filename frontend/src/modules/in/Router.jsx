@@ -4,6 +4,7 @@ import InPage from "@/modules/in/pages/InPage/InPage";
 import HomePage from "@/modules/in/submodules/Home/pages/HomePage";
 import PatientsRouter from "@/modules/in/submodules/Patients/Router";
 import GroupsRouter from "@/modules/in/submodules/Groups/Router";
+import MedicalSpecialtiesRouter from "@/modules/in/submodules/MedicalSpecialties/Router";
 import ProfilePage from "@/modules/in/submodules/Profile/pages/ProfilePage";
 import { ROUTES } from "@/core/constants/routes";
 
@@ -24,6 +25,11 @@ const InRouter = () => {
         />
 
         <Route path={ROUTES.IN.GROUPS.ANYWHERE} element={<GroupsRouter />} />
+
+        <Route
+          path={ROUTES.IN.MEDICAL_SPECIALTIES.ANYWHERE}
+          element={<MedicalSpecialtiesRouter />}
+        />
 
         <Route path={ROUTES.IN.RELATIVE.PROFILE} element={<ProfilePage />} />
 

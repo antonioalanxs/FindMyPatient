@@ -27,3 +27,14 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = "__all__"
+
+class DoctorPreviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = [
+            "first_name",
+            "last_name",
+            "collegiate_code",
+            "phone_number",
+            "email",
+        ]
