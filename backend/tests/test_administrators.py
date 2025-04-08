@@ -75,3 +75,32 @@ class AdministratorCreateTestCase(TestSetUp):
     def test_create_administrator_with_non_authenticated_user(self):
         response = self.client.post(self.url, data=self.input)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+class AdministratorRetrieveTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = lambda id: reverse("administrators-detail", kwargs={"id": id})
+
+    def test_retrieve_administrator(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.administrator.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_administrator_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.get(self.url(self.administrator.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_retrieve_administrator_with_patient(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.url(self.administrator.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_retrieve_administrator_with_non_authenticated_user(self):
+        response = self.client.get(self.url(self.administrator.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_retrieve_non_existing_administrator(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.non_existing_id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
