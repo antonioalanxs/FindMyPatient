@@ -29,6 +29,10 @@ class MedicalSpecialtiesService {
     return axiosInstance.get(`${this._prefix}/${id}/`);
   };
 
+  doctorsByMedicalSpecialty = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/doctors`);
+  };
+
   destroy = (id) => {
     return axiosInstance.delete(`${this._prefix}/${id}/`);
   };
