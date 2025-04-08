@@ -9,3 +9,8 @@ class MedicalSpecialtyPreviewSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         return instance.name
+
+class MedicalSpecialtySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MedicalSpecialty
+        exclude = ['id']
