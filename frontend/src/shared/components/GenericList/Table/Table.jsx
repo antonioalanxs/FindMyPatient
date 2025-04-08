@@ -78,9 +78,17 @@ const Table = ({
       "Really delete?",
       "This action could be irreversible.",
       async () =>
-        await actions?.delete?.action(id).then(() => {
-          onDelete && onDelete();
-        })
+        await actions?.delete
+          ?.action(id)
+          .then(() => {
+            onDelete && onDelete();
+          })
+          .catch((error) => {
+            notificationService.showToast(
+              error?.response?.data?.detail || "Something went wrong.",
+              notificationService.TYPE.ERROR
+            );
+          })
     );
   };
 
