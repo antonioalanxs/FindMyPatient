@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
-import { medicalSpecialtiesService } from "@/core/services/MedicalSpecialtiesService";
+import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
 import { notificationService } from "@/core/services/NotificationService";
 import { textPipe } from "@/core/pipes/textPipe";
 import Load from "@/shared/components/Load/Load";
@@ -24,7 +24,7 @@ function EditMedicalSpecialtyPage() {
 
   useEffect(() => {
     setLoading(true);
-    medicalSpecialtiesService
+    medicalSpecialtyService
       .medicalSpecialty(id)
       .then(({ data }) => {
         setMedicalSpecialty(data);
@@ -43,7 +43,7 @@ function EditMedicalSpecialtyPage() {
 
   async function onSubmit(data) {
     setLoadingForm(true);
-    medicalSpecialtiesService
+    medicalSpecialtyService
       .update(id, data)
       .catch(({ message }) => {
         setError(message);
@@ -148,7 +148,7 @@ function EditMedicalSpecialtyPage() {
                       "Really delete this medical specialty?",
                       "This action could be irreversible.",
                       async () =>
-                        await medicalSpecialtiesService.destroy(id).then(() => {
+                        await medicalSpecialtyService.destroy(id).then(() => {
                           navigate(ROUTES.IN.MEDICAL_SPECIALTIES.BASE);
                         })
                     );

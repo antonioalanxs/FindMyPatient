@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { groupsService } from "@/core/services/GroupsService";
+import { groupService } from "@/core/services/GroupService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/shared/components/Form/Alert/Alert";
@@ -18,7 +18,7 @@ function CreateGroupCard({ onCreate }) {
 
   async function onSubmit(data) {
     setLoading(true);
-    groupsService
+    groupService
       .create(data)
       .then(() => {
         onCreate && onCreate();

@@ -47,5 +47,9 @@ export const ROUTES = {
       CREATE: "new",
       EDIT: (id = ":id") => `${id}/edition`,
     }),
+    ADMINISTRATORS: createModuleRoutes("/in/administrators", {
+      DETAIL: (id = ":id") => id,
+      CREATE: "new",
+    }),
   },
 };

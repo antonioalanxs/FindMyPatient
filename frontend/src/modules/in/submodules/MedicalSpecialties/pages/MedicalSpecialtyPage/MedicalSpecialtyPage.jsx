@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useTitle } from "@/core/hooks/useTitle";
-import { medicalSpecialtiesService } from "@/core/services/MedicalSpecialtiesService";
-import { doctorAdapter } from "@/core/adapters/DoctorAdapter";
+import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
+import { userAdapter } from "@/core/adapters/UserAdapter";
 import { notificationService } from "@/core/services/NotificationService";
 import { textPipe } from "@/core/pipes/textPipe";
 import Load from "@/shared/components/Load/Load";
@@ -22,7 +22,7 @@ function MedicalSpecialtyPage() {
 
   useEffect(() => {
     setLoading(true);
-    medicalSpecialtiesService
+    medicalSpecialtyService
       .medicalSpecialty(id)
       .then(({ data }) => {
         setMedicalSpecialty(data);
@@ -69,9 +69,9 @@ function MedicalSpecialtyPage() {
 
               <GenericList
                 fetchService={() =>
-                  medicalSpecialtiesService.doctorsByMedicalSpecialty(id)
+                  medicalSpecialtyService.doctorsByMedicalSpecialty(id)
                 }
-                adapter={doctorAdapter}
+                adapter={userAdapter}
                 card={{
                   title: "Doctors",
                   subtitle:
@@ -106,11 +106,9 @@ function MedicalSpecialtyPage() {
                         "Really delete this medical specialty?",
                         "This action could be irreversible.",
                         async () =>
-                          await medicalSpecialtiesService
-                            .destroy(id)
-                            .then(() => {
-                              navigate(ROUTES.IN.MEDICAL_SPECIALTIES.BASE);
-                            })
+                          await medicalSpecialtyService.destroy(id).then(() => {
+                            navigate(ROUTES.IN.MEDICAL_SPECIALTIES.BASE);
+                          })
                       );
                     }}
                   >

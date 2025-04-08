@@ -1,39 +1,39 @@
 import { useTitle } from "@/core/hooks/useTitle";
-import { patientService } from "@/core/services/PatientService";
+import { administratorService } from "@/core/services/AdministratorService";
 import { userAdapter } from "@/core/adapters/UserAdapter";
 import Header from "@/modules/in/components/Header/Header";
 import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
 
-function PatientsPage() {
-  useTitle({ title: "Patients" });
+function AdministratorsPage() {
+  useTitle({ title: "Administrators" });
 
   return (
     <>
       <Header
-        title="Patients"
-        subtitle="All of your patients are listed here."
+        title="Administrators"
+        subtitle="All of the administrators are listed here."
       />
 
       <GenericList
-        fetchService={patientService.patients}
+        fetchService={administratorService.administrators}
         adapter={userAdapter}
         actions={{
           search: {
-            label: "Search a patient",
+            label: "Search an administrator",
           },
           view: {
-            path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
+            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.DETAIL(id),
           },
           create: {
             link: {
-              label: "Create a patient",
-              path: ROUTES.IN.PATIENTS.ABSOLUTE.CREATE,
+              label: "Create an administrator",
+              path: ROUTES.IN.ADMINISTRATORS.ABSOLUTE.CREATE,
               icon: "bi-person-fill-add",
             },
           },
           edit: {
-            path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
+            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.DETAIL(id),
           },
           delete: {
             action: (id) => patientService.destroy(id),
@@ -44,4 +44,4 @@ function PatientsPage() {
   );
 }
 
-export default PatientsPage;
+export default AdministratorsPage;

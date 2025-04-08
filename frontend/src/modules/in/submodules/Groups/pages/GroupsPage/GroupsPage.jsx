@@ -1,6 +1,6 @@
 import { useTitle } from "@/core/hooks/useTitle";
-import { groupsService } from "@/core/services/GroupsService";
-import { groupsAdapter } from "@/core/adapters/GroupsAdapter";
+import { groupService } from "@/core/services/GroupService";
+import { groupAdapter } from "@/core/adapters/GroupAdapter";
 import Header from "@/modules/in/components/Header/Header";
 import CreateGroupCard from "@/modules/in/submodules/Groups/components/CreateGroupCard/CreateGroupCard";
 import GenericList from "@/shared/components/GenericList/GenericList";
@@ -17,8 +17,8 @@ function GroupsPage() {
       />
 
       <GenericList
-        fetchService={groupsService.groups}
-        adapter={groupsAdapter}
+        fetchService={groupService.groups}
+        adapter={groupAdapter}
         showID={true}
         actions={{
           search: {
@@ -40,7 +40,7 @@ function GroupsPage() {
             path: (id) => ROUTES.IN.GROUPS.ABSOLUTE.EDIT(id),
           },
           delete: {
-            action: (id) => groupsService.destroy(id),
+            action: (id) => groupService.destroy(id),
           },
         }}
       />
