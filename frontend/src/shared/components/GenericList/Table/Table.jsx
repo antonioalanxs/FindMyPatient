@@ -100,7 +100,9 @@ const Table = ({
               </th>
             ))}
 
-            {hasData && actions && <th className="px-4">Actions</th>}
+            {hasData && (actions?.view || actions?.edit || actions?.delete) && (
+              <th className="px-4">Actions</th>
+            )}
           </tr>
         </thead>
         <tbody className="text-nowrap">
@@ -113,7 +115,7 @@ const Table = ({
                   </td>
                 ))}
 
-                {actions && (
+                {(actions?.view || actions?.edit || actions?.delete) && (
                   <td className="px-4 d-flex gap-4 align-items-center">
                     {actions?.view && (
                       <TooltipTrigger tooltip="View">

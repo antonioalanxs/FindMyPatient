@@ -17,6 +17,7 @@ import { DEFAULT_PAGINATION_SIZE } from "@/core/constants/default";
 const GenericList = ({
   fetchService,
   adapter,
+  card = null,
   showID = false,
   actions = null,
 }) => {
@@ -58,7 +59,7 @@ const GenericList = ({
     <>
       {actions?.create?.component?.(fetchData)}
 
-      <BaseCard>
+      <BaseCard title={card?.title} subtitle={card?.subtitle}>
         <div className="d-flex gap-2 flex-column">
           <div className="row gx-0 gy-3 align-items-start justify-content-md-between">
             {actions?.create?.link && (
