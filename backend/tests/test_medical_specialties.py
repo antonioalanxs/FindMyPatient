@@ -151,3 +151,40 @@ class MedicalSpecialtyDestroyTestCase(TestSetUp):
     def test_destroy_medical_specialty_with_non_authenticated_user(self):
         response = self.client.delete(self.url(self.medical_specialty.id))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class CreateMedicalSpecialtyTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("medical_specialties-list")
+
+    def test_create_medical_specialty(self):
+        self.client.force_authenticate(user=self.administrator)
+        self.medical_specialty_input["name"] = "test2"
+        response = self.client.post(self.url, data=self.medical_specialty_input)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_existing_medical_specialty(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.post(self.url, data=self.medical_specialty_input)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_medical_specialty_with_patient(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(self.url, data=self.medical_specialty_input)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_medical_specialty_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.post(self.url, data=self.medical_specialty_input)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_medical_specialty_with_non_authenticated_user(self):
+        response = self.client.post(self.url, data=self.medical_specialty_input)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_medical_specialty_with_malformed_input(self):
+        self.client.force_authenticate(user=self.administrator)
+        self.medical_specialty_input["name"] = ""
+        response = self.client.post(self.url, data=self.medical_specialty_input)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
