@@ -9,6 +9,7 @@ class AdministratorPreviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrator
         fields = [
+            "id",
             "username",
             "name",
             "email",
