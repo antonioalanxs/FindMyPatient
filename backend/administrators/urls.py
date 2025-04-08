@@ -1,3 +1,8 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = []
+from .views import AdministratorViewSet
+
+router = DefaultRouter()
+router.register(r'', AdministratorViewSet, basename='administrators')
+
+urlpatterns = router.urls
