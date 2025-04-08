@@ -65,7 +65,7 @@ function CreateAdministratorPage() {
           <div className="col-xxl-8">
             <BaseCard
               title="Basic Information"
-              subtitle="Information through which one may be identified."
+              subtitle="Information through which an administrator may be identified."
             >
               <div className="row">
                 <div className="col-md-6 form-group">
@@ -199,7 +199,7 @@ function CreateAdministratorPage() {
           <div className="col-xxl-8">
             <BaseCard
               title="Contact Information"
-              subtitle="Information through which one may be contacted."
+              subtitle="Information through which an administrator may be contacted."
             >
               <div className="row">
                 <div className="col-md-6 form-group">

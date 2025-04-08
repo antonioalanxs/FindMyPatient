@@ -33,7 +33,7 @@ function AdministratorsPage() {
             },
           },
           edit: {
-            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.DETAIL(id),
+            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.EDIT(id),
           },
           delete: {
             action: (id) => patientService.destroy(id),

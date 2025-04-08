@@ -28,6 +28,10 @@ class AdministratorService {
   create = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };
+
+  administrator = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  };
 }
 
 export const administratorService = AdministratorService.instance;
