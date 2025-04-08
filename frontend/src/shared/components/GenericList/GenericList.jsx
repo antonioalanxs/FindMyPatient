@@ -64,12 +64,12 @@ const GenericList = ({
             {actions?.create?.link && (
               <Link
                 to={actions?.create?.link?.path}
-                className="col-12 col-md-4 order-md-1 py-1 text-center btn btn-primary"
+                className="col-12 col-md-3 order-md-1 py-1 text-center btn btn-primary"
               >
                 <i
                   className={`me-2 bi ${actions?.create?.link?.icon} fs-5`}
                 ></i>
-                <span>{actions?.create?.label}</span>
+                <span>{actions?.create?.link?.label}</span>
               </Link>
             )}
 
