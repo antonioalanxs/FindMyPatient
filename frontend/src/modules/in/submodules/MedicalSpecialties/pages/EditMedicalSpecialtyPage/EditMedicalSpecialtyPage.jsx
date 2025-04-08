@@ -75,7 +75,7 @@ function EditMedicalSpecialtyPage() {
                   className="row form-body"
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                  <div className="mb-3 col-lg-3 form-group">
+                  <div className="mb-3 col-lg-4 form-group">
                     <label htmlFor="name">Name</label>
                     <input
                       type="text"

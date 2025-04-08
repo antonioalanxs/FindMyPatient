@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MedicalSpecialtiesPage from "@/modules/in/submodules/MedicalSpecialties/pages/MedicalSpecialtiesPage/MedicalSpecialtiesPage";
 import MedicalSpecialtyPage from "@/modules/in/submodules/MedicalSpecialties/pages/MedicalSpecialtyPage/MedicalSpecialtyPage";
 import EditMedicalSpecialtyPage from "@/modules/in/submodules/MedicalSpecialties/pages/EditMedicalSpecialtyPage/EditMedicalSpecialtyPage";
+import CreateMedicalSpecialtyPage from "@/modules/in/submodules/MedicalSpecialties/pages/CreateMedicalSpecialtyPage/CreateMedicalSpecialtyPage";
 import { ROUTES } from "@/core/constants/routes";
 
 const MedicalSpecialtiesRouter = () => {
@@ -18,6 +19,11 @@ const MedicalSpecialtiesRouter = () => {
       <Route
         path={ROUTES.IN.MEDICAL_SPECIALTIES.RELATIVE.EDIT()}
         element={<EditMedicalSpecialtyPage />}
+      />
+
+      <Route
+        path={ROUTES.IN.MEDICAL_SPECIALTIES.RELATIVE.CREATE}
+        element={<CreateMedicalSpecialtyPage />}
       />
 
       <Route
