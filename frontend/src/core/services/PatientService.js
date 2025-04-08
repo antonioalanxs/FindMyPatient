@@ -29,10 +29,6 @@ class PatientService {
     return axiosInstance.patch(`${this._prefix}/${id}/`, data);
   };
 
-  destroy = (id) => {
-    return axiosInstance.delete(`${this._prefix}/${id}/`);
-  };
-
   create = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };

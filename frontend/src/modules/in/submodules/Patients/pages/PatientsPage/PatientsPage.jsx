@@ -4,6 +4,7 @@ import { userAdapter } from "@/core/adapters/UserAdapter";
 import Header from "@/modules/in/components/Header/Header";
 import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
+import { userService } from "@/core/services/UserService";
 
 function PatientsPage() {
   useTitle({ title: "Patients" });
@@ -36,7 +37,7 @@ function PatientsPage() {
             path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
           },
           delete: {
-            action: (id) => patientService.destroy(id),
+            action: (id) => userService.destroy(id),
           },
         }}
       />
