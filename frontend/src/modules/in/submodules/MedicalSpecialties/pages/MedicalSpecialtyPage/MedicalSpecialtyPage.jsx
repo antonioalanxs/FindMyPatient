@@ -79,7 +79,7 @@ function MedicalSpecialtyPage() {
                 }}
                 actions={{
                   search: {
-                    label: "Search a doctor",
+                    label: "Search for a doctor",
                   },
                 }}
               />

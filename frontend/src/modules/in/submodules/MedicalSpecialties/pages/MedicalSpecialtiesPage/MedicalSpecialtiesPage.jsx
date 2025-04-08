@@ -20,7 +20,7 @@ function MedicalSpecialtiesPage() {
         adapter={medicalSpecialtyAdapter}
         actions={{
           search: {
-            label: "Search a specialty",
+            label: "Search for a specialty",
           },
           create: {
             link: {

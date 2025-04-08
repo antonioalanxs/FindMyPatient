@@ -22,7 +22,7 @@ function GroupsPage() {
         showID={true}
         actions={{
           search: {
-            label: "Search a group",
+            label: "Search for a group",
           },
           create: {
             component: (onCreate) => (

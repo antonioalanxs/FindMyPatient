@@ -20,7 +20,7 @@ function PatientsPage() {
         adapter={userAdapter}
         actions={{
           search: {
-            label: "Search a patient",
+            label: "Search for a patient",
           },
           view: {
             path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),

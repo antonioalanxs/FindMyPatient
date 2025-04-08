@@ -20,7 +20,7 @@ function AdministratorsPage() {
         adapter={userAdapter}
         actions={{
           search: {
-            label: "Search an administrator",
+            label: "Search for an administrator",
           },
           view: {
             path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.DETAIL(id),
