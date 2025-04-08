@@ -40,7 +40,6 @@ export const ROUTES = {
     }),
     GROUPS: createModuleRoutes("/in/groups", {
       DETAIL: (id = ":id") => id,
-      CREATE: "new",
       EDIT: (id = ":id") => `${id}/edition`,
     }),
     MEDICAL_SPECIALTIES: createModuleRoutes("/in/medical-specialties", {

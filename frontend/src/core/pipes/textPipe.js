@@ -12,7 +12,7 @@ class TextPipe {
   }
 
   transform(value) {
-    if (value?.trim() === "") {
+    if (value?.trim() === "" || value === undefined) {
       return DEFAULT_VALUE;
     }
 
