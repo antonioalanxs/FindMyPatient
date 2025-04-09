@@ -51,5 +51,10 @@ export const ROUTES = {
       DETAIL: (id = ":id") => id,
       CREATE: "new",
     }),
+    DOCTORS: createModuleRoutes("/in/doctors", {
+      DETAIL: (id = ":id") => id,
+      CREATE: "new",
+      EDIT: (id = ":id") => `${id}/edition`,
+    }),
   },
 };
