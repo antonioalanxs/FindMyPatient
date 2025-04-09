@@ -29,12 +29,17 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class DoctorPreviewSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Doctor
         fields = [
-            "first_name",
-            "last_name",
+            "id",
+            "name",
             "collegiate_code",
             "phone_number",
             "email",
         ]
+
+    def get_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
