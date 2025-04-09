@@ -20,7 +20,6 @@ class DoctorCompressSerializer(serializers.ModelSerializer):
         return f"{obj.first_name} {obj.last_name}"
 
 
-
 class DoctorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor

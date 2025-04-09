@@ -3,17 +3,15 @@ from rest_framework import status
 
 
 class SerializerValidationErrorResponseMixin:
-    def __extract_error_messages(self, errors, parent_key=""):
+    def __extract_error_messages(self, errors):
         messages = []
 
         for key, value in errors.items():
-            full_key = f"{parent_key}.{key}" if parent_key else key
-
             if isinstance(value, dict):
-                messages.extend(self.__extract_error_messages(value, full_key))
+                messages.extend(self.__extract_error_messages(value))
             elif isinstance(value, list):
                 for error in value:
-                    messages.append(f"{full_key}: {error}")
+                    messages.append(error)
 
         return messages
 
