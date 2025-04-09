@@ -1,4 +1,4 @@
-from config.settings import PAGINATION_OPTIONAL_PARAMETER
+from config.settings import PAGINATION_PARAMETER
 
 from django.shortcuts import get_object_or_404
 
@@ -11,7 +11,8 @@ from mixins.search import SearchMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from .serializers import (
     DoctorUpdateSerializer,
-    DoctorSerializer
+    DoctorSerializer,
+    DoctorPreviewSerializer
 )
 from permissions.decorators import method_permission_classes
 from permissions.users import IsAdministratorOrIsSelf, IsDoctorOrIsAdministrator
@@ -53,11 +54,11 @@ class DoctorViewSet(
     def list(self, request, *args, **kwargs):
         queryset = self.search(self.model, request)
 
-        if request.query_params.get(PAGINATION_OPTIONAL_PARAMETER, None):
+        if request.query_params.get(PAGINATION_PARAMETER, None):
             return self.get_paginated_response_(
                 request,
                 queryset,
-                DoctorSerializer
+                DoctorPreviewSerializer
             )
 
         return Response(
