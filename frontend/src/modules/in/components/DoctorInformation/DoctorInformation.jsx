@@ -35,12 +35,13 @@ function DoctorInformation({ doctor }) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <div className="col-md-6 form-group">
-              <label htmlFor="collegiate_code">Collegiate code</label>
+              <label htmlFor="collegiate_code" className="form-label">
+                Collegiate code
+              </label>
               <input
                 id="collegiate_code"
                 type="text"
                 placeholder="Collegiate code"
-                autoComplete="off"
                 defaultValue={doctor?.collegiate_code}
                 className={`form-control ${
                   errors?.collegiate_code && "is-invalid"
@@ -49,11 +50,11 @@ function DoctorInformation({ doctor }) {
                   required: "Collegiate code is required.",
                   maxLength: {
                     value: 10,
-                    message: "Collegiate code must be less than 10 characters.",
+                    message: "Collegiate code is up to 10 characters.",
                   },
                   minLength: {
                     value: 6,
-                    message: "Collegiate code must be more than 5 characters.",
+                    message: "Collegiate code is at least 6 characters.",
                   },
                 })}
               />

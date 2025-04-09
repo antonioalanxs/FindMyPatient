@@ -11,7 +11,7 @@ from mixins.search import SearchMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from .serializers import (
     DoctorUpdateSerializer,
-    DoctorSerializer,
+    DoctorCompressSerializer,
     DoctorPreviewSerializer
 )
 from permissions.decorators import method_permission_classes
@@ -62,6 +62,6 @@ class DoctorViewSet(
             )
 
         return Response(
-            DoctorSerializer(queryset, many=True).data,
+            DoctorCompressSerializer(queryset, many=True).data,
             status=status.HTTP_200_OK
         )

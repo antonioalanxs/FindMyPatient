@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
-from doctors.serializers import DoctorSerializer
+from doctors.serializers import DoctorCompressSerializer
 from addresses.serializers import AddressSerializer
 from addresses.models import Address
 from doctors.models import Doctor
@@ -29,7 +29,7 @@ class PatientPreviewSerializer(serializers.ModelSerializer):
 
 
 class PatientSerializer(serializers.ModelSerializer):
-    primary_doctor = DoctorSerializer(read_only=True)
+    primary_doctor = DoctorCompressSerializer(read_only=True)
     address = AddressSerializer(read_only=True)
 
     class Meta:

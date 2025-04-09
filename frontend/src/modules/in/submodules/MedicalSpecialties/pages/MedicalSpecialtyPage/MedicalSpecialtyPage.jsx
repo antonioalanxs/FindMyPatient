@@ -52,14 +52,18 @@ function MedicalSpecialtyPage() {
               >
                 <div className="row">
                   <div className="col-md-3 form-group">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name" className="form-label">
+                      Name
+                    </label>
                     <p id="name" className="form-control-static">
                       {textPipe.transform(medicalSpecialty?.name)}
                     </p>
                   </div>
 
                   <div className="col-md-9 form-group">
-                    <label htmlFor="description">Description</label>
+                    <label htmlFor="description" className="form-label">
+                      Description
+                    </label>
                     <p id="description" className="form-control-static">
                       {medicalSpecialty?.description}
                     </p>

@@ -49,14 +49,18 @@ function GroupPage() {
             >
               <div className="row">
                 <div className="col-md-6 form-group">
-                  <label htmlFor="id">ID</label>
+                  <label htmlFor="id" className="form-label">
+                    ID
+                  </label>
                   <p id="id" className="form-control-static">
                     {group?.id}
                   </p>
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="name">Name</label>
+                  <label htmlFor="name" className="form-label">
+                    Name
+                  </label>
                   <p id="name" className="form-control-static">
                     {textPipe.transform(group?.name)}
                   </p>

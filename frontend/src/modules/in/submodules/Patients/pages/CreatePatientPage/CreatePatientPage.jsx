@@ -27,8 +27,8 @@ function CreatePatientPage() {
   const { user } = useContext(AuthenticationContext);
 
   const [loading, setLoading] = useState(false);
-  const [doctorData, setDoctorData] = useState(null);
-  const [doctorSelectionData, setDoctorSelectionData] = useState(null);
+  const [doctor, setDoctor] = useState(null);
+  const [doctors, setDoctors] = useState(null);
   const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
 
@@ -37,11 +37,11 @@ function CreatePatientPage() {
 
     if (user?.role === ROLES.ADMINISTRATOR) {
       doctorService.doctorsWithoutPagination().then(({ data }) => {
-        setDoctorSelectionData(data);
+        setDoctors(data);
       });
     } else {
       userService.user(user?.user_id).then(({ data }) => {
-        setDoctorData(data);
+        setDoctor(data);
       });
     }
 
@@ -51,79 +51,59 @@ function CreatePatientPage() {
   const primaryDoctorCardContent = () => {
     if (loading) {
       return (
-        <div className="pt-5 pb-4">
+        <div className="py-4">
           <Load />
         </div>
       );
     }
 
-    if (doctorData) {
+    if (doctor) {
       return (
-        <>
-          <div className="row gy-3 gy-xxl-4 pb-2">
-            <div className="col-md-6">
-              <p className="truncate opacity-90">
-                <strong>Full name</strong>
-              </p>
-              <p>
-                {doctorData?.first_name} {doctorData?.last_name}
-                <span className="text-muted">{"\t(you)"}</span>
-              </p>
-            </div>
+        <div className="row">
+          <div className="col-md-5 form-group">
+            <label htmlFor="name" className="form-label">
+              Name
+            </label>
+            <p id="name" className="form-control-static truncate">
+              {doctor?.first_name} {doctor?.last_name}
+              <span className="text-muted truncate">{"\t(you)"}</span>
+            </p>
+          </div>
 
-            <div className="col-md-6">
-              <p className="truncate opacity-90">
-                <strong>Collegiate code</strong>
-              </p>
-              <p>{doctorData?.doctor?.collegiate_code}</p>
-            </div>
-
-            <div className="col-md-6 pe-4">
-              <p className="mb-1 truncate opacity-90">
-                <strong>Medical specialties</strong>
-              </p>
-              <Badges items={doctorData?.doctor?.medical_specialties} />
-            </div>
-
-            <div className="col-md-6">
-              <p className="truncate opacity-90">
-                <strong>Patients assigned</strong>
-              </p>
-              <p>{`${doctorData?.doctor?.patients_count}`}</p>
+          <div className="col-md-7 form-group">
+            <label htmlFor="medical_specialties" className="form-label">
+              Medical specialties
+            </label>
+            <div id="medical_specialties" className="form-control-static">
+              <Badges items={doctor?.doctor?.medical_specialties} />
             </div>
           </div>
-        </>
+        </div>
       );
     }
 
-    if (doctorSelectionData) {
+    if (doctors) {
       return (
-        <div className="row">
-          <div
-            className={`col form-group ${
-              errors?.primary_doctor_id ? "py-4" : "py-4_5"
+        <div className="form-group">
+          <label htmlFor="primary_doctor_id" className="form-label">
+            Primary doctor
+          </label>
+          <select
+            className={`form-select ${
+              errors?.primary_doctor_id && "is-invalid"
             }`}
+            {...register("primary_doctor_id", {
+              required: "Primary doctor is required.",
+            })}
           >
-            <label htmlFor="primary_doctor_id">Primary doctor</label>
-            <select
-              className={`form-select ${
-                errors?.primary_doctor_id && "is-invalid"
-              }`}
-              {...register("primary_doctor_id", {
-                required: "Primary doctor is required.",
-              })}
-            >
-              <option value="">Select a primary doctor</option>
-              {doctorSelectionData?.map((doctor) => (
-                <option value={doctor?.id} key={doctor?.id}>
-                  {`${doctor?.first_name} ${
-                    doctor?.last_name
-                  } - ${doctor?.medical_specialties.join(", ")}`}
-                </option>
-              ))}
-            </select>
-            <InvalidFeedback message={errors?.primary_doctor_id?.message} />
-          </div>
+            <option value="">Select a primary doctor</option>
+            {doctors?.map((doctor) => (
+              <option value={doctor?.id} key={doctor?.id}>
+                {`${doctor?.name} - ${doctor?.medical_specialties.join(", ")}`}
+              </option>
+            ))}
+          </select>
+          <InvalidFeedback message={errors?.primary_doctor_id?.message} />
         </div>
       );
     }
@@ -144,7 +124,8 @@ function CreatePatientPage() {
     data = {
       ...data,
       birth_date: datePipe.transform(data.birth_date, datePipe.OPTIONS.BACKEND),
-      primary_doctor_id: parseInt(data.primary_doctor_id),
+      primary_doctor_id:
+        parseInt(data.primary_doctor_id) || parseInt(doctor?.id),
     };
 
     patientService
@@ -168,6 +149,12 @@ function CreatePatientPage() {
         link={ROUTES.IN.PATIENTS.BASE}
       />
 
+      <Alert
+        content={error}
+        onClose={() => setError(null)}
+        classes="mb-4 col-xxl-8"
+      />
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-lg-8">
@@ -177,12 +164,13 @@ function CreatePatientPage() {
             >
               <div className="row">
                 <div className="col-md-6 form-group">
-                  <label htmlFor="first_name">First name</label>
+                  <label htmlFor="first_name" className="form-label">
+                    First name
+                  </label>
                   <input
                     id="first_name"
                     type="text"
                     placeholder="First name"
-                    autoComplete="off"
                     className={`form-control ${
                       errors?.first_name && "is-invalid"
                     }`}
@@ -194,12 +182,13 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="last_name">Last name</label>
+                  <label htmlFor="last_name" className="form-label">
+                    Last name
+                  </label>
                   <input
                     id="last_name"
                     type="text"
                     placeholder="Last name"
-                    autoComplete="off"
                     className={`form-control ${
                       errors?.last_name && "is-invalid"
                     }`}
@@ -211,12 +200,13 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="identity_card_number">Identity card</label>
+                  <label htmlFor="identity_card_number" className="form-label">
+                    Identity card
+                  </label>
                   <input
                     id="identity_card_number"
                     type="text"
                     placeholder="Identity card"
-                    autoComplete="off"
                     className={`form-control ${
                       errors?.identity_card_number && "is-invalid"
                     }`}
@@ -234,7 +224,9 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="birth_date">Date of birth</label>
+                  <label htmlFor="birth_date" className="form-label">
+                    Date of birth
+                  </label>
                   <Controller
                     name="birth_date"
                     control={control}
@@ -253,7 +245,9 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="gender">Gender</label>
+                  <label htmlFor="gender" className="form-label">
+                    Gender
+                  </label>
                   <Controller
                     name="gender"
                     control={control}
@@ -261,7 +255,6 @@ function CreatePatientPage() {
                     render={({ field }) => (
                       <select
                         {...field}
-                        id="gender"
                         className={`form-select ${
                           errors?.gender && "is-invalid"
                         }`}
@@ -276,7 +269,9 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="nationality">Nationality</label>
+                  <label htmlFor="nationality" className="form-label">
+                    Nationality
+                  </label>
                   <Controller
                     name="nationality"
                     control={control}
@@ -284,7 +279,6 @@ function CreatePatientPage() {
                     render={({ field }) => (
                       <select
                         {...field}
-                        id="nationality"
                         className={`form-select ${
                           errors?.nationality && "is-invalid"
                         }`}
@@ -310,14 +304,13 @@ function CreatePatientPage() {
               subtitle="Information through which one may be contacted."
             >
               <div className="form-group">
-                <label htmlFor="social_security_code">
+                <label htmlFor="social_security_code" className="form-label">
                   Social security code
                 </label>
                 <input
                   id="social_security_code"
                   type="text"
                   placeholder="Social security code"
-                  autoComplete="off"
                   className={`form-control ${
                     errors?.social_security_code && "is-invalid"
                   }`}
@@ -325,13 +318,11 @@ function CreatePatientPage() {
                     required: "Social security code is required.",
                     maxLength: {
                       value: 12,
-                      message:
-                        "Social security code must be less than 12 characters.",
+                      message: "Social security code is up to 12 characters.",
                     },
                     minLength: {
                       value: 6,
-                      message:
-                        "Social security code must be more than 6 characters.",
+                      message: "Social security code is at least 6 characters.",
                     },
                   })}
                 />
@@ -342,12 +333,13 @@ function CreatePatientPage() {
 
               <div className="row gx-0">
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
                   <input
                     id="email"
                     type="email"
                     placeholder="Email"
-                    autoComplete="off"
                     className={`form-control ${errors?.email && "is-invalid"}`}
                     {...register("email", {
                       required: "Email is required.",
@@ -357,12 +349,13 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="phone_number">Phone number</label>
+                  <label htmlFor="phone_number" className="form-label">
+                    Phone number
+                  </label>
                   <input
                     id="phone_number"
                     type="tel"
                     placeholder="Phone number"
-                    autoComplete="off"
                     className={`form-control ${
                       errors?.phone_number && "is-invalid"
                     }`}
@@ -370,11 +363,11 @@ function CreatePatientPage() {
                       required: "Phone is required.",
                       maxLength: {
                         value: 15,
-                        message: "Phone number must be up to 15 characters.",
+                        message: "Phone number is up to 15 characters.",
                       },
                       minLength: {
                         value: 7,
-                        message: "Phone number must be at least 7 characters.",
+                        message: "Phone number is at least 7 characters.",
                       },
                       pattern: {
                         value: /^\+[0-9]*$/,
@@ -390,28 +383,20 @@ function CreatePatientPage() {
           </div>
         </div>
 
-        <div className="row align-items-center">
-          <div className="col-lg-5">
-            <BaseCard
-              title="Primary doctor"
-              subtitle="The doctor in charge of the patient."
-            >
-              {primaryDoctorCardContent()}
-            </BaseCard>
-          </div>
-
-          <div className="col-lg-7">
+        <div className="row">
+          <div className="col-lg-7 col-xxl-8">
             <BaseCard title="Address" subtitle="The place of residence.">
               <div className="row">
                 <div className="col-md-6">
                   <div className="row gx-3">
                     <div className="col-6 col-xxl-7 form-group">
-                      <label htmlFor="street">Street</label>
+                      <label htmlFor="street" className="form-label">
+                        Street
+                      </label>
                       <input
                         id="street"
                         type="text"
                         placeholder="Street"
-                        autoComplete="off"
                         className={`form-control ${
                           errors?.address?.street && "is-invalid"
                         }`}
@@ -425,12 +410,13 @@ function CreatePatientPage() {
                     </div>
 
                     <div className="col-6 col-xxl-5 form-group">
-                      <label htmlFor="street">Number</label>
+                      <label htmlFor="number" className="form-label">
+                        Number
+                      </label>
                       <input
                         id="number"
                         type="text"
                         placeholder="Number"
-                        autoComplete="off"
                         className={`form-control ${
                           errors?.address?.number && "is-invalid"
                         }`}
@@ -454,12 +440,13 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="city">City</label>
+                  <label htmlFor="city" className="form-label">
+                    City
+                  </label>
                   <input
                     id="city"
                     type="text"
                     placeholder="City"
-                    autoComplete="off"
                     className={`form-control ${
                       errors?.address?.city && "is-invalid"
                     }`}
@@ -471,12 +458,13 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="zip_code">Postal code</label>
+                  <label htmlFor="zip_code" className="form-label">
+                    Postal code
+                  </label>
                   <input
                     id="zip_code"
                     type="text"
                     placeholder="Postal code"
-                    autoComplete="off"
                     className={`form-control ${
                       errors?.address?.zip_code && "is-invalid"
                     }`}
@@ -484,11 +472,11 @@ function CreatePatientPage() {
                       required: "Postal code is required.",
                       maxLength: {
                         value: 10,
-                        message: "Postal code must be up to 10 characters.",
+                        message: "Postal code is up to 10 characters.",
                       },
                       minLength: {
                         value: 3,
-                        message: "Postal code must be at least 3 characters.",
+                        message: "Postal code is at least 3 characters.",
                       },
                     })}
                   />
@@ -498,7 +486,9 @@ function CreatePatientPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="country">Country</label>
+                  <label htmlFor="address.country" className="form-label">
+                    Country
+                  </label>
                   <Controller
                     name="address.country"
                     control={control}
@@ -506,7 +496,6 @@ function CreatePatientPage() {
                     render={({ field }) => (
                       <select
                         {...field}
-                        id="country"
                         className={`form-select ${
                           errors?.address?.country && "is-invalid"
                         }`}
@@ -527,14 +516,21 @@ function CreatePatientPage() {
               </div>
             </BaseCard>
           </div>
+
+          <div className="col-lg-5 col-xxl-4">
+            <BaseCard
+              title="Primary doctor"
+              subtitle="The doctor in charge of the patient."
+            >
+              {primaryDoctorCardContent()}
+            </BaseCard>
+          </div>
         </div>
 
-        <Alert content={error} onClose={() => setError(null)} classes="mb-4" />
-
-        <div className="row gx-0 gap-3 align-items-center">
+        <div className="row gx-0 gap-3">
           <button
             type="submit"
-            className="col-xl-4 col-xxl-3 btn btn-primary"
+            className="col-sm-5 col-xl-4 col-xxl-3 btn btn-primary"
             disabled={loadingForm || loading}
           >
             Create
@@ -542,7 +538,7 @@ function CreatePatientPage() {
 
           <button
             type="reset"
-            className="col-xl-1 btn btn-outline-primary"
+            className="col-sm-2 col-xxl-1 btn btn-outline-primary"
             disabled={loadingForm || loading}
           >
             Clear

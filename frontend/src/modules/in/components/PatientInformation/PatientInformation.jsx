@@ -36,27 +36,26 @@ function PatientInformation({ patient, showPrimaryDoctor = false }) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <div className="col-md-6 form-group">
-              <label htmlFor="social_security_code">Social security code</label>
+              <label htmlFor="social_security_code" className="form-label">
+                Social security code
+              </label>
               <input
                 id="social_security_code"
                 type="text"
                 placeholder="Social security code"
-                autoComplete="off"
                 defaultValue={patient?.social_security_code}
                 className={`form-control ${
                   errors?.social_security_code && "is-invalid"
                 }`}
                 {...register("social_security_code", {
                   required: "Social security code is required.",
-                  maxLength: {
-                    value: 12,
-                    message:
-                      "Social security code must be less than 12 characters.",
-                  },
                   minLength: {
                     value: 6,
-                    message:
-                      "Social security code must be more than 6 characters.",
+                    message: "Social security code is at least 6 characters.",
+                  },
+                  maxLength: {
+                    value: 12,
+                    message: "Social security code is up to 12 characters.",
                   },
                 })}
               />
@@ -82,7 +81,7 @@ function PatientInformation({ patient, showPrimaryDoctor = false }) {
           <div className="d-flex flex-column gap-3">
             <div>
               <p>
-                <strong>Full name</strong>
+                <strong>Name</strong>
               </p>
               <p>
                 {`${patient?.primary_doctor?.first_name} ${patient?.primary_doctor?.last_name}`}

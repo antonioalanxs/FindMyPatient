@@ -64,12 +64,13 @@ function BasicInformationCard({ data }) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="first_name">First name</label>
+            <label htmlFor="first_name" className="form-label">
+              First name
+            </label>
             <input
               id="first_name"
               type="text"
               placeholder="First name"
-              autoComplete="off"
               defaultValue={data?.first_name}
               className={`form-control ${errors?.first_name && "is-invalid"}`}
               {...register("first_name", {
@@ -80,12 +81,13 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="last_name">Last name</label>
+            <label htmlFor="last_name" className="form-label">
+              Last name
+            </label>
             <input
               id="last_name"
               type="text"
               placeholder="Last name"
-              autoComplete="off"
               defaultValue={data?.last_name}
               className={`form-control ${errors?.last_name && "is-invalid"}`}
               {...register("last_name", {
@@ -96,12 +98,13 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="identity_card_number">Identity card</label>
+            <label htmlFor="identity_card_number" className="form-label">
+              Identity card
+            </label>
             <input
               id="identity_card_number"
               type="text"
               placeholder="Identity card"
-              autoComplete="off"
               defaultValue={data?.identity_card_number}
               className={`form-control ${
                 errors?.identity_card_number && "is-invalid"
@@ -118,11 +121,13 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="birth_date">Date of birth</label>
+            <label htmlFor="birth_date" className="form-label">
+              Date of birth
+            </label>
             <Controller
               name="birth_date"
-              defaultValue={data?.birth_date}
               control={control}
+              defaultValue={data?.birth_date}
               rules={{ required: "Date of birth is required." }}
               render={({ field }) => (
                 <Flatpickr
@@ -137,16 +142,17 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="gender">Gender</label>
+            <label htmlFor="gender" className="form-label">
+              Gender
+            </label>
             <Controller
               name="gender"
-              defaultValue={data?.gender}
               control={control}
+              defaultValue={data?.gender}
               rules={{ required: "Gender is required." }}
               render={({ field }) => (
                 <select
                   {...field}
-                  id="gender"
                   className={`form-select ${errors?.gender && "is-invalid"}`}
                 >
                   <option value="M">Male</option>
@@ -158,16 +164,17 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="nationality">Nationality</label>
+            <label htmlFor="nationality" className="form-label">
+              Nationality
+            </label>
             <Controller
               name="nationality"
-              defaultValue={data?.nationality}
               control={control}
+              defaultValue={data?.nationality}
               rules={{ required: "Nationality is required." }}
               render={({ field }) => (
                 <select
                   {...field}
-                  id="nationality"
                   className={`form-select ${
                     errors?.nationality && "is-invalid"
                   }`}

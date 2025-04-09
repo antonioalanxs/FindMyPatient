@@ -4,29 +4,28 @@ from medical_specialties.serializers import MedicalSpecialtyPreviewSerializer
 from .models import Doctor
 
 
-class DoctorSerializer(serializers.ModelSerializer):
+class DoctorCompressSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
     medical_specialties = MedicalSpecialtyPreviewSerializer(many=True, read_only=True)
-    patients_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Doctor
         fields = [
             "id",
-            "first_name",
-            "last_name",
-            "collegiate_code",
-            "patients_count",
+            "name",
             "medical_specialties",
         ]
 
-    def get_patients_count(self, obj):
-        return obj.patients.count()
+    def get_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
 
 
 class DoctorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = "__all__"
+
 
 class DoctorPreviewSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()

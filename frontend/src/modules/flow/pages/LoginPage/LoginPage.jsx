@@ -61,7 +61,6 @@ function LoginPage() {
           <input
             type="text"
             placeholder="Username"
-            autoComplete="off"
             className={`form-control form-control-xl ${
               errors?.username && "is-invalid"
             }`}
@@ -77,7 +76,6 @@ function LoginPage() {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            autoComplete="off"
             className={`form-control form-control-xl form-password ${
               errors?.password && "is-invalid"
             }`}

@@ -35,40 +35,40 @@ function CreateGroupCard({ onCreate }) {
       subtitle="You only need a name to create a group."
     >
       <form onSubmit={handleSubmit(onSubmit)} className="form form-horizontal">
-        <div className="form-body">
-          <div className="row gx-4 align-items-center">
-            <div className="col-md-6 form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Name"
-                className={`form-control ${errors?.name && "is-invalid"}`}
-                {...register("name", {
-                  required: "This field is required.",
-                  minLength: {
-                    value: 5,
-                    message: "The name must be at least 5 characters.",
-                  },
-                })}
-              />
-              <InvalidFeedback>{errors.name?.message}</InvalidFeedback>
-            </div>
-
-            <div className="col-md-6">
-              <button
-                type="submit"
-                className="mt-3 px-4 py-1 btn btn-primary"
-                disabled={loading}
-              >
-                <i className="me-2 bi bi-person-fill-add fs-5"></i>{" "}
-                <span>Create a group</span>
-              </button>
-            </div>
+        <div className="row gx-4 align-items-center">
+          <div className="col-md-6 form-group">
+            <label htmlFor="name" className="form-label">
+              Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Name"
+              className={`form-control ${errors?.name && "is-invalid"}`}
+              {...register("name", {
+                required: "This field is required.",
+                minLength: {
+                  value: 5,
+                  message: "The name is at least 5 characters.",
+                },
+              })}
+            />
+            <InvalidFeedback>{errors.name?.message}</InvalidFeedback>
           </div>
 
-          <Alert content={error} onClose={() => setError(null)} />
+          <div className="col-md-6">
+            <button
+              type="submit"
+              className="mt-3 px-4 py-1 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2 bi bi-person-fill-add fs-5"></i>
+              <span>Create a group</span>
+            </button>
+          </div>
         </div>
+
+        <Alert content={error} onClose={() => setError(null)} />
       </form>
     </BaseCard>
   );

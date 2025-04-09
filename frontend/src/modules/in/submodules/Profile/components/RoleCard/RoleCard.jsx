@@ -14,14 +14,16 @@ function RoleCard() {
     >
       <div className="row">
         <form className="col-md-6 col-12">
-          <label htmlFor="role" className="d-none">
+          <label htmlFor="role" className="d-none form-label">
             Role
           </label>
           <input
+            id="role"
             type="text"
-            className="form-control form-control-lg mb-1"
+            placeholder="Role"
             value={textPipe.transform(user?.role)}
             disabled
+            className="form-control form-control-lg mb-1"
           />
           <p className="ms-1">
             <small className="text-muted">You cannot change your role.</small>

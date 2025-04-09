@@ -37,12 +37,13 @@ function ChangePasswordCard() {
       <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-12 form-group">
-            <label htmlFor="old_password">Old password</label>
+            <label htmlFor="old_password" className="form-label">
+              Old password
+            </label>
             <input
               id="old_password"
               type="password"
               placeholder="Old password"
-              autoComplete="off"
               className={`form-control form-control-lg form-password ${
                 errors?.old_password && "is-invalid"
               }`}
@@ -54,12 +55,13 @@ function ChangePasswordCard() {
           </div>
 
           <div className="col-12 form-group">
-            <label htmlFor="new_password">New password</label>
+            <label htmlFor="new_password" className="form-label">
+              New password
+            </label>
             <input
               id="new_password"
               type="password"
               placeholder="New password"
-              autoComplete="off"
               className={`form-control form-control-lg form-password ${
                 errors?.new_password && "is-invalid"
               }`}

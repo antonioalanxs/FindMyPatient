@@ -61,7 +61,6 @@ function PasswordResetPage() {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            autoComplete="off"
             className={`form-control form-control-xl form-password ${
               errors?.password && "is-invalid"
             }`}

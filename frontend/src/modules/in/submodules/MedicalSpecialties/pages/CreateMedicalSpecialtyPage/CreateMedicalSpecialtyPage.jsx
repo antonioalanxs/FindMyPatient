@@ -56,21 +56,23 @@ function CreateMedicalSpecialtyPage() {
         >
           <form className="row form-body" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-3 col-lg-4 form-group">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name" className="form-label">
+                Name
+              </label>
               <input
+                id="name"
                 type="text"
                 placeholder="Name"
-                id="name"
                 className={`form-control ${errors?.name && "is-invalid"}`}
                 {...register("name", {
                   required: "Name is required.",
                   minLength: {
                     value: 5,
-                    message: "The minimum length is 5 characters.",
+                    message: "Name is at least 5 characters.",
                   },
                   maxLength: {
                     value: 50,
-                    message: "The maximum length is 50 characters.",
+                    message: "Name is up to 50 characters.",
                   },
                 })}
               />
@@ -78,7 +80,9 @@ function CreateMedicalSpecialtyPage() {
             </div>
 
             <div className="col-lg-8 form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="description" className="form-label">
+                Description
+              </label>
               <textarea
                 id="description"
                 placeholder="Description"
@@ -90,11 +94,11 @@ function CreateMedicalSpecialtyPage() {
                   required: "Description is required.",
                   minLength: {
                     value: 25,
-                    message: "The minimum length is 25 characters.",
+                    message: "Description is at least 25 characters.",
                   },
                   maxLength: {
                     value: 100,
-                    message: "The maximum length is 100 characters.",
+                    message: "Description is up to 100 characters.",
                   },
                 })}
               />

@@ -73,25 +73,28 @@ function EditGroupPage() {
               <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
                 <div className="row gx-4">
                   <div className="col-md-4 form-group">
-                    <label htmlFor="id">ID</label>
+                    <label htmlFor="id" className="form-label">
+                      ID
+                    </label>
                     <input
-                      type="text"
                       id="id"
+                      type="text"
                       placeholder="ID"
-                      className={`form-control ${errors?.id && "is-invalid"}`}
                       defaultValue={group?.id}
                       disabled
                     />
                   </div>
 
                   <div className="col-md-4 form-group">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name" className="form-label">
+                      Name
+                    </label>
                     <input
-                      type="text"
                       id="name"
+                      type="text"
                       placeholder="Name"
-                      className={`form-control ${errors?.name && "is-invalid"}`}
                       defaultValue={group?.name}
+                      className={`form-control ${errors?.name && "is-invalid"}`}
                       {...register("name", {
                         required: "Name is required.",
                       })}
@@ -126,7 +129,7 @@ function EditGroupPage() {
                 }}
                 disabled={loadingForm}
               >
-                <i className="bi bi-trash me-2"></i>
+                <i className="me-2 bi bi-trash"></i>
                 <span>Delete group</span>
               </button>
             </BaseCard>

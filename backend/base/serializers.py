@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from doctors.serializers import DoctorSerializer
+from doctors.serializers import DoctorCompressSerializer
 from patients.serializers import PatientSerializer
 from .models import User
 
@@ -8,7 +8,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
     patient = PatientSerializer(required=False)
-    doctor = DoctorSerializer(required=False)
+    doctor = DoctorCompressSerializer(required=False)
 
     class Meta:
         model = User

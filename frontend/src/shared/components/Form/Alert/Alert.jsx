@@ -5,7 +5,7 @@ function Alert({ content, onClose, classes = "" }) {
     <div
       className={`alert alert-danger alert-dismissible show fade ${classes}`}
     >
-      <p dangerouslySetInnerHTML={{ __html: content }}></p>
+      <p dangerouslySetInnerHTML={{ __html: content }} className="truncate"></p>
       <button
         type="button"
         className="btn-close"
