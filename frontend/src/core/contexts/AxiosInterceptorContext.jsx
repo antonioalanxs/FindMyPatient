@@ -43,12 +43,16 @@ export const AxiosInterceptorProvider = ({ children }) => {
             notificationService.TYPE.SUCCESS
           );
 
+        method === HTTP_METHODS["PATCH"] &&
+          status === HTTP_STATUS["200_OK"] &&
+          notificationService.showToast(
+            "Changes saved.",
+            notificationService.TYPE.SUCCESS
+          );
+
         const message = response?.data?.message;
 
-        (method === HTTP_METHODS["POST"] ||
-          method === HTTP_METHODS["PUT"] ||
-          method === HTTP_METHODS["PATCH"] ||
-          method === HTTP_METHODS["DELETE"]) &&
+        (method === HTTP_METHODS["POST"] || method === HTTP_METHODS["PUT"]) &&
           (status === HTTP_STATUS["200_OK"] ||
             status === HTTP_STATUS["201_CREATED"]) &&
           message &&

@@ -63,10 +63,7 @@ class PatientViewSet(
 
         if serializer.is_valid():
             serializer.save()
-            return Response(
-                {'message': 'Changes saved.'},
-                status=status.HTTP_200_OK
-            )
+            return Response(status=status.HTTP_200_OK)
 
         return self.handle_serializer_is_not_valid_response(serializer)
 

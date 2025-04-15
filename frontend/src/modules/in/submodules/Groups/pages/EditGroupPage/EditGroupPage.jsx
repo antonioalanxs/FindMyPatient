@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
@@ -28,8 +28,6 @@ function EditGroupPage() {
       })
       .finally(() => setLoading(false));
   }, [id]);
-
-  const navigate = useNavigate();
 
   const {
     register,
