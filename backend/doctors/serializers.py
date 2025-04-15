@@ -21,10 +21,23 @@ class DoctorCompressSerializer(serializers.ModelSerializer):
         return f"{obj.first_name} {obj.last_name}"
 
 
-class DoctorUpdateSerializer(serializers.ModelSerializer):
+class DoctorSerializer(serializers.ModelSerializer):
+    medical_specialties = MedicalSpecialtyCompressSerializer(many=True, read_only=True)
+
     class Meta:
         model = Doctor
-        exclude = ["id"]
+        fields = [
+            "first_name",
+            "last_name",
+            "identity_card_number",
+            "birth_date",
+            "gender",
+            "nationality",
+            "email",
+            "phone_number",
+            "collegiate_code",
+            "medical_specialties",
+        ]
 
 
 class DoctorPreviewSerializer(serializers.ModelSerializer):

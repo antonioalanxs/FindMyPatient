@@ -67,3 +67,71 @@ class DoctorListTestCase(TestSetUp):
     def test_list_doctors_with_non_authenticated_user(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class DoctorRetrieveTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = lambda id: reverse("doctors-detail", kwargs={"id": id})
+
+    def test_retrieve_doctor(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_non_existing_doctor(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.non_existing_id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_retrieve_doctor_with_patient_who_is_assigned_to_it(self):
+        self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_doctor_with_patient_who_is_not_assigned_to_it(self):
+        self.client.force_authenticate(user=self.patient_without_address_and_primary_doctor)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_retrieve_doctor_with_doctor(self):
+        self.client.force_authenticate(user=self.another_doctor)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_retrieve_doctor_with_non_authenticated_user(self):
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class ListPatientsByDoctorTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = lambda id: reverse(
+            "doctors-patients",
+            kwargs={"id": id}
+        )
+
+    def test_list_patients_by_doctor(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_list_patients_by_doctor_with_owner_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_list_patients_by_doctor_with_non_owner_doctor(self):
+        self.client.force_authenticate(user=self.another_doctor)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_list_patients_by_doctor_with_patient(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_list_patients_by_doctor_with_non_authenticated_user(self):
+        response = self.client.get(self.url(self.doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

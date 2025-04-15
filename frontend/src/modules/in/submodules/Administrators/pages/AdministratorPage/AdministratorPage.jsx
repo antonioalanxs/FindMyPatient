@@ -3,15 +3,13 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useTitle } from "@/core/hooks/useTitle";
 import { administratorService } from "@/core/services/AdministratorService";
-import { userService } from "@/core/services/UserService";
 import { userAdapter } from "@/core/adapters/UserAdapter";
 import { notificationService } from "@/core/services/NotificationService";
 import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
-import BasicInformationCard from "@/modules/in/components/BasicInformationCard/BasicInformationCard";
-import ContactInformationCard from "@/modules/in/components/ContactInformationCard/ContactInformationCard";
 import { ROUTES } from "@/core/constants/routes";
+import { userService } from "@/core/services/UserService";
 
 function AdministratorPage() {
   useTitle({ title: "Administrator" });
@@ -62,7 +60,7 @@ function AdministratorPage() {
                         "Really delete this administrator?",
                         "This action could be irreversible.",
                         async () =>
-                          await groupService.destroy(id).then(() => {
+                          await userService.destroy(id).then(() => {
                             navigate(ROUTES.IN.ADMINISTRATORS.BASE);
                           })
                       );

@@ -97,8 +97,13 @@ function MedicalSpecialtyPage() {
             </BaseCard>
 
             <GenericList
-              fetchService={() =>
-                medicalSpecialtyService.doctorsByMedicalSpecialty(id)
+              fetchService={(searchTerm, page, pageSize) =>
+                medicalSpecialtyService.doctorsByMedicalSpecialty(
+                  id,
+                  searchTerm,
+                  page,
+                  pageSize
+                )
               }
               adapter={userAdapter}
               card={{

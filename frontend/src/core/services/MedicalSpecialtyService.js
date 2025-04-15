@@ -29,8 +29,15 @@ class MedicalSpecialtyService {
     return axiosInstance.get(`${this._prefix}/${id}/`);
   };
 
-  doctorsByMedicalSpecialty = (id) => {
-    return axiosInstance.get(`${this._prefix}/${id}/doctors`);
+  doctorsByMedicalSpecialty = (
+    id,
+    query,
+    page,
+    pageSize = DEFAULT_PAGINATION_SIZE
+  ) => {
+    return axiosInstance.get(
+      `${this._prefix}/${id}/doctors?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
+    );
   };
 
   destroy = (id) => {
