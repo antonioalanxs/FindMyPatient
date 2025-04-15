@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
-import countryList from "react-select-country-list";
 
 import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { userService } from "@/core/services/UserService";
@@ -11,11 +11,12 @@ import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import Button from "@/modules/in/components/Form/Button/Button";
+import { COUNTRIES } from "@/core/constants/countries";
 
-function BasicInformationCard({ data }) {
-  const countries = countryList().getData();
+function BasicInformationCard({ user }) {
+  const { id } = useParams();
 
-  const { user, setUser } = useContext(AuthenticationContext);
+  const { user: token, setUser } = useContext(AuthenticationContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -36,14 +37,14 @@ function BasicInformationCard({ data }) {
       ),
     };
 
-    if (user?.user_id === data?.id) {
+    if (!id) {
       setUser((previousUser) => ({
         ...previousUser,
         first_name: formData.first_name,
       }));
 
       await storageService.save(storageService.USER, {
-        ...user,
+        ...token,
         first_name: formData.first_name,
       });
     }
@@ -51,16 +52,13 @@ function BasicInformationCard({ data }) {
     setLoading(true);
 
     userService
-      .update(data?.id, formData)
+      .update(id || token?.user_id, formData)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
-    <BaseCard
-      title="Basic Information"
-      subtitle="Information through which one may be identified."
-    >
+    <BaseCard title="Basic Information">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6 form-group">
@@ -71,7 +69,7 @@ function BasicInformationCard({ data }) {
               id="first_name"
               type="text"
               placeholder="First name"
-              defaultValue={data?.first_name}
+              defaultValue={user?.first_name}
               className={`form-control ${errors?.first_name && "is-invalid"}`}
               {...register("first_name", {
                 required: "First name is required.",
@@ -88,7 +86,7 @@ function BasicInformationCard({ data }) {
               id="last_name"
               type="text"
               placeholder="Last name"
-              defaultValue={data?.last_name}
+              defaultValue={user?.last_name}
               className={`form-control ${errors?.last_name && "is-invalid"}`}
               {...register("last_name", {
                 required: "Last name is required.",
@@ -105,7 +103,7 @@ function BasicInformationCard({ data }) {
               id="identity_card_number"
               type="text"
               placeholder="Identity card"
-              defaultValue={data?.identity_card_number}
+              defaultValue={user?.identity_card_number}
               className={`form-control ${
                 errors?.identity_card_number && "is-invalid"
               }`}
@@ -127,7 +125,7 @@ function BasicInformationCard({ data }) {
             <Controller
               name="birth_date"
               control={control}
-              defaultValue={data?.birth_date}
+              defaultValue={user?.birth_date}
               rules={{ required: "Date of birth is required." }}
               render={({ field }) => (
                 <Flatpickr
@@ -148,7 +146,7 @@ function BasicInformationCard({ data }) {
             <Controller
               name="gender"
               control={control}
-              defaultValue={data?.gender}
+              defaultValue={user?.gender}
               rules={{ required: "Gender is required." }}
               render={({ field }) => (
                 <select
@@ -170,7 +168,7 @@ function BasicInformationCard({ data }) {
             <Controller
               name="nationality"
               control={control}
-              defaultValue={data?.nationality}
+              defaultValue={user?.nationality}
               rules={{ required: "Nationality is required." }}
               render={({ field }) => (
                 <select
@@ -179,7 +177,7 @@ function BasicInformationCard({ data }) {
                     errors?.nationality && "is-invalid"
                   }`}
                 >
-                  {countries.map(({ value, label }) => (
+                  {COUNTRIES.map(({ value, label }) => (
                     <option key={value} value={value}>
                       {label}
                     </option>

@@ -51,7 +51,7 @@ const NavigationBar = ({ tabs = defaultTabs, actions = [] }) => {
               <div
                 key={tab.id}
                 id={tab.id}
-                className={`tab-pane fade ${index === 0 ? "show active" : ""}`}
+                className={`tab-pane fade ${index === 0 && "show active"}`}
                 role="tabpanel"
                 aria-labelledby={`${tab.id}-tab`}
               >
@@ -62,7 +62,7 @@ const NavigationBar = ({ tabs = defaultTabs, actions = [] }) => {
         </div>
 
         <div className="col-xl-4">
-          <div className="card mb-4 mb-xl-0 sticky-top">
+          <div className="sticky-top mb-4 mb-xl-0 card shadow-sm">
             <div className="card-content">
               <div className="card-body">
                 <ul

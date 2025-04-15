@@ -30,7 +30,7 @@ function PatientsPage() {
             link: {
               label: "Create a patient",
               path: ROUTES.IN.PATIENTS.ABSOLUTE.CREATE,
-              icon: "bi-person-fill-add",
+              icon: "bi-people-fill",
             },
           },
           edit: {

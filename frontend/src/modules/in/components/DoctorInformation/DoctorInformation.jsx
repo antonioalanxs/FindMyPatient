@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { doctorService } from "@/core/services/DoctorService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
@@ -9,6 +11,11 @@ import Button from "@/modules/in/components/Form/Button/Button";
 import Badges from "@/shared/components/Badges/Badges";
 
 function DoctorInformation({ doctor }) {
+  const { id } = useParams();
+  const { user } = useContext(AuthenticationContext);
+
+  const [ID, setID] = useState(id || user?.user_id);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -21,17 +28,14 @@ function DoctorInformation({ doctor }) {
   const onSubmit = async (data) => {
     setLoading(true);
     doctorService
-      .update(doctor?.id, data)
+      .update(ID, data)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
     <>
-      <BaseCard
-        title="Collegiate code"
-        subtitle="It identifies the doctor in the medical college."
-      >
+      <BaseCard title="Collegiate code">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <div className="col-md-6 form-group">
@@ -48,13 +52,13 @@ function DoctorInformation({ doctor }) {
                 }`}
                 {...register("collegiate_code", {
                   required: "Collegiate code is required.",
-                  maxLength: {
-                    value: 10,
-                    message: "Collegiate code is up to 10 characters.",
-                  },
                   minLength: {
                     value: 6,
                     message: "Collegiate code is at least 6 characters.",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "Collegiate code is up to 10 characters.",
                   },
                 })}
               />
@@ -68,10 +72,7 @@ function DoctorInformation({ doctor }) {
         </form>
       </BaseCard>
 
-      <BaseCard
-        title="Medical specialties"
-        subtitle="Areas of medicine in which the doctor is specialized."
-      >
+      <BaseCard title="Medical specialties">
         <div className="row">
           <div className="col-md-6">
             <Badges items={doctor?.medical_specialties} />

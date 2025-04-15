@@ -27,7 +27,7 @@ function DoctorsPage() {
             link: {
               label: "Create a doctor",
               path: ROUTES.IN.DOCTORS.ABSOLUTE.CREATE,
-              icon: "bi-person-fill-add",
+              icon: "bi-people-fill",
             },
           },
           edit: {

@@ -27,7 +27,6 @@ class AdministratorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Administrator
         fields = [
-            "id",
             "first_name",
             "last_name",
             "identity_card_number",

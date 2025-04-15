@@ -1,6 +1,6 @@
 const BaseCard = ({ title, subtitle, children }) => {
   return (
-    <article className="card">
+    <article className="card shadow-sm">
       {title && (
         <header className="card-header pb-1">
           <h4 className="card-title">{title}</h4>

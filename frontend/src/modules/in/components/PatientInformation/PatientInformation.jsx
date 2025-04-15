@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { patientService } from "@/core/services/PatientService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
@@ -9,7 +11,12 @@ import Button from "@/modules/in/components/Form/Button/Button";
 import AddressCard from "@/modules/in/components/AddressCard/AddressCard";
 import Badges from "@/shared/components/Badges/Badges";
 
-function PatientInformation({ patient, showPrimaryDoctor = false }) {
+function PatientInformation({ patient }) {
+  const { id } = useParams();
+
+  const { user } = useContext(AuthenticationContext);
+
+  const [ID, setID] = useState(id || user?.user_id);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,17 +29,14 @@ function PatientInformation({ patient, showPrimaryDoctor = false }) {
   const onSubmit = async (data) => {
     setLoading(true);
     patientService
-      .update(patient?.id, data)
+      .update(ID, data)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
     <>
-      <BaseCard
-        title="Social security code"
-        subtitle="It identifies a patient in the health system."
-      >
+      <BaseCard title="Social security code">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
             <div className="col-md-6 form-group">
@@ -73,38 +77,27 @@ function PatientInformation({ patient, showPrimaryDoctor = false }) {
 
       <AddressCard id={patient?.id} address={patient?.address} />
 
-      {showPrimaryDoctor && (
-        <BaseCard
-          title="Primary Doctor"
-          subtitle="It cares for your health and can always find you."
-        >
-          <div className="d-flex flex-column gap-3">
-            <div>
-              <p>
-                <strong>Name</strong>
-              </p>
-              <p>
-                {`${patient?.primary_doctor?.first_name} ${patient?.primary_doctor?.last_name}`}
-              </p>
-            </div>
+      <BaseCard title="Primary doctor">
+        <div className="row">
+          <div className="col-md-5 form-group">
+            <label htmlFor="name" className="form-label">
+              Name
+            </label>
+            <p id="name" className="form-control-static truncate">
+              {patient?.primary_doctor?.name}
+            </p>
+          </div>
 
-            <div>
-              <p>
-                <strong>Collegiate code</strong>
-              </p>
-              <p>{patient?.primary_doctor?.collegiate_code}</p>
-            </div>
-
-            <div>
-              <p className="mb-1">
-                <strong>Medical specialties</strong>
-              </p>
-
+          <div className="col-md-7 form-group">
+            <label htmlFor="medical_specialties" className="form-label">
+              Medical specialties
+            </label>
+            <div id="medical_specialties" className="form-control-static">
               <Badges items={patient?.primary_doctor?.medical_specialties} />
             </div>
           </div>
-        </BaseCard>
-      )}
+        </div>
+      </BaseCard>
     </>
   );
 }

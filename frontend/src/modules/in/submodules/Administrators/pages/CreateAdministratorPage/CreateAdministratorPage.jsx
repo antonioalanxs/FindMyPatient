@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Flatpickr from "react-flatpickr";
-import countryList from "react-select-country-list";
 
 import { administratorService } from "@/core/services/AdministratorService";
 import { useTitle } from "@/core/hooks/useTitle";
@@ -11,13 +10,11 @@ import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/shared/components/Form/Alert/Alert";
-import Button from "@/modules/in/components/Form/Button/Button";
+import { COUNTRIES } from "@/core/constants/countries";
 import { ROUTES } from "@/core/constants/routes";
 
 function CreateAdministratorPage() {
   useTitle({ title: "Create an administrator" });
-
-  const countries = countryList().getData();
 
   const {
     register,
@@ -68,11 +65,8 @@ function CreateAdministratorPage() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          <div className="col-xxl-8">
-            <BaseCard
-              title="Basic Information"
-              subtitle="Information through which an administrator may be identified."
-            >
+          <div className="col-lg-8">
+            <BaseCard title="Basic Information">
               <div className="row">
                 <div className="col-md-6 form-group">
                   <label htmlFor="first_name" className="form-label">
@@ -108,30 +102,6 @@ function CreateAdministratorPage() {
                     })}
                   />
                   <InvalidFeedback message={errors?.last_name?.message} />
-                </div>
-
-                <div className="col-md-6 form-group">
-                  <label htmlFor="identity_card_number" className="form-label">
-                    Identity card
-                  </label>
-                  <input
-                    id="identity_card_number"
-                    type="text"
-                    placeholder="Identity card"
-                    className={`form-control ${
-                      errors?.identity_card_number && "is-invalid"
-                    }`}
-                    {...register("identity_card_number", {
-                      required: "Identity card is required.",
-                      maxLength: {
-                        value: 20,
-                        message: "Identity card is up to 20 characters.",
-                      },
-                    })}
-                  />
-                  <InvalidFeedback
-                    message={errors?.identity_card_number?.message}
-                  />
                 </div>
 
                 <div className="col-md-6 form-group">
@@ -195,7 +165,7 @@ function CreateAdministratorPage() {
                         }`}
                       >
                         <option value="">Select a nationality</option>
-                        {countries.map(({ value, label }) => (
+                        {COUNTRIES.map(({ value, label }) => (
                           <option key={value} value={value}>
                             {label}
                           </option>
@@ -209,13 +179,34 @@ function CreateAdministratorPage() {
             </BaseCard>
           </div>
 
-          <div className="col-xxl-8">
-            <BaseCard
-              title="Contact Information"
-              subtitle="Information through which an administrator may be contacted."
-            >
+          <div className="col-lg-4">
+            <BaseCard title="Contact Information">
               <div className="row">
-                <div className="col-md-6 form-group">
+                <div className="form-group">
+                  <label htmlFor="identity_card_number" className="form-label">
+                    Identity card
+                  </label>
+                  <input
+                    id="identity_card_number"
+                    type="text"
+                    placeholder="Identity card"
+                    className={`form-control ${
+                      errors?.identity_card_number && "is-invalid"
+                    }`}
+                    {...register("identity_card_number", {
+                      required: "Identity card is required.",
+                      maxLength: {
+                        value: 20,
+                        message: "Identity card is up to 20 characters.",
+                      },
+                    })}
+                  />
+                  <InvalidFeedback
+                    message={errors?.identity_card_number?.message}
+                  />
+                </div>
+
+                <div className="form-group">
                   <label htmlFor="email" className="form-label">
                     Email
                   </label>
@@ -231,7 +222,7 @@ function CreateAdministratorPage() {
                   <InvalidFeedback message={errors?.email?.message} />
                 </div>
 
-                <div className="col-md-6 form-group">
+                <div className="form-group">
                   <label htmlFor="phone_number" className="form-label">
                     Phone number
                   </label>
@@ -266,7 +257,23 @@ function CreateAdministratorPage() {
           </div>
         </div>
 
-        <Button clear loading={loadingForm} text="Create administrator" />
+        <div className="row gx-0 gap-3">
+          <button
+            type="submit"
+            className="col-sm-5 col-xl-4 col-xxl-3 btn btn-primary"
+            disabled={loadingForm}
+          >
+            Create
+          </button>
+
+          <button
+            type="reset"
+            className="col-sm-2 col-xxl-1 btn btn-outline-primary"
+            disabled={loadingForm}
+          >
+            Clear
+          </button>
+        </div>
       </form>
     </>
   );

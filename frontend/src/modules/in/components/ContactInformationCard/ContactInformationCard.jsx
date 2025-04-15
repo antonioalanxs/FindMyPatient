@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { userService } from "@/core/services/UserService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
@@ -8,6 +10,10 @@ import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFee
 import Button from "@/modules/in/components/Form/Button/Button";
 
 function ContactInformationCard({ user }) {
+  const { id } = useParams();
+
+  const { user: token } = useContext(AuthenticationContext);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -20,16 +26,13 @@ function ContactInformationCard({ user }) {
   const onSubmit = async (data) => {
     setLoading(true);
     userService
-      .update(user?.id, data)
+      .update(id || token?.user_id, data)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
-    <BaseCard
-      title="Contact Information"
-      subtitle="Information through which contact may be made."
-    >
+    <BaseCard title="Contact Information">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6 form-group">

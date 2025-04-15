@@ -9,7 +9,8 @@ class SerializerValidationErrorResponseMixin:
         for key, value in errors.items():
             if isinstance(value, dict):
                 messages.extend(self.__extract_error_messages(value))
-            elif isinstance(value, list):
+
+            if isinstance(value, list):
                 for error in value:
                     messages.append(error)
 

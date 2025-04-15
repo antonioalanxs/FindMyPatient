@@ -38,7 +38,7 @@ const ElementsPerPage = ({
   };
 
   return (
-    <div className="container-fluid">
+    <div className="px-0 container-fluid">
       <div className="row">
         <div className="col-3 col-md-2 col-5">
           <div className="form-group">
@@ -56,13 +56,15 @@ const ElementsPerPage = ({
             </select>
           </div>
         </div>
-        <div className="col d-sm-block d-none">
-          <p className="text-muted mt-2 m-0 text-sm-start text-end">
+
+        <div className="col d-md-block d-none">
+          <p className="mt-2 m-0 text-sm-start text-end text-muted">
             elements per page
           </p>
         </div>
+
         <div className="col">
-          <p className="text-muted mt-2 m-0 text-end">
+          <p className="mt-2 m-0 text-end text-muted">
             Total {totalElements} elements
           </p>
         </div>

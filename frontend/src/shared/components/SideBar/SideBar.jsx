@@ -115,7 +115,7 @@ function SideBar() {
       </button>
 
       <div id="sidebar">
-        <aside className="sidebar-wrapper">
+        <aside className="sidebar-wrapper shadow-sm">
           <header className="sidebar-header d-flex justify-content-between align-items-center">
             <Link to={ROUTES.ROOT} className="text-decoration-none">
               <h1 className="mt-1 fs-5 text-primary">{BRAND_NAME}</h1>

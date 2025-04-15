@@ -30,13 +30,10 @@ function ChangePasswordCard() {
   }
 
   return (
-    <BaseCard
-      title="Change password"
-      subtitle="For security reasons, please change your password regularly and do not share it with anyone."
-    >
-      <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
-        <div className="row">
-          <div className="col-12 form-group">
+    <BaseCard title="Change password">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="row gy-2">
+          <div className="col-md-6 form-group">
             <label htmlFor="old_password" className="form-label">
               Old password
             </label>
@@ -44,9 +41,7 @@ function ChangePasswordCard() {
               id="old_password"
               type="password"
               placeholder="Old password"
-              className={`form-control form-control-lg form-password ${
-                errors?.old_password && "is-invalid"
-              }`}
+              className={`form-control ${errors?.old_password && "is-invalid"}`}
               {...register("old_password", {
                 required: "Old password is required.",
               })}
@@ -54,7 +49,7 @@ function ChangePasswordCard() {
             <InvalidFeedback message={errors?.old_password?.message} />
           </div>
 
-          <div className="col-12 form-group">
+          <div className="col-md-6 form-group">
             <label htmlFor="new_password" className="form-label">
               New password
             </label>
@@ -62,9 +57,7 @@ function ChangePasswordCard() {
               id="new_password"
               type="password"
               placeholder="New password"
-              className={`form-control form-control-lg form-password ${
-                errors?.new_password && "is-invalid"
-              }`}
+              className={`form-control ${errors?.new_password && "is-invalid"}`}
               {...register("new_password", {
                 required: "New password is required.",
               })}

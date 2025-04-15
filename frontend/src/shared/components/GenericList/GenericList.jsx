@@ -60,22 +60,20 @@ const GenericList = ({
       {actions?.create?.component?.(fetchData)}
 
       <BaseCard title={card?.title} subtitle={card?.subtitle}>
-        <div className="d-flex gap-2 flex-column">
+        <div className="d-flex gap-3 flex-column">
           <div className="row gx-0 gy-3 align-items-start justify-content-md-between">
             {actions?.create?.link && (
               <Link
                 to={actions?.create?.link?.path}
-                className="col-12 col-md-4 order-md-1 py-1 text-center btn btn-primary"
+                className="col-md-4 col-xxl-3 order-md-1 btn btn-primary"
               >
-                <i
-                  className={`me-2 bi ${actions?.create?.link?.icon} fs-5`}
-                ></i>
+                <i className={`me-2 bi ${actions?.create?.link?.icon}`}></i>
                 <span>{actions?.create?.link?.label}</span>
               </Link>
             )}
 
             {actions?.search && (
-              <div className="col-12 col-md-5 order-md-0">
+              <div className="col-md-5 col-xl-4 order-md-0">
                 <SearchBar
                   onSearchSubmitted={(term) => {
                     setSearchTerm(term);

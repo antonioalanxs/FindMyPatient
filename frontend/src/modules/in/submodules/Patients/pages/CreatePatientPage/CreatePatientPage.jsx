@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import Flatpickr from "react-flatpickr";
-import countryList from "react-select-country-list";
 
 import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { userService } from "@/core/services/UserService";
@@ -16,13 +15,12 @@ import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFee
 import Load from "@/shared/components/Load/Load";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import Badges from "@/shared/components/Badges/Badges";
+import { COUNTRIES } from "@/core/constants/countries";
 import { ROUTES } from "@/core/constants/routes";
 import { ROLES } from "@/core/constants/roles";
 
 function CreatePatientPage() {
   useTitle({ title: "Create a patient" });
-
-  const countries = countryList().getData();
 
   const { user } = useContext(AuthenticationContext);
 
@@ -50,11 +48,7 @@ function CreatePatientPage() {
 
   const primaryDoctorCardContent = () => {
     if (loading) {
-      return (
-        <div className="py-4">
-          <Load />
-        </div>
-      );
+      return <Load classes="py-4" />;
     }
 
     if (doctor) {
@@ -158,10 +152,7 @@ function CreatePatientPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-lg-8">
-            <BaseCard
-              title="Basic Information"
-              subtitle="Information through which one may be identified."
-            >
+            <BaseCard title="Basic Information">
               <div className="row">
                 <div className="col-md-6 form-group">
                   <label htmlFor="first_name" className="form-label">
@@ -284,7 +275,7 @@ function CreatePatientPage() {
                         }`}
                       >
                         <option value="">Select a nationality</option>
-                        {countries.map(({ value, label }) => (
+                        {COUNTRIES.map(({ value, label }) => (
                           <option key={value} value={value}>
                             {label}
                           </option>
@@ -299,10 +290,7 @@ function CreatePatientPage() {
           </div>
 
           <div className="col-lg-4">
-            <BaseCard
-              title="Contact Information"
-              subtitle="Information through which one may be contacted."
-            >
+            <BaseCard title="Contact Information">
               <div className="form-group">
                 <label htmlFor="social_security_code" className="form-label">
                   Social security code
@@ -331,53 +319,51 @@ function CreatePatientPage() {
                 />
               </div>
 
-              <div className="row gx-0">
-                <div className="form-group">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    className={`form-control ${errors?.email && "is-invalid"}`}
-                    {...register("email", {
-                      required: "Email is required.",
-                    })}
-                  />
-                  <InvalidFeedback message={errors?.email?.message} />
-                </div>
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  className={`form-control ${errors?.email && "is-invalid"}`}
+                  {...register("email", {
+                    required: "Email is required.",
+                  })}
+                />
+                <InvalidFeedback message={errors?.email?.message} />
+              </div>
 
-                <div className="form-group">
-                  <label htmlFor="phone_number" className="form-label">
-                    Phone number
-                  </label>
-                  <input
-                    id="phone_number"
-                    type="tel"
-                    placeholder="Phone number"
-                    className={`form-control ${
-                      errors?.phone_number && "is-invalid"
-                    }`}
-                    {...register("phone_number", {
-                      required: "Phone is required.",
-                      maxLength: {
-                        value: 15,
-                        message: "Phone number is up to 15 characters.",
-                      },
-                      minLength: {
-                        value: 7,
-                        message: "Phone number is at least 7 characters.",
-                      },
-                      pattern: {
-                        value: /^\+[0-9]*$/,
-                        message:
-                          "Phone number can only contain numbers and the '+' sign for its prefix.",
-                      },
-                    })}
-                  />
-                  <InvalidFeedback message={errors?.phone_number?.message} />
-                </div>
+              <div className="form-group">
+                <label htmlFor="phone_number" className="form-label">
+                  Phone number
+                </label>
+                <input
+                  id="phone_number"
+                  type="tel"
+                  placeholder="Phone number"
+                  className={`form-control ${
+                    errors?.phone_number && "is-invalid"
+                  }`}
+                  {...register("phone_number", {
+                    required: "Phone is required.",
+                    maxLength: {
+                      value: 15,
+                      message: "Phone number is up to 15 characters.",
+                    },
+                    minLength: {
+                      value: 7,
+                      message: "Phone number is at least 7 characters.",
+                    },
+                    pattern: {
+                      value: /^\+[0-9]*$/,
+                      message:
+                        "Phone number can only contain numbers and the '+' sign for its prefix.",
+                    },
+                  })}
+                />
+                <InvalidFeedback message={errors?.phone_number?.message} />
               </div>
             </BaseCard>
           </div>
@@ -385,7 +371,7 @@ function CreatePatientPage() {
 
         <div className="row">
           <div className="col-lg-7 col-xxl-8">
-            <BaseCard title="Address" subtitle="The place of residence.">
+            <BaseCard title="Address">
               <div className="row">
                 <div className="col-md-6">
                   <div className="row gx-3">
@@ -501,7 +487,7 @@ function CreatePatientPage() {
                         }`}
                       >
                         <option value="">Select a country</option>
-                        {countries.map(({ value, label }) => (
+                        {COUNTRIES.map(({ value, label }) => (
                           <option key={value} value={value}>
                             {label}
                           </option>
@@ -518,10 +504,7 @@ function CreatePatientPage() {
           </div>
 
           <div className="col-lg-5 col-xxl-4">
-            <BaseCard
-              title="Primary doctor"
-              subtitle="The doctor in charge of the patient."
-            >
+            <BaseCard title="Primary doctor">
               {primaryDoctorCardContent()}
             </BaseCard>
           </div>

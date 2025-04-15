@@ -8,13 +8,13 @@ import {
 import Map from "@/shared/components/Map/Map";
 import { fetchAddress } from "@/core/utilities/address";
 
-const MapReceiver = ({ patient, doctor }) => {
+const MapServer = ({ patient, doctor }) => {
   const [position, setPosition] = useState(null);
   const [path, setPath] = useState([]);
   const [address, setAddress] = useState(null);
   const [error, setError] = useState(false);
 
-  const receive = useCallback(() => {
+  const server = useCallback(() => {
     setError(false);
 
     const webSocket = new WebSocket(WEB_SOCKET_TRACKING_URL(patient, doctor));
@@ -54,36 +54,39 @@ const MapReceiver = ({ patient, doctor }) => {
   }, [patient, doctor]);
 
   useEffect(() => {
-    receive();
-  }, [receive]);
+    server();
+  }, [server]);
 
   if (error) {
     return (
-      <div>
+      <>
         <div className="alert alert-warning" role="alert">
-          It seems that the patient is not sharing its location.
+          <p className="truncate">
+            It seems that the patient is not sharing its location.
+          </p>
         </div>
 
         <div className="mt-3 row justify-content-end">
-          <div className="col col-sm-5 col-md-4 justify-content-end">
+          <div className="col-sm-6 col-lg-4">
             <button
               type="submit"
               className="w-100 btn btn-primary"
-              onClick={receive}
+              onClick={server}
             >
-              Refresh
+              <i className="me-2 bi bi-arrow-clockwise" />
+              <span>Refresh</span>
             </button>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
   if (!position || !address) {
-    return <Load />;
+    return <Load classes="mb-2" />;
   }
 
   return <Map position={position} path={path} address={address} />;
 };
 
-export default MapReceiver;
+export default MapServer;

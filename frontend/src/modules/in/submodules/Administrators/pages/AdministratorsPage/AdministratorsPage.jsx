@@ -30,11 +30,11 @@ function AdministratorsPage() {
             link: {
               label: "Create an administrator",
               path: ROUTES.IN.ADMINISTRATORS.ABSOLUTE.CREATE,
-              icon: "bi-person-fill-add",
+              icon: "bi-people-fill",
             },
           },
           edit: {
-            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.DETAIL(id),
+            path: (id) => ROUTES.IN.ADMINISTRATORS.ABSOLUTE.EDIT(id),
           },
           delete: {
             action: (id) => userService.destroy(id),

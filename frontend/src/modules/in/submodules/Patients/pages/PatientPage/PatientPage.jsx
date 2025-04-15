@@ -13,7 +13,7 @@ import PatientInformation from "@/modules/in/components/PatientInformation/Patie
 import { ROUTES } from "@/core/constants/routes";
 
 function PatientPage() {
-  useTitle({ title: "Manage patient" });
+  useTitle({ title: "Patient" });
 
   const { id } = useParams();
 
@@ -39,12 +39,12 @@ function PatientPage() {
       content: <PatientRealTimeLocationCard user={user} />,
     },
     {
-      id: "information",
-      label: "Information",
-      icon: <i className="bi bi-info-circle-fill"></i>,
+      id: "sheet",
+      label: "Sheet",
+      icon: <i className="bi bi-file-earmark-text-fill"></i>,
       content: (
         <>
-          <BasicInformationCard data={user} />
+          <BasicInformationCard user={user} />
           <ContactInformationCard user={user} />
           <PatientInformation patient={user?.patient} />
         </>
@@ -53,7 +53,7 @@ function PatientPage() {
     {
       id: "clinical-history",
       label: "Clinical history",
-      icon: <i className="bi bi-file-earmark-medical-fill"></i>,
+      icon: <i className="bi bi-journal-medical"></i>,
       content: null,
     },
     {
@@ -75,8 +75,8 @@ function PatientPage() {
   ) : (
     <>
       <Header
-        title="Patient"
-        subtitle="Here you can manage a patient."
+        title="Visualize a patient"
+        subtitle="Here you can visualize the patient information and its real-time location."
         link={ROUTES.IN.PATIENTS.BASE}
       />
 

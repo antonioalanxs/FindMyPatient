@@ -6,15 +6,11 @@ from rest_framework.permissions import IsAuthenticated
 
 from .serializers import (
     PatientPreviewSerializer,
-    PatientUpdateSerializer,
-    PatientCreateSerializer
+    PatientSerializer
 )
 from permissions.decorators import method_permission_classes
 from permissions.users import IsDoctorOrIsAdministrator
-from permissions.patients import (
-    IsAdministratorOrIsPatientAssignedDoctor,
-    IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
-)
+from permissions.patients import IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
 from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
@@ -35,6 +31,7 @@ class PatientViewSet(
     model = Patient
     queryset = None
     list_serializer_class = PatientPreviewSerializer
+    serializer_class = PatientSerializer
 
     def get_object(self):
         return get_object_or_404(self.model, id=self.kwargs['id'])
@@ -58,7 +55,7 @@ class PatientViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf])
     def partial_update(self, request, *args, **kwargs):
-        serializer = PatientUpdateSerializer(
+        serializer = self.serializer_class(
             self.get_object(),
             data=request.data,
             partial=True
@@ -75,7 +72,7 @@ class PatientViewSet(
 
     @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministrator])
     def create(self, request, *args, **kwargs):
-        serializer = PatientCreateSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             patient, random_password = serializer.save()

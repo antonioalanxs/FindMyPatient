@@ -1,18 +1,19 @@
 from rest_framework import serializers
 
-from medical_specialties.serializers import MedicalSpecialtyPreviewSerializer
+from medical_specialties.serializers import MedicalSpecialtyCompressSerializer
 from .models import Doctor
 
 
 class DoctorCompressSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
-    medical_specialties = MedicalSpecialtyPreviewSerializer(many=True, read_only=True)
+    medical_specialties = MedicalSpecialtyCompressSerializer(many=True, read_only=True)
 
     class Meta:
         model = Doctor
         fields = [
             "id",
             "name",
+            "collegiate_code",
             "medical_specialties",
         ]
 
@@ -23,7 +24,7 @@ class DoctorCompressSerializer(serializers.ModelSerializer):
 class DoctorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
-        fields = "__all__"
+        exclude = ["id"]
 
 
 class DoctorPreviewSerializer(serializers.ModelSerializer):

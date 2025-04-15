@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
-import countryList from "react-select-country-list";
+import { useParams } from "react-router-dom";
 
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { addressService } from "@/core/services/AddressService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Button from "@/modules/in/components/Form/Button/Button";
+import { COUNTRIES } from "@/core/constants/countries";
 
-function AddressCard({ id, address }) {
-  const countries = countryList().getData();
+function AddressCard({ address }) {
+  const { id } = useParams();
+
+  const { user } = useContext(AuthenticationContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,13 +28,13 @@ function AddressCard({ id, address }) {
   const onSubmit = async (data) => {
     setLoading(true);
     addressService
-      .update(id, data)
+      .update(id || user?.user_id, data)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
-    <BaseCard title="Address" subtitle="The place of residence.">
+    <BaseCard title="Address">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="form-group col-md-6">
@@ -133,7 +137,7 @@ function AddressCard({ id, address }) {
                   {...field}
                   className={`form-select ${errors?.country && "is-invalid"}`}
                 >
-                  {countries.map((country, index) => (
+                  {COUNTRIES.map((country, index) => (
                     <option key={index} value={country.value}>
                       {country.label}
                     </option>

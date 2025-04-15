@@ -6,7 +6,7 @@ from rest_framework import status, viewsets, mixins, views
 
 from .serializers import (
     MedicalSpecialtySerializer,
-    MedicalSpecialtyUpsetSerializer
+    MedicalSpecialtyPreviewSerializer
 )
 from doctors.serializers import DoctorPreviewSerializer
 from .models import MedicalSpecialty
@@ -53,8 +53,8 @@ class MedicalSpecialtyViewSet(
 ):
     model = MedicalSpecialty
     queryset = None
+    list_serializer_class = MedicalSpecialtyPreviewSerializer
     serializer_class = MedicalSpecialtySerializer
-    serializer_upset_class = MedicalSpecialtyUpsetSerializer
 
     def get_object(self):
         return get_object_or_404(
@@ -68,7 +68,7 @@ class MedicalSpecialtyViewSet(
         return self.get_paginated_response_(
             request,
             queryset,
-            self.serializer_class
+            self.list_serializer_class
         )
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
@@ -79,7 +79,7 @@ class MedicalSpecialtyViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def partial_update(self, request, *args, **kwargs):
-        serializer = self.serializer_upset_class(
+        serializer = self.serializer_class(
             self.get_object(),
             data=request.data,
             partial=True
@@ -102,7 +102,7 @@ class MedicalSpecialtyViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_upset_class(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             serializer.save()

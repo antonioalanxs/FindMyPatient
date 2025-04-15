@@ -28,27 +28,20 @@ class PatientPreviewSerializer(serializers.ModelSerializer):
         return f"{obj.first_name} {obj.last_name}"
 
 
-class PatientSerializer(serializers.ModelSerializer):
+class PatientCompressSerializer(serializers.ModelSerializer):
     primary_doctor = DoctorCompressSerializer(read_only=True)
     address = AddressSerializer(read_only=True)
 
     class Meta:
         model = Patient
         fields = [
-            "id",
             "social_security_code",
             "address",
             "primary_doctor",
         ]
 
 
-class PatientUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Patient
-        fields = "__all__"
-
-
-class PatientCreateSerializer(serializers.ModelSerializer):
+class PatientSerializer(serializers.ModelSerializer):
     primary_doctor_id = serializers.IntegerField()
     address = AddressSerializer()
 
