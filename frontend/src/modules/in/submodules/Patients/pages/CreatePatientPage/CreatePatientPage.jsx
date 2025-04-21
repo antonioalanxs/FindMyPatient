@@ -516,7 +516,8 @@ function CreatePatientPage() {
             className="col-sm-5 col-xl-4 col-xxl-3 btn btn-primary"
             disabled={loadingForm || loading}
           >
-            Create
+            <i className="me-2 bi bi-people-fill"></i>
+            <span>Create patient</span>
           </button>
 
           <button
