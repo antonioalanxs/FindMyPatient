@@ -1,7 +1,7 @@
 import Spinner from "@/shared/components/Spinner/Spinner";
 import Phrases from "@/shared/components/Load/Phrases/Phrases";
 
-function Load({ center, classes }) {
+function Load({ center, phrases = true, classes }) {
   return (
     <div
       className={`d-flex flex-column gap-2_5 justify-content-center align-items-center ${
@@ -9,7 +9,7 @@ function Load({ center, classes }) {
       } ${classes && classes}`}
     >
       <Spinner />
-      <Phrases />
+      {phrases && <Phrases />}
     </div>
   );
 }
