@@ -83,6 +83,7 @@ function CreatePatientPage() {
             Primary doctor
           </label>
           <select
+            id="primary_doctor_id"
             className={`form-select ${
               errors?.primary_doctor_id && "is-invalid"
             }`}
