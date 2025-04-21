@@ -56,7 +56,7 @@ function EditAdministratorPage() {
     <>
       <Header
         title="Edit an administrator"
-        subtitle="Here you can edit an administrator."
+        subtitle="Here you can update the administrator information."
         link={ROUTES.IN.ADMINISTRATORS.BASE}
       />
 
