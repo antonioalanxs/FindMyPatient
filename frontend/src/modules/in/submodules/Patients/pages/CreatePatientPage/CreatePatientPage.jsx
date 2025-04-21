@@ -370,7 +370,7 @@ function CreatePatientPage() {
         </div>
 
         <div className="row">
-          <div className="col-lg-7 col-xxl-8">
+          <div className="col-lg-6 col-xxl-7">
             <BaseCard title="Address">
               <div className="row">
                 <div className="col-md-6">
@@ -503,7 +503,7 @@ function CreatePatientPage() {
             </BaseCard>
           </div>
 
-          <div className="col-lg-5 col-xxl-4">
+          <div className="col-lg-6 col-xxl-5">
             <BaseCard title="Primary doctor">
               {primaryDoctorCardContent()}
             </BaseCard>
