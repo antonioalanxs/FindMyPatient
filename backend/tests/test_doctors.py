@@ -135,3 +135,55 @@ class ListPatientsByDoctorTestCase(TestSetUp):
     def test_list_patients_by_doctor_with_non_authenticated_user(self):
         response = self.client.get(self.url(self.doctor.id))
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
+class DoctorCreateTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+
+        self.url = reverse("doctors-list")
+
+        self.input = {
+            "first_name": "Antonio José",
+            "last_name": "Alanís Bernal",
+            "identity_card_number": "54182062L",
+            "email": "antoniojalanis7131@gmail.com",
+            "phone_number": "+34684222019",
+            "collegiate_code": "28/745193B",
+            "birth_date": "2002-07-04",
+            "gender": "M",
+            "nationality": "ES",
+            "medical_specialties": [self.medical_specialty_id]
+        }
+
+    def test_create_doctor(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.post(self.url, data=self.input, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_doctor_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.post(self.url, data=self.input, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_doctor_with_patient(self):
+        self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
+        response = self.client.post(self.url, data=self.input, format="json")
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_doctor_with_non_authenticated_user(self):
+        response = self.client.post(self.url, data=self.input, format="json")
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_doctor_with_malformed_input(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.post(self.url, data={"collegiate_code": ""}, format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_existing_doctor(self):
+        self.client.force_authenticate(user=self.administrator)
+
+        self.client.post(self.url, data=self.input, format="json")
+        response = self.client.post(self.url, data=self.input, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
