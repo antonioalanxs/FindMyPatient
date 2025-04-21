@@ -79,3 +79,15 @@ class PatientSerializer(serializers.ModelSerializer):
         patient.save()
 
         return patient, random_password
+
+    def update(self, instance, validated_data):
+        address_data = validated_data.pop("address", None)
+        for attribute, value in address_data.items():
+            setattr(instance.address, attribute, value)
+            instance.address.save()
+
+        for attribute, value in validated_data.items():
+            setattr(instance, attribute, value)
+        instance.save()
+
+        return instance
