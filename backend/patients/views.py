@@ -13,7 +13,10 @@ from .serializers import (
     PatientSerializer
 )
 from permissions.decorators import method_permission_classes
-from permissions.users import IsDoctorOrIsAdministrator
+from permissions.users import (
+    IsDoctorOrIsAdministrator,
+    IsDoctorOrIsAdministratorOrIsSelf
+)
 from permissions.patients import IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
 from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
@@ -96,3 +99,10 @@ class PatientViewSet(
             )
 
         return self.handle_serializer_is_not_valid_response(serializer)
+
+    @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministratorOrIsSelf])
+    def retrieve(self, request, *args, **kwargs):
+        return Response(
+            self.serializer_class(self.get_object()).data,
+            status=status.HTTP_200_OK
+        )
