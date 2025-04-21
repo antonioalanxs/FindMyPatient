@@ -22,7 +22,7 @@ from .serializers import (
     DoctorSerializer,
     DoctorCompressSerializer,
     DoctorPreviewSerializer,
-    DoctorCreateSerializer
+    DoctorUpsetSerializer
 )
 from permissions.decorators import method_permission_classes
 from permissions.users import (
@@ -88,7 +88,7 @@ class DoctorViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministratorOrIsSelf])
     def partial_update(self, request, *args, **kwargs):
-        serializer = DoctorSerializer(
+        serializer = DoctorUpsetSerializer(
             self.get_object(),
             data=request.data,
             partial=True
@@ -125,7 +125,7 @@ class DoctorViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def create(self, request, *args, **kwargs):
-        serializer = DoctorCreateSerializer(data=request.data)
+        serializer = DoctorUpsetSerializer(data=request.data)
 
         if serializer.is_valid():
             doctor, random_password = serializer.save()

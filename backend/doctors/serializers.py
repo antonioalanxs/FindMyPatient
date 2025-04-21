@@ -43,7 +43,7 @@ class DoctorSerializer(serializers.ModelSerializer):
         ]
 
 
-class DoctorCreateSerializer(serializers.ModelSerializer):
+class DoctorUpsetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Doctor
         fields = [
