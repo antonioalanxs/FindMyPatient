@@ -24,7 +24,7 @@ function CreatePatientPage() {
 
   const { user } = useContext(AuthenticationContext);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [doctor, setDoctor] = useState(null);
   const [doctors, setDoctors] = useState(null);
   const [loadingForm, setLoadingForm] = useState(false);
@@ -139,7 +139,7 @@ function CreatePatientPage() {
     <>
       <Header
         title="Create a patient"
-        subtitle="Create a new patient in the system."
+        subtitle="Here you can create a new patient in the system."
         link={ROUTES.IN.PATIENTS.BASE}
       />
 
@@ -192,20 +192,20 @@ function CreatePatientPage() {
 
                 <div className="col-md-6 form-group">
                   <label htmlFor="identity_card_number" className="form-label">
-                    Identity card
+                    Identity card number
                   </label>
                   <input
                     id="identity_card_number"
                     type="text"
-                    placeholder="Identity card"
+                    placeholder="Identity card number"
                     className={`form-control ${
                       errors?.identity_card_number && "is-invalid"
                     }`}
                     {...register("identity_card_number", {
-                      required: "Identity card is required.",
+                      required: "Identity card number is required.",
                       maxLength: {
                         value: 20,
-                        message: "Identity card is up to 20 characters.",
+                        message: "Identity card number is up to 20 characters.",
                       },
                     })}
                   />

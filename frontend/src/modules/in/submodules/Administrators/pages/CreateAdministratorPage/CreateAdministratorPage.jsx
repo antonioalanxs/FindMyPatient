@@ -53,7 +53,7 @@ function CreateAdministratorPage() {
     <>
       <Header
         title="Create an administrator"
-        subtitle="Create a new administrator in the system."
+        subtitle="Here you can create a new administrator in the system."
         link={ROUTES.IN.ADMINISTRATORS.BASE}
       />
 
@@ -184,20 +184,20 @@ function CreateAdministratorPage() {
               <div className="row">
                 <div className="form-group">
                   <label htmlFor="identity_card_number" className="form-label">
-                    Identity card
+                    Identity card number
                   </label>
                   <input
                     id="identity_card_number"
                     type="text"
-                    placeholder="Identity card"
+                    placeholder="Identity card number"
                     className={`form-control ${
                       errors?.identity_card_number && "is-invalid"
                     }`}
                     {...register("identity_card_number", {
-                      required: "Identity card is required.",
+                      required: "Identity card number is required.",
                       maxLength: {
                         value: 20,
-                        message: "Identity card is up to 20 characters.",
+                        message: "Identity card number is up to 20 characters.",
                       },
                     })}
                   />
@@ -263,7 +263,8 @@ function CreateAdministratorPage() {
             className="col-sm-5 col-xl-4 col-xxl-3 btn btn-primary"
             disabled={loadingForm}
           >
-            Create
+            <i className="me-2 bi bi-people-fill" />
+            <span>Create administrator</span>
           </button>
 
           <button

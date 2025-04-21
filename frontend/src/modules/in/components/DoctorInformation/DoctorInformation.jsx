@@ -16,7 +16,7 @@ function DoctorInformation({ doctor }) {
 
   const [ID, setID] = useState(id || user?.user_id);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const {

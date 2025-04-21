@@ -97,21 +97,21 @@ function BasicInformationCard({ user }) {
 
           <div className="col-md-6 form-group">
             <label htmlFor="identity_card_number" className="form-label">
-              Identity card
+              Identity card number
             </label>
             <input
               id="identity_card_number"
               type="text"
-              placeholder="Identity card"
+              placeholder="Identity card number"
               defaultValue={user?.identity_card_number}
               className={`form-control ${
                 errors?.identity_card_number && "is-invalid"
               }`}
               {...register("identity_card_number", {
-                required: "Identity card is required.",
+                required: "Identity card number is required.",
                 maxLength: {
                   value: 20,
-                  message: "Identity card is up to 20 characters.",
+                  message: "Identity card number is up to 20 characters.",
                 },
               })}
             />

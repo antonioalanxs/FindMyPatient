@@ -122,10 +122,11 @@ function EditAdministratorPage() {
                         errors?.identity_card_number && "is-invalid"
                       }`}
                       {...register("identity_card_number", {
-                        required: "Identity card is required.",
+                        required: "Identity card number is required.",
                         maxLength: {
                           value: 20,
-                          message: "Identity card is up to 20 characters.",
+                          message:
+                            "Identity card number is up to 20 characters.",
                         },
                       })}
                     />
@@ -146,6 +147,7 @@ function EditAdministratorPage() {
                       render={({ field }) => (
                         <Flatpickr
                           {...field}
+                          placeholder="Date of birth"
                           className={`form-control ${
                             errors?.birth_date && "is-invalid"
                           }`}

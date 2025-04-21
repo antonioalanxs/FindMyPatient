@@ -18,7 +18,7 @@ import { ROUTES } from "@/core/constants/routes";
 function CreateDoctorPage() {
   useTitle({ title: "Create a doctor" });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [medicalSpecialties, setMedicalSpecialties] = useState([]);
   const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
@@ -66,7 +66,7 @@ function CreateDoctorPage() {
     <>
       <Header
         title="Create a doctor"
-        subtitle="Create a new doctor in the system."
+        subtitle="Here you can create a new doctor in the system."
         link={ROUTES.IN.DOCTORS.BASE}
       />
 
@@ -196,20 +196,20 @@ function CreateDoctorPage() {
             <BaseCard title="Contact Information">
               <div className="form-group">
                 <label htmlFor="identity_card_number" className="form-label">
-                  Identity card
+                  Identity card number
                 </label>
                 <input
                   id="identity_card_number"
                   type="text"
-                  placeholder="Identity card"
+                  placeholder="Identity card number"
                   className={`form-control ${
                     errors?.identity_card_number && "is-invalid"
                   }`}
                   {...register("identity_card_number", {
-                    required: "Identity card is required.",
+                    required: "Identity card number is required.",
                     maxLength: {
                       value: 20,
-                      message: "Identity card is up to 20 characters.",
+                      message: "Identity card number is up to 20 characters.",
                     },
                   })}
                 />
