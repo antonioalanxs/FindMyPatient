@@ -1,3 +1,5 @@
+from config.settings import PAGINATION_PARAMETER
+
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
@@ -11,7 +13,8 @@ from rest_framework import (
 
 from .serializers import (
     MedicalSpecialtySerializer,
-    MedicalSpecialtyPreviewSerializer
+    MedicalSpecialtyPreviewSerializer,
+    MedicalSpecialtyCompressSerializer
 )
 from doctors.serializers import DoctorPreviewSerializer
 from .models import MedicalSpecialty
@@ -60,6 +63,7 @@ class MedicalSpecialtyViewSet(
     queryset = None
     list_serializer_class = MedicalSpecialtyPreviewSerializer
     serializer_class = MedicalSpecialtySerializer
+    compress_serializer_class = MedicalSpecialtyCompressSerializer
 
     def get_object(self):
         return get_object_or_404(
@@ -70,10 +74,17 @@ class MedicalSpecialtyViewSet(
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def list(self, request, *args, **kwargs):
         queryset = self.search(self.model, request)
-        return self.get_paginated_response_(
-            request,
-            queryset,
-            self.list_serializer_class
+
+        if request.query_params.get(PAGINATION_PARAMETER, None):
+            return self.get_paginated_response_(
+                request,
+                queryset,
+                self.list_serializer_class
+            )
+
+        return Response(
+            self.compress_serializer_class(queryset, many=True).data,
+            status=status.HTTP_200_OK
         )
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
