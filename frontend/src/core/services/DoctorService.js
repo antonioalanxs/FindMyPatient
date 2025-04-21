@@ -41,6 +41,10 @@ class DoctorService {
     axiosInstance.get(
       `${this._prefix}/${id}/patients?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
     );
+
+  create = (data) => {
+    return axiosInstance.post(`${this._prefix}/`, data);
+  };
 }
 
 export const doctorService = DoctorService.instance;

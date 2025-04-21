@@ -51,6 +51,10 @@ class MedicalSpecialtyService {
   create = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };
+
+  medicalSpecialtiesWithoutPagination = () => {
+    return axiosInstance.get(`${this._prefix}/`);
+  };
 }
 
 export const medicalSpecialtyService = MedicalSpecialtyService.instance;

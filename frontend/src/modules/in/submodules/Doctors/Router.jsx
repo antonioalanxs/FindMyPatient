@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import DoctorsPage from "@/modules/in/submodules/Doctors/pages/DoctorsPage/DoctorsPage";
 import DoctorPage from "@/modules/in/submodules/Doctors/pages/DoctorPage/DoctorPage";
+import CreateDoctorPage from "@/modules/in/submodules/Doctors/pages/CreateDoctorPage/CreateDoctorPage";
 import { ROUTES } from "@/core/constants/routes";
 
 const DoctorsRouter = () => {
@@ -12,6 +13,11 @@ const DoctorsRouter = () => {
       <Route
         path={ROUTES.IN.DOCTORS.RELATIVE.DETAIL()}
         element={<DoctorPage />}
+      />
+
+      <Route
+        path={ROUTES.IN.DOCTORS.RELATIVE.CREATE}
+        element={<CreateDoctorPage />}
       />
 
       <Route
