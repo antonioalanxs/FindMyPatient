@@ -159,7 +159,9 @@ const Table = ({
             ))
           ) : (
             <tr>
-              <td colSpan={1}>There is no data.</td>
+              <td colSpan={1} className="text-center">
+                There is no data.
+              </td>
             </tr>
           )}
         </tbody>
