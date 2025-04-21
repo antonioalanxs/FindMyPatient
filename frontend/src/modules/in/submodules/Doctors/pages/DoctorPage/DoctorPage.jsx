@@ -111,7 +111,7 @@ function DoctorPage() {
                   path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
                 },
                 edit: {
-                  path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
+                  path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.EDIT(id),
                 },
                 delete: {
                   action: (id) => userService.destroy(id),

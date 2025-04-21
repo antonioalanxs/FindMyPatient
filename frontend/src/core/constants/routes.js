@@ -37,6 +37,7 @@ export const ROUTES = {
     PATIENTS: createModuleRoutes("/in/patients", {
       DETAIL: (id = ":id") => id,
       CREATE: "new",
+      EDIT: (id = ":id") => `${id}/edition`,
     }),
     GROUPS: createModuleRoutes("/in/groups", {
       DETAIL: (id = ":id") => id,
