@@ -11,6 +11,7 @@ import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
+import { genericEntityAdapter } from "@/core/adapters/GenericEntityAdapter";
 
 function MedicalSpecialtyPage() {
   useTitle({ title: "Medical specialty" });
@@ -95,7 +96,9 @@ function MedicalSpecialtyPage() {
                 </div>
               </div>
             </BaseCard>
+          </div>
 
+          <div className="col">
             <GenericList
               fetchService={(searchTerm, page, pageSize) =>
                 medicalSpecialtyService.doctorsByMedicalSpecialty(
@@ -114,6 +117,28 @@ function MedicalSpecialtyPage() {
               actions={{
                 search: {
                   label: "Search for a doctor",
+                },
+              }}
+            />
+
+            <GenericList
+              fetchService={(searchTerm, page, pageSize) =>
+                medicalSpecialtyService.roomsByMedicalSpecialty(
+                  id,
+                  searchTerm,
+                  page,
+                  pageSize
+                )
+              }
+              adapter={genericEntityAdapter}
+              card={{
+                title: "Rooms",
+                subtitle:
+                  "All of the rooms that are related to this medical specialty.",
+              }}
+              actions={{
+                search: {
+                  label: "Search for a room",
                 },
               }}
             />
