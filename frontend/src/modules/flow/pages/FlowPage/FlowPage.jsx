@@ -18,7 +18,7 @@ function FlowPage() {
     <>
       <div id="authentication">
         <div className="row h-100">
-          <div id="authentication-left" className="col-12 col-lg-6 col-xl-5">
+          <div id="authentication-left" className="col-lg-6 col-xl-5">
             <div id="theme-wrapper">
               <Theme />
             </div>

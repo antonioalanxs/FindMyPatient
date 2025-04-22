@@ -30,44 +30,43 @@ function CreateGroupCard({ onCreate }) {
   }
 
   return (
-    <BaseCard
-      title="Define a new group (role)"
-      subtitle="You only need a name to create a group."
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className="form form-horizontal">
-        <div className="form-body">
-          <div className="row gx-4 align-items-center">
-            <div className="col-md-6 form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Name"
-                className={`form-control ${errors?.name && "is-invalid"}`}
-                {...register("name", {
-                  required: "This field is required.",
-                  minLength: {
-                    value: 5,
-                    message: "The name must be at least 5 characters.",
-                  },
-                })}
-              />
-              <InvalidFeedback>{errors.name?.message}</InvalidFeedback>
-            </div>
-
-            <div className="col-md-6">
-              <button
-                type="submit"
-                className="mt-3 px-4 py-1 btn btn-primary"
-                disabled={loading}
-              >
-                <i className="me-2 bi bi-person-fill-add fs-5"></i>{" "}
-                <span>Create a group</span>
-              </button>
-            </div>
+    <BaseCard>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-2 row">
+          <div className="col form-group">
+            <label htmlFor="name" className="form-label">
+              Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Name"
+              className={`form-control ${errors?.name && "is-invalid"}`}
+              {...register("name", {
+                required: "This field is required.",
+                minLength: {
+                  value: 5,
+                  message: "The name is at least 5 characters.",
+                },
+              })}
+            />
+            <InvalidFeedback>{errors.name?.message}</InvalidFeedback>
           </div>
+        </div>
 
-          <Alert content={error} onClose={() => setError(null)} />
+        <Alert content={error} onClose={() => setError(null)} classes="mt-2" />
+
+        <div className="row justify-content-end">
+          <div className="col-sm-6">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2 bi bi-people-fill"></i>
+              <span>Create a group</span>
+            </button>
+          </div>
         </div>
       </form>
     </BaseCard>

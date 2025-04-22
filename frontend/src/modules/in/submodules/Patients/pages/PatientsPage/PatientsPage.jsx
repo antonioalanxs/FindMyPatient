@@ -30,11 +30,11 @@ function PatientsPage() {
             link: {
               label: "Create a patient",
               path: ROUTES.IN.PATIENTS.ABSOLUTE.CREATE,
-              icon: "bi-person-fill-add",
+              icon: "bi-people-fill",
             },
           },
           edit: {
-            path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.DETAIL(id),
+            path: (id) => ROUTES.IN.PATIENTS.ABSOLUTE.EDIT(id),
           },
           delete: {
             action: (id) => userService.destroy(id),

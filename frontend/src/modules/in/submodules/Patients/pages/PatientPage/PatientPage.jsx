@@ -7,13 +7,11 @@ import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
 import NavigationBar from "@/shared/components/NavigationBar/NavigationBar";
 import PatientRealTimeLocationCard from "@/modules/in/submodules/Patients/components/PatientRealTimeLocationCard/PatientRealTimeLocationCard";
-import BasicInformationCard from "@/modules/in/components/BasicInformationCard/BasicInformationCard";
-import ContactInformationCard from "@/modules/in/components/ContactInformationCard/ContactInformationCard";
-import PatientInformation from "@/modules/in/components/PatientInformation/PatientInformation";
+import PatientSheetPage from "@/modules/in/submodules/Patients/pages/PatientSheetPage/PatientSheetPage";
 import { ROUTES } from "@/core/constants/routes";
 
 function PatientPage() {
-  useTitle({ title: "Manage patient" });
+  useTitle({ title: "Patient" });
 
   const { id } = useParams();
 
@@ -39,21 +37,15 @@ function PatientPage() {
       content: <PatientRealTimeLocationCard user={user} />,
     },
     {
-      id: "information",
-      label: "Information",
-      icon: <i className="bi bi-info-circle-fill"></i>,
-      content: (
-        <>
-          <BasicInformationCard data={user} />
-          <ContactInformationCard user={user} />
-          <PatientInformation patient={user?.patient} />
-        </>
-      ),
+      id: "sheet",
+      label: "Sheet",
+      icon: <i className="bi bi-file-earmark-text-fill"></i>,
+      content: <PatientSheetPage user={user} />,
     },
     {
       id: "clinical-history",
       label: "Clinical history",
-      icon: <i className="bi bi-file-earmark-medical-fill"></i>,
+      icon: <i className="bi bi-journal-medical"></i>,
       content: null,
     },
     {
@@ -75,8 +67,8 @@ function PatientPage() {
   ) : (
     <>
       <Header
-        title="Patient"
-        subtitle="Here you can manage a patient."
+        title="Visualize a patient"
+        subtitle="Here you can visualize the patient information and its real-time location."
         link={ROUTES.IN.PATIENTS.BASE}
       />
 

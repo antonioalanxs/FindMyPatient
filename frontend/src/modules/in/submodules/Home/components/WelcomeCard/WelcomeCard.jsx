@@ -32,7 +32,7 @@ function WelcomeCard() {
   }, []);
 
   return (
-    <article className="card">
+    <article className="card shadow-sm">
       <header className="px-4_5 py-5">
         <h3 className="mb-1">
           {greetings}, <span className="text-primary">{name}</span>

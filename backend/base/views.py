@@ -2,7 +2,11 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status, viewsets, mixins
+from rest_framework import (
+    status,
+    viewsets,
+    mixins
+)
 
 from base.models import User
 from base.serializers import UserSerializer
@@ -40,10 +44,7 @@ class UserViewSet(viewsets.GenericViewSet, mixins.DestroyModelMixin, SerializerV
 
         if serializer.is_valid():
             serializer.save()
-            return Response(
-                {'message': 'Changes saved.'},
-                status=status.HTTP_200_OK
-            )
+            return Response(status=status.HTTP_200_OK)
 
         return self.handle_serializer_is_not_valid_response(serializer)
 

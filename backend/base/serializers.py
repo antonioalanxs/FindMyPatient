@@ -1,14 +1,15 @@
 from rest_framework import serializers
 
-from doctors.serializers import DoctorSerializer
-from patients.serializers import PatientSerializer
+from doctors.serializers import DoctorCompressSerializer
+from patients.serializers import PatientCompressSerializer
 from .models import User
+from utilities.models import get_role_
 
 
 class UserSerializer(serializers.ModelSerializer):
     role = serializers.SerializerMethodField()
-    patient = PatientSerializer(required=False)
-    doctor = DoctorSerializer(required=False)
+    patient = PatientCompressSerializer(required=False)
+    doctor = DoctorCompressSerializer(required=False)
 
     class Meta:
         model = User
@@ -28,7 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
         ]
 
     def get_role(self, obj):
-        return obj.groups.values_list("name", flat=True).first()
+        return get_role_(obj)
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

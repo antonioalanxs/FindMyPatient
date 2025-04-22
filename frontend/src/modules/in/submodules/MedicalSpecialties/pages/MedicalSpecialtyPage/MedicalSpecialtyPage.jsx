@@ -43,83 +43,82 @@ function MedicalSpecialtyPage() {
       {loading ? (
         <Load />
       ) : (
-        <>
-          <div className="row align-items-start">
-            <div className="col-xxl-9">
-              <BaseCard
-                title="Detail"
-                subtitle="Detailed information about the medical specialty and its properties."
-              >
-                <div className="row">
-                  <div className="col-md-3 form-group">
-                    <label htmlFor="name">Name</label>
-                    <p id="name" className="form-control-static">
-                      {textPipe.transform(medicalSpecialty?.name)}
-                    </p>
-                  </div>
-
-                  <div className="col-md-9 form-group">
-                    <label htmlFor="description">Description</label>
-                    <p id="description" className="form-control-static">
-                      {medicalSpecialty?.description}
-                    </p>
-                  </div>
+        <div className="row">
+          <div className="col-lg-9 col-xxl-8">
+            <BaseCard>
+              <form className="row gy-3">
+                <div className="col-md-3 form-group">
+                  <label htmlFor="name" className="form-label">
+                    Name
+                  </label>
+                  <p id="name" className="form-control-static">
+                    {textPipe.transform(medicalSpecialty?.name)}
+                  </p>
                 </div>
-              </BaseCard>
 
-              <GenericList
-                fetchService={() =>
-                  medicalSpecialtyService.doctorsByMedicalSpecialty(id)
-                }
-                adapter={userAdapter}
-                card={{
-                  title: "Doctors",
-                  subtitle:
-                    "All of the doctors that are related to this medical specialty.",
-                }}
-                actions={{
-                  search: {
-                    label: "Search for a doctor",
-                  },
-                }}
-              />
-            </div>
+                <div className="col-md-9 form-group">
+                  <label htmlFor="description" className="form-label">
+                    Description
+                  </label>
+                  <p id="description" className="form-control-static">
+                    {medicalSpecialty?.description}
+                  </p>
+                </div>
+              </form>
 
-            <div className="col-xxl-3">
-              <BaseCard
-                title="Actions"
-                subtitle="You can edit or delete this medical specialty."
-              >
-                <div className="pb-2 d-flex flex-xxl-column gap-3">
-                  <Link
-                    to={ROUTES.IN.MEDICAL_SPECIALTIES.ABSOLUTE.EDIT(id)}
-                    className="btn btn-primary"
-                  >
-                    <i className="bi bi-pencil-square me-2"></i>
-                    <span>Edit specialty</span>
-                  </Link>
-
+              <div className="mt-3 row justify-content-end">
+                <div className="col d-flex gap-3 flex-column flex-sm-row justify-content-sm-end">
                   <button
-                    className="btn btn-outline-danger"
+                    className="btn btn-danger"
                     onClick={() => {
                       notificationService.showConfirmDialog(
-                        "Really delete this medical specialty?",
+                        "Really delete this specialty?",
                         "This action could be irreversible.",
                         async () =>
-                          await medicalSpecialtyService.destroy(id).then(() => {
+                          await groupService.destroy(id).then(() => {
                             navigate(ROUTES.IN.MEDICAL_SPECIALTIES.BASE);
                           })
                       );
                     }}
                   >
-                    <i className="bi bi-trash me-2"></i>
+                    <i className="me-2 bi bi-trash"></i>
                     <span>Delete specialty</span>
                   </button>
+
+                  <Link
+                    to={ROUTES.IN.MEDICAL_SPECIALTIES.ABSOLUTE.EDIT(id)}
+                    className="btn btn-primary"
+                  >
+                    <i className="me-2 bi bi-pencil"></i>
+                    <span>Edit specialty</span>
+                  </Link>
                 </div>
-              </BaseCard>
-            </div>
+              </div>
+            </BaseCard>
+
+            <GenericList
+              fetchService={(searchTerm, page, pageSize) =>
+                medicalSpecialtyService.doctorsByMedicalSpecialty(
+                  id,
+                  searchTerm,
+                  page,
+                  pageSize
+                )
+              }
+              adapter={userAdapter}
+              card={{
+                title: "Doctors",
+                subtitle:
+                  "All of the doctors that are related to this medical specialty.",
+              }}
+              actions={{
+                search: {
+                  label: "Search for a doctor",
+                },
+              }}
+            />
           </div>
-        </>
+        </div>
       )}
     </>
   );

@@ -100,6 +100,7 @@ class TestSetUp(APITestCase):
         self.medical_specialty = MedicalSpecialty.objects.create(
             **self.medical_specialty_input
         )
+        self.medical_specialty_id = self.medical_specialty.id
         self.medical_specialty.save()
 
         self.doctor.medical_specialties.add(self.medical_specialty)

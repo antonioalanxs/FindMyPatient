@@ -1,20 +1,20 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework import status, viewsets, mixins
+from rest_framework import (
+    status,
+    viewsets,
+    mixins
+)
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import (
     PatientPreviewSerializer,
-    PatientUpdateSerializer,
-    PatientCreateSerializer
+    PatientSerializer
 )
 from permissions.decorators import method_permission_classes
 from permissions.users import IsDoctorOrIsAdministrator
-from permissions.patients import (
-    IsAdministratorOrIsPatientAssignedDoctor,
-    IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
-)
+from permissions.patients import IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
 from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
@@ -35,6 +35,7 @@ class PatientViewSet(
     model = Patient
     queryset = None
     list_serializer_class = PatientPreviewSerializer
+    serializer_class = PatientSerializer
 
     def get_object(self):
         return get_object_or_404(self.model, id=self.kwargs['id'])
@@ -58,7 +59,7 @@ class PatientViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf])
     def partial_update(self, request, *args, **kwargs):
-        serializer = PatientUpdateSerializer(
+        serializer = self.serializer_class(
             self.get_object(),
             data=request.data,
             partial=True
@@ -66,16 +67,13 @@ class PatientViewSet(
 
         if serializer.is_valid():
             serializer.save()
-            return Response(
-                {'message': 'Changes saved.'},
-                status=status.HTTP_200_OK
-            )
+            return Response(status=status.HTTP_200_OK)
 
         return self.handle_serializer_is_not_valid_response(serializer)
 
     @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministrator])
     def create(self, request, *args, **kwargs):
-        serializer = PatientCreateSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             patient, random_password = serializer.save()
@@ -98,3 +96,10 @@ class PatientViewSet(
             )
 
         return self.handle_serializer_is_not_valid_response(serializer)
+
+    @method_permission_classes([IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf])
+    def retrieve(self, request, *args, **kwargs):
+        return Response(
+            self.serializer_class(self.get_object()).data,
+            status=status.HTTP_200_OK
+        )

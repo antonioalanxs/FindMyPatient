@@ -32,6 +32,10 @@ class PatientService {
   create = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };
+
+  patient = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  };
 }
 
 export const patientService = PatientService.instance;

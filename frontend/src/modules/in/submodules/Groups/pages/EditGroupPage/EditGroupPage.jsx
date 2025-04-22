@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useTitle } from "@/core/hooks/useTitle";
 import { groupService } from "@/core/services/GroupService";
-import { notificationService } from "@/core/services/NotificationService";
 import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/shared/components/Form/Alert/Alert";
-import Button from "@/modules/in/components/Form/Button/Button";
 import { ROUTES } from "@/core/constants/routes";
 
 function EditGroupPage() {
@@ -30,8 +28,6 @@ function EditGroupPage() {
       })
       .finally(() => setLoading(false));
   }, [id]);
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -57,41 +53,42 @@ function EditGroupPage() {
     <>
       <Header
         title="Edit a group (role)"
-        subtitle="Here you can edit a group (role)."
+        subtitle="Here you can update the group (role) information."
         link={ROUTES.IN.GROUPS.BASE}
       />
 
       {loading ? (
         <Load />
       ) : (
-        <div className="row gx-4 gy-4">
-          <div className="col-12 col-xl-9">
-            <BaseCard
-              title="Edition"
-              subtitle="Update the group (role) and its properties."
-            >
-              <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
-                <div className="row gx-4">
-                  <div className="col-md-4 form-group">
-                    <label htmlFor="id">ID</label>
+        <div className="row">
+          <div className="col-lg-9 col-xxl-7">
+            <BaseCard>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="row">
+                  <div className="col-md-6 form-group">
+                    <label htmlFor="id" className="form-label">
+                      ID
+                    </label>
                     <input
-                      type="text"
                       id="id"
+                      type="text"
                       placeholder="ID"
-                      className={`form-control ${errors?.id && "is-invalid"}`}
                       defaultValue={group?.id}
                       disabled
+                      className="form-control"
                     />
                   </div>
 
-                  <div className="col-md-4 form-group">
-                    <label htmlFor="name">Name</label>
+                  <div className="col-md-6 form-group">
+                    <label htmlFor="name" className="form-label">
+                      Name
+                    </label>
                     <input
-                      type="text"
                       id="name"
+                      type="text"
                       placeholder="Name"
-                      className={`form-control ${errors?.name && "is-invalid"}`}
                       defaultValue={group?.name}
+                      className={`form-control ${errors?.name && "is-invalid"}`}
                       {...register("name", {
                         required: "Name is required.",
                       })}
@@ -100,35 +97,25 @@ function EditGroupPage() {
                   </div>
                 </div>
 
-                <Alert content={error} onClose={() => setError(null)} />
+                <Alert
+                  content={error}
+                  onClose={() => setError(null)}
+                  classes="mt-2"
+                />
 
-                <Button loading={loadingForm} text="Update group" />
+                <div className="mt-2 row justify-content-end">
+                  <div className="col-md-4">
+                    <button
+                      type="submit"
+                      className="w-100 btn btn-primary"
+                      disabled={loadingForm}
+                    >
+                      <i className="me-2 bi bi-pencil"></i>
+                      <span>Update group</span>
+                    </button>
+                  </div>
+                </div>
               </form>
-            </BaseCard>
-          </div>
-
-          <div className="col-12 col-xl-3">
-            <BaseCard
-              title="Extra actions"
-              subtitle="Additional actions for this group (role)."
-            >
-              <button
-                className="btn btn-outline-danger w-100"
-                onClick={() => {
-                  notificationService.showConfirmDialog(
-                    "Really delete this role (group)?",
-                    "This action could be irreversible.",
-                    async () =>
-                      await groupService.destroy(id).then(() => {
-                        navigate(ROUTES.IN.GROUPS.BASE);
-                      })
-                  );
-                }}
-                disabled={loadingForm}
-              >
-                <i className="bi bi-trash me-2"></i>
-                <span>Delete group</span>
-              </button>
             </BaseCard>
           </div>
         </div>

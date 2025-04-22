@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
-import countryList from "react-select-country-list";
+import { useParams } from "react-router-dom";
 
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { addressService } from "@/core/services/AddressService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
-import Button from "@/modules/in/components/Form/Button/Button";
+import { COUNTRIES } from "@/core/constants/countries";
 
-function AddressCard({ id, address }) {
-  const countries = countryList().getData();
+function AddressCard({ address }) {
+  const { id } = useParams();
+
+  const { user } = useContext(AuthenticationContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,36 +27,40 @@ function AddressCard({ id, address }) {
   const onSubmit = async (data) => {
     setLoading(true);
     addressService
-      .update(id, data)
+      .update(id || user?.user_id, data)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
-    <BaseCard title="Address" subtitle="The place of residence.">
+    <BaseCard title="Address">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="form-group col-md-6">
             <div className="row gx-3">
               <div className="col-6 col-xxl-7 form-group">
-                <label htmlFor="street">Street</label>
+                <label htmlFor="street" className="form-label">
+                  Street
+                </label>
                 <input
-                  type="text"
-                  className={`form-control ${errors?.street && "is-invalid"}`}
                   id="street"
+                  type="text"
+                  placeholder="Street"
                   defaultValue={address?.street}
+                  className={`form-control ${errors?.street && "is-invalid"}`}
                   {...register("street", { required: true })}
                 />
                 <InvalidFeedback message={errors?.street?.message} />
               </div>
 
               <div className="col-6 col-xxl-5 form-group">
-                <label htmlFor="street">Number</label>
+                <label htmlFor="street" className="form-label">
+                  Number
+                </label>
                 <input
                   id="number"
                   type="text"
                   placeholder="Number"
-                  autoComplete="off"
                   defaultValue={address?.number}
                   className={`form-control ${
                     errors?.address?.number && "is-invalid"
@@ -76,24 +83,30 @@ function AddressCard({ id, address }) {
           </div>
 
           <div className="form-group col-md-6">
-            <label htmlFor="city">City</label>
+            <label htmlFor="city" className="form-label">
+              City
+            </label>
             <input
-              type="text"
-              className={`form-control ${errors?.city && "is-invalid"}`}
               id="city"
+              type="text"
+              placeholder="City"
               defaultValue={address?.city}
+              className={`form-control ${errors?.city && "is-invalid"}`}
               {...register("city", { required: true })}
             />
             <InvalidFeedback message={errors?.city?.message} />
           </div>
 
           <div className="form-group col-md-6">
-            <label htmlFor="zip_code">Postal code</label>
+            <label htmlFor="zip_code" className="form-label">
+              Postal code
+            </label>
             <input
-              type="text"
-              className={`form-control ${errors?.state && "is-invalid"}`}
               id="postal_code"
+              type="text"
+              placeholder="Postal code"
               defaultValue={address?.zip_code}
+              className={`form-control ${errors?.state && "is-invalid"}`}
               {...register("zip_code", {
                 required: "Postal code is required.",
                 maxLength: {
@@ -110,19 +123,20 @@ function AddressCard({ id, address }) {
           </div>
 
           <div className="form-group col-md-6">
-            <label htmlFor="country">Country</label>
+            <label htmlFor="country" className="form-label">
+              Country
+            </label>
             <Controller
               name="country"
-              defaultValue={address?.country}
               control={control}
+              defaultValue={address?.country}
               rules={{ required: "Country is required." }}
               render={({ field }) => (
                 <select
                   {...field}
-                  id="country"
                   className={`form-select ${errors?.country && "is-invalid"}`}
                 >
-                  {countries.map((country, index) => (
+                  {COUNTRIES.map((country, index) => (
                     <option key={index} value={country.value}>
                       {country.label}
                     </option>
@@ -135,7 +149,18 @@ function AddressCard({ id, address }) {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={loading} text="Update" />
+        <div className="mt-2 row justify-content-end">
+          <div className="col-sm-6 col-md-4 col-xxl-3">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2_5 bi bi-pencil-square"></i>
+              <span>Update</span>
+            </button>
+          </div>
+        </div>
       </form>
     </BaseCard>
   );

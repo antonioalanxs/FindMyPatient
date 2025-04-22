@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import MedicalSpecialty
 
 
-class MedicalSpecialtyPreviewSerializer(serializers.ModelSerializer):
+class MedicalSpecialtySqueezeSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalSpecialty
 
@@ -11,13 +11,19 @@ class MedicalSpecialtyPreviewSerializer(serializers.ModelSerializer):
         return instance.name
 
 
-class MedicalSpecialtySerializer(serializers.ModelSerializer):
+class MedicalSpecialtyCompressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MedicalSpecialty
+        fields = ['id', 'name']
+
+
+class MedicalSpecialtyPreviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalSpecialty
         fields = '__all__'
 
 
-class MedicalSpecialtyUpsetSerializer(serializers.ModelSerializer):
+class MedicalSpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalSpecialty
         exclude = ['id']

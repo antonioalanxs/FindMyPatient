@@ -1,6 +1,6 @@
 import { phoneNumberPipe } from "@/core/pipes/phoneNumberPipe";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
-import MapReceiver from "@/shared/components/Map/MapReceiver/MapReceiver";
+import MapServer from "@/shared/components/Map/MapServer/MapServer";
 import DataCard from "@/modules/in/components/DataCard/DataCard";
 
 function PatientRealTimeLocationCard({ user }) {
@@ -31,9 +31,9 @@ function PatientRealTimeLocationCard({ user }) {
     <>
       <BaseCard
         title="Real-time location"
-        subtitle="Where is your patient at any moment."
+        subtitle="Where is the patient at any moment."
       >
-        <MapReceiver
+        <MapServer
           patient={user?.id}
           doctor={user?.patient?.primary_doctor?.id}
         />

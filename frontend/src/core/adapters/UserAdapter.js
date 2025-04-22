@@ -2,6 +2,7 @@ import { genderPipe } from "@/core/pipes/genderPipe";
 import { datePipe } from "@/core/pipes/datePipe";
 import { phoneNumberPipe } from "@/core/pipes/phoneNumberPipe";
 import { textPipe } from "@/core/pipes/textPipe";
+import { countryPipe } from "@/core/pipes/countryPipe";
 
 class UserAdapter {
   static instance = new UserAdapter();
@@ -24,6 +25,7 @@ class UserAdapter {
         datePipe.transform(value, datePipe.OPTIONS.NUMERIC),
       date_joined: (value) => datePipe.transform(value, datePipe.OPTIONS.LONG),
       phone_number: (value) => phoneNumberPipe.transform(value),
+      nationality: (value) => countryPipe.transform(value),
     };
 
     UserAdapter.instance = this;

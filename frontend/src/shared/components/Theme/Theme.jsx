@@ -49,14 +49,17 @@ function Theme() {
       <SunIcon />
 
       <div className="d-flex align-items-center justify-content-center form-check form-switch fs-6">
+        <label
+          htmlFor="toggle-dark"
+          className="form-label form-check-label"
+        ></label>
         <input
-          className="form-check-input cursor-pointer"
-          type="checkbox"
           id="toggle-dark"
-          onChange={toggleTheme}
+          type="checkbox"
           checked={isChecked}
+          className="form-check-input cursor-pointer"
+          onChange={toggleTheme}
         />
-        <label className="form-check-label" htmlFor="toggle-dark"></label>
       </div>
 
       <MoonIcon />

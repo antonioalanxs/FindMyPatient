@@ -7,11 +7,12 @@ function ExitCard() {
   return (
     <BaseCard
       title="Log out"
-      subtitle="It means that you will have to log in again to use the application."
+      subtitle="You will have to log in again to use the application."
     >
-      <div className="btn btn-danger" onClick={logout}>
-        Log out
-      </div>
+      <button className="btn btn-danger" onClick={logout}>
+        <i className="me-2 bi bi-box-arrow-right"></i>
+        <span>Log out</span>
+      </button>
     </BaseCard>
   );
 }

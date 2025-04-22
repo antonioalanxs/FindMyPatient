@@ -5,7 +5,6 @@ import { authenticationService } from "@/core/services/AuthenticationService";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
-import Button from "@/modules/in/components/Form/Button/Button";
 
 function ChangePasswordCard() {
   const [loading, setLoading] = useState(false);
@@ -30,22 +29,18 @@ function ChangePasswordCard() {
   }
 
   return (
-    <BaseCard
-      title="Change password"
-      subtitle="For security reasons, please change your password regularly and do not share it with anyone."
-    >
-      <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
+    <BaseCard title="Change password">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-          <div className="col-12 form-group">
-            <label htmlFor="old_password">Old password</label>
+          <div className="col-md-6 form-group">
+            <label htmlFor="old_password" className="form-label">
+              Old password
+            </label>
             <input
               id="old_password"
               type="password"
               placeholder="Old password"
-              autoComplete="off"
-              className={`form-control form-control-lg form-password ${
-                errors?.old_password && "is-invalid"
-              }`}
+              className={`form-control ${errors?.old_password && "is-invalid"}`}
               {...register("old_password", {
                 required: "Old password is required.",
               })}
@@ -53,16 +48,15 @@ function ChangePasswordCard() {
             <InvalidFeedback message={errors?.old_password?.message} />
           </div>
 
-          <div className="col-12 form-group">
-            <label htmlFor="new_password">New password</label>
+          <div className="col-md-6 form-group">
+            <label htmlFor="new_password" className="form-label">
+              New password
+            </label>
             <input
               id="new_password"
               type="password"
               placeholder="New password"
-              autoComplete="off"
-              className={`form-control form-control-lg form-password ${
-                errors?.new_password && "is-invalid"
-              }`}
+              className={`form-control ${errors?.new_password && "is-invalid"}`}
               {...register("new_password", {
                 required: "New password is required.",
               })}
@@ -73,7 +67,18 @@ function ChangePasswordCard() {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={loading} clear text="Change password" />
+        <div className="mt-2 row justify-content-end">
+          <div className="col-sm-6 col-lg-5 col-xxl-4">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2_5 bi bi-pencil-square"></i>
+              <span>Update password</span>
+            </button>
+          </div>
+        </div>
       </form>
     </BaseCard>
   );

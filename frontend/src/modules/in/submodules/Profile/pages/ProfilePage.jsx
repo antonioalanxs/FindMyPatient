@@ -7,41 +7,36 @@ import Header from "@/modules/in/components/Header/Header";
 import NavigationBar from "@/shared/components/NavigationBar/NavigationBar";
 import BasicInformationCard from "@/modules/in/components/BasicInformationCard/BasicInformationCard";
 import ContactInformationCard from "@/modules/in/components/ContactInformationCard/ContactInformationCard";
-import RoleCard from "@/modules/in/submodules/Profile/components/RoleCard/RoleCard";
 import PatientInformation from "@/modules/in/components/PatientInformation/PatientInformation";
 import DoctorInformation from "@/modules/in/components/DoctorInformation/DoctorInformation";
 import ChangePasswordCard from "@/modules/in/submodules/Profile/components/ChangePasswordCard/ChangePasswordCard";
 import ExitCard from "@/modules/in/submodules/Profile/components/ExitCard/ExitCard";
 import Load from "@/shared/components/Load/Load";
-import { ROLES } from "@/core/constants/roles";
 
 function ProfilePage() {
   useTitle({ title: "Profile" });
 
-  const { user } = useContext(AuthenticationContext);
+  const { user: token } = useContext(AuthenticationContext);
 
-  const [data, setData] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    userService.user(user?.user_id).then(({ data }) => {
-      setData(data);
+    userService.user(token?.user_id).then(({ data }) => {
+      setUser(data);
     });
-  }, [user]);
+  }, [token]);
 
   const tabs = [
     {
-      id: "information",
-      label: "Information",
-      icon: <i className="bi bi-info-circle-fill"></i>,
+      id: "profile",
+      label: "Profile",
+      icon: <i className="bi bi-person-square"></i>,
       content: (
         <>
-          <BasicInformationCard data={data} />
-          <ContactInformationCard user={data} />
-          {data?.role === ROLES.ADMINISTRATOR && <RoleCard />}
-          {data?.doctor && <DoctorInformation doctor={data.doctor} />}
-          {data?.patient && (
-            <PatientInformation patient={data.patient} showPrimaryDoctor />
-          )}
+          <BasicInformationCard user={user} />
+          <ContactInformationCard user={user} />
+          {user?.doctor && <DoctorInformation doctor={user.doctor} />}
+          {user?.patient && <PatientInformation patient={user.patient} />}
         </>
       ),
     },
@@ -63,7 +58,7 @@ function ProfilePage() {
     <>
       <Header subtitle="Set up your account and preferences." title="Profile" />
 
-      {data ? <NavigationBar tabs={tabs} /> : <Load />}
+      {user ? <NavigationBar tabs={tabs} /> : <Load />}
     </>
   );
 }

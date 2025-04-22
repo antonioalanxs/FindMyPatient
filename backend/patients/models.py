@@ -28,7 +28,7 @@ class Patient(User):
         on_delete=models.SET_NULL,
         related_name="patients",
         null=True,
-        blank=True
+        blank=True,
     )
 
     clinical_history = models.ManyToManyField(ClinicalHistory)

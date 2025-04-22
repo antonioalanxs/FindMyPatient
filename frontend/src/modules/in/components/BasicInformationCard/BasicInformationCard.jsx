@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
-import countryList from "react-select-country-list";
 
 import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { userService } from "@/core/services/UserService";
@@ -10,12 +10,12 @@ import { datePipe } from "@/core/pipes/datePipe";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/shared/components/Form/Alert/Alert";
-import Button from "@/modules/in/components/Form/Button/Button";
+import { COUNTRIES } from "@/core/constants/countries";
 
-function BasicInformationCard({ data }) {
-  const countries = countryList().getData();
+function BasicInformationCard({ user }) {
+  const { id } = useParams();
 
-  const { user, setUser } = useContext(AuthenticationContext);
+  const { user: token, setUser } = useContext(AuthenticationContext);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,6 +28,8 @@ function BasicInformationCard({ data }) {
   } = useForm();
 
   const onSubmit = async (formData) => {
+    setLoading(true);
+
     formData = {
       ...formData,
       birth_date: datePipe.transform(
@@ -36,41 +38,37 @@ function BasicInformationCard({ data }) {
       ),
     };
 
-    if (user?.user_id === data?.id) {
+    if (!id) {
       setUser((previousUser) => ({
         ...previousUser,
         first_name: formData.first_name,
       }));
 
       await storageService.save(storageService.USER, {
-        ...user,
+        ...token,
         first_name: formData.first_name,
       });
     }
 
-    setLoading(true);
-
     userService
-      .update(data?.id, formData)
+      .update(id || token?.user_id, formData)
       .catch(({ message }) => setError(message))
       .finally(() => setLoading(false));
   };
 
   return (
-    <BaseCard
-      title="Basic Information"
-      subtitle="Information through which one may be identified."
-    >
+    <BaseCard title="Basic Information">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
           <div className="col-md-6 form-group">
-            <label htmlFor="first_name">First name</label>
+            <label htmlFor="first_name" className="form-label">
+              First name
+            </label>
             <input
               id="first_name"
               type="text"
               placeholder="First name"
-              autoComplete="off"
-              defaultValue={data?.first_name}
+              defaultValue={user?.first_name}
               className={`form-control ${errors?.first_name && "is-invalid"}`}
               {...register("first_name", {
                 required: "First name is required.",
@@ -80,13 +78,14 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="last_name">Last name</label>
+            <label htmlFor="last_name" className="form-label">
+              Last name
+            </label>
             <input
               id="last_name"
               type="text"
               placeholder="Last name"
-              autoComplete="off"
-              defaultValue={data?.last_name}
+              defaultValue={user?.last_name}
               className={`form-control ${errors?.last_name && "is-invalid"}`}
               {...register("last_name", {
                 required: "Last name is required.",
@@ -96,21 +95,22 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="identity_card_number">Identity card</label>
+            <label htmlFor="identity_card_number" className="form-label">
+              Identity card number
+            </label>
             <input
               id="identity_card_number"
               type="text"
-              placeholder="Identity card"
-              autoComplete="off"
-              defaultValue={data?.identity_card_number}
+              placeholder="Identity card number"
+              defaultValue={user?.identity_card_number}
               className={`form-control ${
                 errors?.identity_card_number && "is-invalid"
               }`}
               {...register("identity_card_number", {
-                required: "Identity card is required.",
+                required: "Identity card number is required.",
                 maxLength: {
                   value: 20,
-                  message: "Identity card is up to 20 characters.",
+                  message: "Identity card number is up to 20 characters.",
                 },
               })}
             />
@@ -118,11 +118,13 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="birth_date">Date of birth</label>
+            <label htmlFor="birth_date" className="form-label">
+              Date of birth
+            </label>
             <Controller
               name="birth_date"
-              defaultValue={data?.birth_date}
               control={control}
+              defaultValue={user?.birth_date}
               rules={{ required: "Date of birth is required." }}
               render={({ field }) => (
                 <Flatpickr
@@ -137,16 +139,17 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="gender">Gender</label>
+            <label htmlFor="gender" className="form-label">
+              Gender
+            </label>
             <Controller
               name="gender"
-              defaultValue={data?.gender}
               control={control}
+              defaultValue={user?.gender}
               rules={{ required: "Gender is required." }}
               render={({ field }) => (
                 <select
                   {...field}
-                  id="gender"
                   className={`form-select ${errors?.gender && "is-invalid"}`}
                 >
                   <option value="M">Male</option>
@@ -158,21 +161,22 @@ function BasicInformationCard({ data }) {
           </div>
 
           <div className="col-md-6 form-group">
-            <label htmlFor="nationality">Nationality</label>
+            <label htmlFor="nationality" className="form-label">
+              Nationality
+            </label>
             <Controller
               name="nationality"
-              defaultValue={data?.nationality}
               control={control}
+              defaultValue={user?.nationality}
               rules={{ required: "Nationality is required." }}
               render={({ field }) => (
                 <select
                   {...field}
-                  id="nationality"
                   className={`form-select ${
                     errors?.nationality && "is-invalid"
                   }`}
                 >
-                  {countries.map(({ value, label }) => (
+                  {COUNTRIES.map(({ value, label }) => (
                     <option key={value} value={value}>
                       {label}
                     </option>
@@ -186,7 +190,18 @@ function BasicInformationCard({ data }) {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={loading} text="Update" />
+        <div className="mt-2 row justify-content-end">
+          <div className="col-sm-6 col-md-4 col-xxl-3">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2_5 bi bi-pencil-square"></i>
+              <span>Update</span>
+            </button>
+          </div>
+        </div>
       </form>
     </BaseCard>
   );

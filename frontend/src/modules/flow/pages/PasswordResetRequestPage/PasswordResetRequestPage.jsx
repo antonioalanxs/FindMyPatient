@@ -45,7 +45,6 @@ function PasswordResetRequestPage() {
           <input
             type="email"
             placeholder="Email"
-            autoComplete="off"
             className={`form-control form-control-xl ${
               errors?.email && "is-invalid"
             }`}

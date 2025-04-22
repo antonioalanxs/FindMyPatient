@@ -35,9 +35,16 @@ class IsAdministrator(BasePermission):
     def has_permission(self, request, view):
         return is_administrator(request.user)
 
+
 class IsDoctorOrIsAdministrator(BasePermission):
     def has_permission(self, request, view):
         return is_doctor(request.user) or is_administrator(request.user)
+
+
+class IsDoctorOrIsAdministratorOrIsSelf(BasePermission):
+    def has_permission(self, request, view):
+        return is_doctor(request.user) or is_administrator(request.user) or is_self(request, view)
+
 
 class IsAdministratorOrIsSelf(BasePermission):
     def has_permission(self, request, view):

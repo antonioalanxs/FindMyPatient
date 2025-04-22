@@ -1,83 +1,136 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 import { doctorService } from "@/core/services/DoctorService";
+import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
-import Button from "@/modules/in/components/Form/Button/Button";
-import Badges from "@/shared/components/Badges/Badges";
+import Load from "@/shared/components/Load/Load";
 
 function DoctorInformation({ doctor }) {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [medicalSpecialties, setMedicalSpecialties] = useState([]);
+
+  useEffect(() => {
+    medicalSpecialtyService
+      .medicalSpecialtiesWithoutPagination()
+      .then(({ data }) => setMedicalSpecialties(data))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    setLoadingForm(true);
     doctorService
       .update(doctor?.id, data)
       .catch(({ message }) => setError(message))
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingForm(false));
   };
 
   return (
-    <>
-      <BaseCard
-        title="Collegiate code"
-        subtitle="It identifies the doctor in the medical college."
-      >
+    <BaseCard title="Doctor Information">
+      {loading || !doctor ? (
+        <Load />
+      ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-            <div className="col-md-6 form-group">
-              <label htmlFor="collegiate_code">Collegiate code</label>
+            <div className="col-md-4 col-lg-6 form-group">
+              <label htmlFor="collegiate_code" className="form-label">
+                Collegiate code
+              </label>
               <input
                 id="collegiate_code"
                 type="text"
                 placeholder="Collegiate code"
-                autoComplete="off"
                 defaultValue={doctor?.collegiate_code}
                 className={`form-control ${
                   errors?.collegiate_code && "is-invalid"
                 }`}
                 {...register("collegiate_code", {
                   required: "Collegiate code is required.",
-                  maxLength: {
-                    value: 10,
-                    message: "Collegiate code must be less than 10 characters.",
-                  },
                   minLength: {
                     value: 6,
-                    message: "Collegiate code must be more than 5 characters.",
+                    message: "Collegiate code is at least 6 characters.",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "Collegiate code is up to 10 characters.",
                   },
                 })}
               />
               <InvalidFeedback message={errors?.collegiate_code?.message} />
             </div>
+
+            <div className="col-md-8 col-lg-6 form-group">
+              <label htmlFor="medical_specialties" className="form-label">
+                Medical specialties
+              </label>
+              <Controller
+                name="medical_specialties"
+                control={control}
+                rules={{
+                  required: "At least one medical specialty is required.",
+                }}
+                render={({ field }) => (
+                  <select
+                    multiple
+                    defaultValue={
+                      medicalSpecialties
+                        ?.filter(({ name }) =>
+                          doctor?.medical_specialties?.includes(name)
+                        )
+                        .map(({ id }) => id)
+                        .filter(Boolean) || []
+                    }
+                    className={`py-2 form-select ${
+                      errors?.medical_specialties && "is-invalid"
+                    }`}
+                    onChange={(event) => {
+                      const selectedOptions = Array.from(
+                        event.target.selectedOptions
+                      ).map((option) => option.value);
+                      field.onChange(selectedOptions);
+                    }}
+                  >
+                    {medicalSpecialties.map(({ id, name }) => (
+                      <option key={id} value={id}>
+                        {name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+              <InvalidFeedback message={errors?.medical_specialties?.message} />
+            </div>
           </div>
 
           <Alert content={error} onClose={() => setError(null)} />
 
-          <Button loading={loading} text="Update" />
-        </form>
-      </BaseCard>
-
-      <BaseCard
-        title="Medical specialties"
-        subtitle="Areas of medicine in which the doctor is specialized."
-      >
-        <div className="row">
-          <div className="col-md-6">
-            <Badges items={doctor?.medical_specialties} />
+          <div className="mt-2 row justify-content-end">
+            <div className="col-sm-6 col-md-4 col-xxl-3">
+              <button
+                type="submit"
+                className="w-100 btn btn-primary"
+                disabled={loadingForm}
+              >
+                <i className="me-2_5 bi bi-pencil-square"></i>
+                <span>Update</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </BaseCard>
-    </>
+        </form>
+      )}
+    </BaseCard>
   );
 }
 

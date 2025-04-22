@@ -1,12 +1,20 @@
+from config.settings import PAGINATION_PARAMETER
+
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status, viewsets, mixins, views
+from rest_framework import (
+    status,
+    viewsets,
+    mixins,
+    views
+)
 
 from .serializers import (
     MedicalSpecialtySerializer,
-    MedicalSpecialtyUpsetSerializer
+    MedicalSpecialtyPreviewSerializer,
+    MedicalSpecialtyCompressSerializer
 )
 from doctors.serializers import DoctorPreviewSerializer
 from .models import MedicalSpecialty
@@ -15,7 +23,7 @@ from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
-from permissions.users import IsAdministrator
+from permissions.users import IsAdministrator, IsDoctorOrIsAdministrator
 
 
 class ListDoctorsByMedicalSpecialtyAPIView(
@@ -53,8 +61,9 @@ class MedicalSpecialtyViewSet(
 ):
     model = MedicalSpecialty
     queryset = None
+    list_serializer_class = MedicalSpecialtyPreviewSerializer
     serializer_class = MedicalSpecialtySerializer
-    serializer_upset_class = MedicalSpecialtyUpsetSerializer
+    compress_serializer_class = MedicalSpecialtyCompressSerializer
 
     def get_object(self):
         return get_object_or_404(
@@ -62,13 +71,20 @@ class MedicalSpecialtyViewSet(
             id=self.kwargs.get("pk")
         )
 
-    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministrator])
     def list(self, request, *args, **kwargs):
         queryset = self.search(self.model, request)
-        return self.get_paginated_response_(
-            request,
-            queryset,
-            self.serializer_class
+
+        if request.query_params.get(PAGINATION_PARAMETER, None):
+            return self.get_paginated_response_(
+                request,
+                queryset,
+                self.list_serializer_class
+            )
+
+        return Response(
+            self.compress_serializer_class(queryset, many=True).data,
+            status=status.HTTP_200_OK
         )
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
@@ -79,7 +95,7 @@ class MedicalSpecialtyViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def partial_update(self, request, *args, **kwargs):
-        serializer = self.serializer_upset_class(
+        serializer = self.serializer_class(
             self.get_object(),
             data=request.data,
             partial=True
@@ -87,10 +103,7 @@ class MedicalSpecialtyViewSet(
 
         if serializer.is_valid():
             serializer.save()
-            return Response(
-                {'message': 'Changes saved.'},
-                status=status.HTTP_200_OK
-            )
+            return Response(status=status.HTTP_200_OK)
 
         return self.handle_serializer_is_not_valid_response(serializer)
 
@@ -102,7 +115,7 @@ class MedicalSpecialtyViewSet(
 
     @method_permission_classes([IsAuthenticated, IsAdministrator])
     def create(self, request, *args, **kwargs):
-        serializer = self.serializer_upset_class(data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
             serializer.save()

@@ -131,3 +131,38 @@ class PatientCreateTestCase(TestSetUp):
         response = self.client.post(self.url, data=self.input, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PatientRetrieveTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = lambda id: reverse("patients-detail", kwargs={"id": id})
+
+    def test_retrieve_patient_with_administrator(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.patient_with_address_and_primary_doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_patient_with_doctor_who_is_assigned_to_the_patient(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.get(self.url(self.patient_with_address_and_primary_doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_patient_with_doctor_who_is_not_assigned_to_the_patient(self):
+        self.client.force_authenticate(user=self.another_doctor)
+        response = self.client.get(self.url(self.patient_with_address_and_primary_doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_retrieve_patient_with_owner_user(self):
+        self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
+        response = self.client.get(self.url(self.patient_with_address_and_primary_doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_retrieve_patient_with_non_owner_user(self):
+        self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
+        response = self.client.get(self.url(self.patient_without_address_and_primary_doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_retrieve_patient_with_non_authenticated_user(self):
+        response = self.client.get(self.url(self.patient_with_address_and_primary_doctor.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

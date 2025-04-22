@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
-from doctors.serializers import DoctorSerializer
+from doctors.serializers import DoctorCompressSerializer
 from addresses.serializers import AddressSerializer
 from addresses.models import Address
 from doctors.models import Doctor
@@ -28,27 +28,20 @@ class PatientPreviewSerializer(serializers.ModelSerializer):
         return f"{obj.first_name} {obj.last_name}"
 
 
-class PatientSerializer(serializers.ModelSerializer):
-    primary_doctor = DoctorSerializer(read_only=True)
+class PatientCompressSerializer(serializers.ModelSerializer):
+    primary_doctor = DoctorCompressSerializer(read_only=True)
     address = AddressSerializer(read_only=True)
 
     class Meta:
         model = Patient
         fields = [
-            "id",
             "social_security_code",
             "address",
             "primary_doctor",
         ]
 
 
-class PatientUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Patient
-        fields = "__all__"
-
-
-class PatientCreateSerializer(serializers.ModelSerializer):
+class PatientSerializer(serializers.ModelSerializer):
     primary_doctor_id = serializers.IntegerField()
     address = AddressSerializer()
 
@@ -86,3 +79,16 @@ class PatientCreateSerializer(serializers.ModelSerializer):
         patient.save()
 
         return patient, random_password
+
+    def update(self, instance, validated_data):
+        address_data = validated_data.pop("address", None)
+        if address_data:
+            for attribute, value in address_data.items():
+                setattr(instance.address, attribute, value)
+                instance.address.save()
+
+        for attribute, value in validated_data.items():
+            setattr(instance, attribute, value)
+        instance.save()
+
+        return instance
