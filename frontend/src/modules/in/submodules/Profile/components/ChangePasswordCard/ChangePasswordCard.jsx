@@ -5,7 +5,6 @@ import { authenticationService } from "@/core/services/AuthenticationService";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
-import Button from "@/modules/in/components/Form/Button/Button";
 
 function ChangePasswordCard() {
   const [loading, setLoading] = useState(false);
@@ -32,7 +31,7 @@ function ChangePasswordCard() {
   return (
     <BaseCard title="Change password">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="row gy-2">
+        <div className="row">
           <div className="col-md-6 form-group">
             <label htmlFor="old_password" className="form-label">
               Old password
@@ -68,7 +67,18 @@ function ChangePasswordCard() {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={loading} clear text="Change password" />
+        <div className="mt-2 row justify-content-end">
+          <div className="col-sm-6 col-lg-5 col-xxl-4">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2_5 bi bi-pencil-square"></i>
+              <span>Update password</span>
+            </button>
+          </div>
+        </div>
       </form>
     </BaseCard>
   );

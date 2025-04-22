@@ -10,7 +10,6 @@ import { datePipe } from "@/core/pipes/datePipe";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Alert from "@/shared/components/Form/Alert/Alert";
-import Button from "@/modules/in/components/Form/Button/Button";
 import { COUNTRIES } from "@/core/constants/countries";
 
 function BasicInformationCard({ user }) {
@@ -29,6 +28,8 @@ function BasicInformationCard({ user }) {
   } = useForm();
 
   const onSubmit = async (formData) => {
+    setLoading(true);
+
     formData = {
       ...formData,
       birth_date: datePipe.transform(
@@ -48,8 +49,6 @@ function BasicInformationCard({ user }) {
         first_name: formData.first_name,
       });
     }
-
-    setLoading(true);
 
     userService
       .update(id || token?.user_id, formData)
@@ -191,7 +190,18 @@ function BasicInformationCard({ user }) {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={loading} text="Update" />
+        <div className="mt-2 row justify-content-end">
+          <div className="col-sm-6 col-md-4 col-xxl-3">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2_5 bi bi-pencil-square"></i>
+              <span>Update</span>
+            </button>
+          </div>
+        </div>
       </form>
     </BaseCard>
   );

@@ -7,7 +7,6 @@ import { userService } from "@/core/services/UserService";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
-import Button from "@/modules/in/components/Form/Button/Button";
 
 function ContactInformationCard({ user }) {
   const { id } = useParams();
@@ -85,7 +84,18 @@ function ContactInformationCard({ user }) {
 
         <Alert content={error} onClose={() => setError(null)} />
 
-        <Button loading={loading} text="Update" />
+        <div className="mt-2 row justify-content-end">
+          <div className="col-sm-6 col-md-4 col-xxl-3">
+            <button
+              type="submit"
+              className="w-100 btn btn-primary"
+              disabled={loading}
+            >
+              <i className="me-2_5 bi bi-pencil-square"></i>
+              <span>Update</span>
+            </button>
+          </div>
+        </div>
       </form>
     </BaseCard>
   );
