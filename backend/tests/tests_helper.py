@@ -10,6 +10,7 @@ from addresses.models import Address
 from doctors.models import Doctor
 from administrators.models import Administrator
 from medical_specialties.models import MedicalSpecialty
+from rooms.models import Room
 
 
 class TestSetUp(APITestCase):
@@ -101,13 +102,18 @@ class TestSetUp(APITestCase):
             **self.medical_specialty_input
         )
         self.medical_specialty_id = self.medical_specialty.id
-        self.medical_specialty.save()
 
         self.doctor.medical_specialties.add(self.medical_specialty)
         self.doctor.save()
 
         self.another_doctor.medical_specialties.add(self.medical_specialty)
         self.another_doctor.save()
+
+        self.room = Room.objects.create(
+            name="test",
+            location="test",
+            medical_specialty=self.medical_specialty,
+        )
 
     def setUp(self):
         self.non_existing_id = 999999
