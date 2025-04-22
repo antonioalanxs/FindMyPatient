@@ -1,14 +1,14 @@
 import { textPipe } from "@/core/pipes/textPipe";
 
-class MedicalSpecialtyAdapter {
-  static instance = new MedicalSpecialtyAdapter();
+class GenericEntityAdapter {
+  static instance = new GenericEntityAdapter();
 
   constructor() {
-    if (MedicalSpecialtyAdapter.instance) {
-      return MedicalSpecialtyAdapter.instance;
+    if (GenericEntityAdapter.instance) {
+      return GenericEntityAdapter.instance;
     }
 
-    MedicalSpecialtyAdapter.instance = this;
+    GenericEntityAdapter.instance = this;
   }
 
   _adapt(entity) {
@@ -33,4 +33,4 @@ class MedicalSpecialtyAdapter {
   }
 }
 
-export const medicalSpecialtyAdapter = MedicalSpecialtyAdapter.instance;
+export const genericEntityAdapter = GenericEntityAdapter.instance;
