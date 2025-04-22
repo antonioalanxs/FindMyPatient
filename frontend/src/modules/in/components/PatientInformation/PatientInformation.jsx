@@ -37,7 +37,7 @@ function PatientInformation({ patient }) {
       <BaseCard title="Social security code">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row">
-            <div className="col-md-6 form-group">
+            <div className="col-md-4 form-group">
               <label htmlFor="social_security_code" className="form-label">
                 Social security code
               </label>
