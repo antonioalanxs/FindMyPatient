@@ -17,13 +17,15 @@ from .serializers import (
     MedicalSpecialtyCompressSerializer
 )
 from doctors.serializers import DoctorPreviewSerializer
-from .models import MedicalSpecialty
-from doctors.models import Doctor
+from rooms.serializers import RoomPreviewSerializer
 from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
 from permissions.users import IsAdministrator, IsDoctorOrIsAdministrator
+from .models import MedicalSpecialty
+from doctors.models import Doctor
+from rooms.models import Room
 
 
 class ListDoctorsByMedicalSpecialtyAPIView(
@@ -40,7 +42,7 @@ class ListDoctorsByMedicalSpecialtyAPIView(
         )
 
         queryset = self.search(
-            Doctor,
+            Room,
             request,
             base_queryset=medical_specialty.doctor_set.all()
         )
@@ -49,6 +51,32 @@ class ListDoctorsByMedicalSpecialtyAPIView(
             request,
             queryset,
             DoctorPreviewSerializer
+        )
+
+
+class ListRoomsByMedicalSpecialtyAPIView(
+    views.APIView,
+    SearchMixin,
+    PaginationMixin
+):
+    permission_classes = [IsAuthenticated, IsAdministrator]
+
+    def get(self, request, *args, **kwargs):
+        medical_specialty = get_object_or_404(
+            MedicalSpecialty,
+            id=self.kwargs.get("pk")
+        )
+
+        queryset = self.search(
+            Room,
+            request,
+            base_queryset=medical_specialty.rooms.all(),
+        )
+
+        return self.get_paginated_response_(
+            request,
+            queryset,
+            RoomPreviewSerializer
         )
 
 
