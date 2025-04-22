@@ -10,6 +10,7 @@ from rest_framework import (
 
 from .serializers import (
     RoomPreviewSerializer,
+    RoomSerializer,
 )
 from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
@@ -29,6 +30,7 @@ class RoomViewSet(
     model = Room
     queryset = None
     list_serializer_class = RoomPreviewSerializer
+    serializer_class = RoomSerializer
 
     def get_object(self):
         return get_object_or_404(
@@ -50,3 +52,9 @@ class RoomViewSet(
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def retrieve(self, request, *args, **kwargs):
+        room = self.get_object()
+        serializer = self.serializer_class(room)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -16,3 +16,18 @@ class RoomPreviewSerializer(serializers.ModelSerializer):
             'location',
             'medical_specialty'
         ]
+
+class RoomSerializer(serializers.ModelSerializer):
+    medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
+    availability = serializers.BooleanField(source='is_available')
+
+    class Meta:
+        model = Room
+        fields = [
+            'name',
+            'description',
+            'location',
+            'capacity',
+            'medical_specialty',
+            'availability',
+        ]
