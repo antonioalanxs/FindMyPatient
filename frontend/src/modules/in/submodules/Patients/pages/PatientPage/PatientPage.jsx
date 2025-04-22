@@ -7,9 +7,7 @@ import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
 import NavigationBar from "@/shared/components/NavigationBar/NavigationBar";
 import PatientRealTimeLocationCard from "@/modules/in/submodules/Patients/components/PatientRealTimeLocationCard/PatientRealTimeLocationCard";
-import BasicInformationCard from "@/modules/in/components/BasicInformationCard/BasicInformationCard";
-import ContactInformationCard from "@/modules/in/components/ContactInformationCard/ContactInformationCard";
-import PatientInformation from "@/modules/in/components/PatientInformation/PatientInformation";
+import PatientSheetPage from "@/modules/in/submodules/Patients/pages/PatientSheetPage/PatientSheetPage";
 import { ROUTES } from "@/core/constants/routes";
 
 function PatientPage() {
@@ -42,13 +40,7 @@ function PatientPage() {
       id: "sheet",
       label: "Sheet",
       icon: <i className="bi bi-file-earmark-text-fill"></i>,
-      content: (
-        <>
-          <BasicInformationCard user={user} />
-          <ContactInformationCard user={user} />
-          <PatientInformation patient={user?.patient} />
-        </>
-      ),
+      content: <PatientSheetPage user={user} />,
     },
     {
       id: "clinical-history",
