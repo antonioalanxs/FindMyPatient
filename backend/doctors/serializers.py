@@ -4,7 +4,6 @@ from rest_framework import serializers
 
 from medical_specialties.serializers import MedicalSpecialtySqueezeSerializer
 from .models import Doctor
-from medical_specialties.models import MedicalSpecialty
 from utilities.password import generate_random_password
 
 
@@ -17,6 +16,7 @@ class DoctorCompressSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "collegiate_code",
             "medical_specialties",
         ]
 
