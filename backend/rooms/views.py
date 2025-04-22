@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework import (
     viewsets,
-    mixins
+    mixins,
+    status,
 )
 
 from .serializers import (
@@ -42,3 +44,9 @@ class RoomViewSet(
             queryset,
             self.list_serializer_class
         )
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
