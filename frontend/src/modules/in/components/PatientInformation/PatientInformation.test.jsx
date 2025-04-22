@@ -1,9 +1,8 @@
-import { render } from "@testing-library/react";
-
+import { customRender } from "@/tests/customRender";
 import PatientInformation from "@/modules/in/components/PatientInformation/PatientInformation";
 
 describe("PatientInformation", () => {
   it("should create", () => {
-    render(<PatientInformation patient={{}} />);
+    customRender(<PatientInformation patient={{}} />);
   });
 });
