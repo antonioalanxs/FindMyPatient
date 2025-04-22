@@ -28,6 +28,10 @@ class RoomService {
   destroy = (id) => {
     return axiosInstance.delete(`${this._prefix}/${id}/`);
   };
+
+  room = (id) => {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  };
 }
 
 export const roomService = RoomService.instance;
