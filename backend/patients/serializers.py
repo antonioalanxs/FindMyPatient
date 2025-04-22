@@ -82,9 +82,10 @@ class PatientSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         address_data = validated_data.pop("address", None)
-        for attribute, value in address_data.items():
-            setattr(instance.address, attribute, value)
-            instance.address.save()
+        if address_data:
+            for attribute, value in address_data.items():
+                setattr(instance.address, attribute, value)
+                instance.address.save()
 
         for attribute, value in validated_data.items():
             setattr(instance, attribute, value)
