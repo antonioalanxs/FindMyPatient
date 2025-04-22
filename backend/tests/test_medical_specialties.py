@@ -188,3 +188,31 @@ class CreateMedicalSpecialtyTestCase(TestSetUp):
         self.medical_specialty_input["name"] = ""
         response = self.client.post(self.url, data=self.medical_specialty_input)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class ListRoomsByMedicalSpecialtyTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = lambda id: reverse(
+            "medical_specialties-rooms",
+            kwargs={"pk": id}
+        )
+
+    def test_list_rooms_by_medical_specialty(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url(self.medical_specialty.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_list_rooms_by_medical_specialty_with_patient(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(self.url(self.medical_specialty.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_list_rooms_by_medical_specialty_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.get(self.url(self.medical_specialty.id))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_list_rooms_by_medical_specialty_with_non_authenticated_user(self):
+        response = self.client.get(self.url(self.medical_specialty.id))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
