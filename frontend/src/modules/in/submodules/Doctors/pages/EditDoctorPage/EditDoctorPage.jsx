@@ -287,7 +287,7 @@ function EditDoctorPage() {
             <div className="col-xxl-7">
               <BaseCard title="Doctor Information">
                 <div className="row">
-                  <div className="col-md-6 form-group">
+                  <div className="col-md-4 col-lg-5 form-group">
                     <label htmlFor="collegiate_code" className="form-label">
                       Collegiate code
                     </label>
@@ -316,7 +316,7 @@ function EditDoctorPage() {
                     />
                   </div>
 
-                  <div className="col-md-6 form-group">
+                  <div className="col-md-8 col-lg-7 form-group">
                     <label htmlFor="medical_specialties" className="form-label">
                       Medical specialties
                     </label>
@@ -329,6 +329,14 @@ function EditDoctorPage() {
                       render={({ field }) => (
                         <select
                           multiple
+                          defaultValue={
+                            medicalSpecialties
+                              ?.filter(({ name }) =>
+                                doctor?.medical_specialties?.includes(name)
+                              )
+                              .map(({ id }) => id)
+                              .filter(Boolean) || []
+                          }
                           className={`py-2 form-select ${
                             errors?.medical_specialties && "is-invalid"
                           }`}
@@ -340,13 +348,7 @@ function EditDoctorPage() {
                           }}
                         >
                           {medicalSpecialties.map(({ id, name }) => (
-                            <option
-                              key={id}
-                              value={id}
-                              selected={doctor?.medical_specialties?.includes(
-                                name
-                              )}
-                            >
+                            <option key={id} value={id}>
                               {name}
                             </option>
                           ))}
