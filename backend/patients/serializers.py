@@ -92,3 +92,14 @@ class PatientSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+
+class PatientSqueezeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = [
+            "id",
+            "name",
+            "identity_card_number",
+            "social_security_code",
+        ]
