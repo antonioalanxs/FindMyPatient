@@ -130,12 +130,12 @@ function CreateRoomPage() {
                   {...register("location", {
                     required: "Location is required.",
                     minLength: {
-                      value: 25,
-                      message: "Location is at least 25 characters.",
+                      value: 7,
+                      message: "Location is at least 7 characters.",
                     },
                     maxLength: {
-                      value: 100,
-                      message: "Location is up to 100 characters.",
+                      value: 50,
+                      message: "Location is up to 50 characters.",
                     },
                   })}
                 />
