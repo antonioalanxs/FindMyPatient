@@ -58,3 +58,16 @@ class RoomViewSet(
         room = self.get_object()
         serializer = self.serializer_class(room)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {'message': 'Room created.'},
+                status=status.HTTP_201_CREATED
+            )
+
+        return self.handle_serializer_is_not_valid_response(serializer)
