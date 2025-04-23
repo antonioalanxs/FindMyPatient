@@ -71,3 +71,17 @@ class RoomViewSet(
             )
 
         return self.handle_serializer_is_not_valid_response(serializer)
+
+    @method_permission_classes([IsAuthenticated, IsAdministrator])
+    def partial_update(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            self.get_object(),
+            data=request.data,
+            partial=True
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK)
+
+        return self.handle_serializer_is_not_valid_response(serializer)
