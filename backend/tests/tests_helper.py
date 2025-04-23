@@ -104,16 +104,21 @@ class TestSetUp(APITestCase):
         self.medical_specialty_id = self.medical_specialty.id
 
         self.doctor.medical_specialties.add(self.medical_specialty)
-        self.doctor.save()
 
         self.another_doctor.medical_specialties.add(self.medical_specialty)
-        self.another_doctor.save()
 
-        self.room = Room.objects.create(
-            name="test",
-            location="test",
-            medical_specialty=self.medical_specialty,
-        )
+        self.room_input = {
+            "name": "Room test",
+            "location": "test",
+            "capacity": 1,
+        }
+
+        self.room = Room.objects.create(**self.room_input)
+        self.room.medical_specialty = self.medical_specialty
+
+        self.room.save()
+        self.doctor.save()
+        self.another_doctor.save()
 
     def setUp(self):
         self.non_existing_id = 999999
