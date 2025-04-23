@@ -63,5 +63,8 @@ export const ROUTES = {
       CREATE: "new",
       EDIT: (id = ":id") => `${id}/edition`,
     }),
+    APPOINTMENTS: createModuleRoutes("/in/appointments", {
+      REQUEST: "request",
+    }),
   },
 };

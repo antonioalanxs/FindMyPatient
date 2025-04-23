@@ -9,6 +9,7 @@ import MedicalSpecialtiesRouter from "@/modules/in/submodules/MedicalSpecialties
 import AdministratorsRouter from "@/modules/in/submodules/Administrators/Router";
 import DoctorsRouter from "@/modules/in/submodules/Doctors/Router";
 import RoomsRouter from "@/modules/in/submodules/Rooms/Router";
+import AppointmentsRouter from "@/modules/in/submodules/Appointments/Router";
 import { ROUTES } from "@/core/constants/routes";
 
 const InRouter = () => {
@@ -41,9 +42,14 @@ const InRouter = () => {
           element={<AdministratorsRouter />}
         />
 
+        <Route path={ROUTES.IN.DOCTORS.ANYWHERE} element={<DoctorsRouter />} />
+
         <Route path={ROUTES.IN.ROOMS.ANYWHERE} element={<RoomsRouter />} />
 
-        <Route path={ROUTES.IN.DOCTORS.ANYWHERE} element={<DoctorsRouter />} />
+        <Route
+          path={ROUTES.IN.APPOINTMENTS.ANYWHERE}
+          element={<AppointmentsRouter />}
+        />
 
         <Route
           path={ROUTES.ANYWHERE}

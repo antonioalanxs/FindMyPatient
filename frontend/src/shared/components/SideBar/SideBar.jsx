@@ -22,10 +22,16 @@ function SideBar() {
       label: "Home",
     },
     {
-      link: null,
+      link: ROUTES.IN.APPOINTMENTS.ABSOLUTE.REQUEST,
+      icon: <i className="bi bi-calendar-plus"></i>,
+      label: "Request visit",
+      roles: [ROLES.PATIENT, ROLES.DOCTOR, ROLES.ADMINISTRATOR],
+    },
+    {
+      link: ROUTES.IN.APPOINTMENTS.BASE,
       icon: <i className="bi bi-journal-medical"></i>,
       label: "Appointments",
-      roles: [ROLES.PATIENT],
+      roles: [ROLES.PATIENT, ROLES.DOCTOR],
     },
     {
       link: null,
@@ -43,12 +49,6 @@ function SideBar() {
       link: null,
       icon: <i className="bi bi-calendar2-event-fill"></i>,
       label: "Schedule",
-      roles: [ROLES.DOCTOR],
-    },
-    {
-      link: null,
-      icon: <i className="bi bi-journal-medical"></i>,
-      label: "Appointments",
       roles: [ROLES.DOCTOR],
     },
     {
