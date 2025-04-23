@@ -22,7 +22,7 @@ function EditDoctorPage() {
 
   const [loading, setLoading] = useState(true);
   const [doctor, setDoctor] = useState(null);
-  const [medicalSpecialties, setMedicalSpecialties] = useState([]);
+  const [medicalSpecialties, setMedicalSpecialties] = useState(null);
   const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
 
