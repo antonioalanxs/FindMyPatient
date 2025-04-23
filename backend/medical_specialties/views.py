@@ -99,7 +99,7 @@ class MedicalSpecialtyViewSet(
             id=self.kwargs.get("pk")
         )
 
-    @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministrator])
+    @method_permission_classes([IsAuthenticated])
     def list(self, request, *args, **kwargs):
         queryset = self.search(self.model, request)
 
