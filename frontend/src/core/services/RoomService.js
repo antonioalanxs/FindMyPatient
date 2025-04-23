@@ -36,6 +36,10 @@ class RoomService {
   create = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };
+
+  update = (id, data) => {
+    return axiosInstance.patch(`${this._prefix}/${id}/`, data);
+  };
 }
 
 export const roomService = RoomService.instance;
