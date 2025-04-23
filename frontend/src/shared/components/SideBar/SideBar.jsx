@@ -81,6 +81,12 @@ function SideBar() {
       label: "Specialties",
       roles: [ROLES.ADMINISTRATOR],
     },
+    {
+      link: ROUTES.IN.ROOMS.BASE,
+      icon: <i className="bi bi-buildings-fill"></i>,
+      label: "Rooms",
+      roles: [ROLES.ADMINISTRATOR],
+    },
   ];
 
   const dropdownOptions = [

@@ -55,7 +55,7 @@ function EditMedicalSpecialtyPage() {
     <>
       <Header
         title="Edit a medical specialty"
-        subtitle="Here you can update a specialty."
+        subtitle="Here you can update the specialty information."
         link={ROUTES.IN.MEDICAL_SPECIALTIES.BASE}
       />
 

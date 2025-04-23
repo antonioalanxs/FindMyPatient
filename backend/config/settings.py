@@ -71,6 +71,7 @@ LOCAL_APPS = [
     'medical_specialties',
     'addresses',
     'groups',
+    'rooms',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS

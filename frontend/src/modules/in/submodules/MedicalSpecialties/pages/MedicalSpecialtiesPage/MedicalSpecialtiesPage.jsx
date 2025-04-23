@@ -1,6 +1,6 @@
 import { useTitle } from "@/core/hooks/useTitle";
 import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
-import { medicalSpecialtyAdapter } from "@/core/adapters/MedicalSpecialtyAdapter";
+import { genericEntityAdapter } from "@/core/adapters/GenericEntityAdapter";
 import Header from "@/modules/in/components/Header/Header";
 import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
@@ -17,7 +17,7 @@ function MedicalSpecialtiesPage() {
 
       <GenericList
         fetchService={medicalSpecialtyService.medicalSpecialties}
-        adapter={medicalSpecialtyAdapter}
+        adapter={genericEntityAdapter}
         actions={{
           search: {
             label: "Search for a specialty",

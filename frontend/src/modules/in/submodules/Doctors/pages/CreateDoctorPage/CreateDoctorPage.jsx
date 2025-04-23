@@ -18,17 +18,14 @@ import { ROUTES } from "@/core/constants/routes";
 function CreateDoctorPage() {
   useTitle({ title: "Create a doctor" });
 
-  const [loading, setLoading] = useState(true);
-  const [medicalSpecialties, setMedicalSpecialties] = useState([]);
-  const [loadingForm, setLoadingForm] = useState(false);
+  const [medicalSpecialties, setMedicalSpecialties] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
     medicalSpecialtyService
       .medicalSpecialtiesWithoutPagination()
-      .then(({ data }) => setMedicalSpecialties(data))
-      .finally(() => setLoading(false));
+      .then(({ data }) => setMedicalSpecialties(data));
   }, []);
 
   const {
@@ -41,7 +38,7 @@ function CreateDoctorPage() {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    setLoadingForm(true);
+    setLoading(true);
 
     data = {
       ...data,
@@ -58,7 +55,7 @@ function CreateDoctorPage() {
         setError(message);
       })
       .finally(() => {
-        setLoadingForm(false);
+        setLoading(false);
       });
   };
 
@@ -303,7 +300,7 @@ function CreateDoctorPage() {
                     Medical specialties
                   </label>
 
-                  {loading ? (
+                  {!medicalSpecialties ? (
                     <>
                       <Load phrases={false} classes="mt-1" />
                       <p className="d-none form-control-static">
@@ -355,7 +352,7 @@ function CreateDoctorPage() {
           <button
             type="submit"
             className="col-sm-5 col-xl-4 col-xxl-3 btn btn-primary"
-            disabled={loadingForm || loading}
+            disabled={loading || !medicalSpecialties}
           >
             <i className="me-2 bi bi-people-fill"></i>
             <span>Create doctor</span>
@@ -364,7 +361,7 @@ function CreateDoctorPage() {
           <button
             type="reset"
             className="col-sm-2 col-xxl-1 btn btn-outline-primary"
-            disabled={loadingForm || loading}
+            disabled={loading || !medicalSpecialties}
           >
             Clear
           </button>

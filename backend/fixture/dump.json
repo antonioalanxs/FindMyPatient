@@ -464,32 +464,32 @@
     "model": "medical_specialties.medicalspecialty",
     "pk": 1,
     "fields": {
-      "name": "Cardiología",
-      "description": "Especialidad médica que se ocupa de las enfermedades del corazón y del sistema circulatorio."
+      "name": "Cardiology",
+      "description": "Medical specialty that deals with heart diseases and the circulatory system."
     }
   },
   {
     "model": "medical_specialties.medicalspecialty",
     "pk": 2,
     "fields": {
-      "name": "Dermatología",
-      "description": "Especialidad médica que se ocupa de las enfermedades de la piel."
+      "name": "Dermatology",
+      "description": "Medical specialty that deals with skin diseases."
     }
   },
   {
     "model": "medical_specialties.medicalspecialty",
     "pk": 3,
     "fields": {
-      "name": "Pediatría",
-      "description": "Especialidad médica que se ocupa de la salud de los niños."
+      "name": "Pediatrics",
+      "description": "Medical specialty that deals with children's health."
     }
   },
   {
     "model": "medical_specialties.medicalspecialty",
     "pk": 4,
     "fields": {
-      "name": "Ginecología",
-      "description": "Especialidad médica que se ocupa de la salud del sistema reproductor femenino."
+      "name": "Gynecology",
+      "description": "Medical specialty that deals with female reproductive system health."
     }
   },
   {
@@ -520,7 +520,7 @@
     "model": "addresses.address",
     "pk": 1,
     "fields": {
-      "street": "Calle Falsa 123",
+      "street": "Calle Falsa",
       "city": "Madrid",
       "number": "1",
       "country": "ES",
@@ -531,7 +531,7 @@
     "model": "addresses.address",
     "pk": 2,
     "fields": {
-      "street": "Avenida Real 456",
+      "street": "Avenida Real",
       "city": "Barcelona",
       "number": "2B",
       "country": "ES",
@@ -542,7 +542,7 @@
     "model": "addresses.address",
     "pk": 3,
     "fields": {
-      "street": "Calle Nueva 789",
+      "street": "Calle Nueva",
       "city": "Valencia",
       "number": "3",
       "country": "ES",
@@ -553,7 +553,7 @@
     "model": "addresses.address",
     "pk": 4,
     "fields": {
-      "street": "Calle Vieja 101",
+      "street": "Calle Vieja",
       "city": "Sevilla",
       "number": "4",
       "country": "ES",
@@ -564,7 +564,7 @@
     "model": "addresses.address",
     "pk": 5,
     "fields": {
-      "street": "Calle Mayor 202",
+      "street": "Calle Mayor",
       "city": "Zaragoza",
       "number": "5",
       "country": "ES",
@@ -575,7 +575,7 @@
     "model": "addresses.address",
     "pk": 6,
     "fields": {
-      "street": "Calle Ancha 303",
+      "street": "Calle Ancha",
       "city": "Málaga",
       "number": "6",
       "country": "ES",
@@ -586,7 +586,7 @@
     "model": "addresses.address",
     "pk": 7,
     "fields": {
-      "street": "Calle Estrecha 404",
+      "street": "Calle Estrecha",
       "city": "Bilbao",
       "number": "7",
       "country": "ES",
@@ -597,7 +597,7 @@
     "model": "addresses.address",
     "pk": 8,
     "fields": {
-      "street": "Calle Larga 505",
+      "street": "Calle Larga",
       "city": "Murcia",
       "number": "8",
       "country": "ES",
@@ -608,7 +608,7 @@
     "model": "addresses.address",
     "pk": 9,
     "fields": {
-      "street": "Calle Corta 606",
+      "street": "Calle Corta",
       "city": "Palma",
       "number": "9",
       "country": "ES",
@@ -619,7 +619,7 @@
     "model": "addresses.address",
     "pk": 10,
     "fields": {
-      "street": "Calle Ancha 707",
+      "street": "Calle Ancha",
       "city": "Las Palmas",
       "number": "10",
       "country": "ES",
@@ -630,7 +630,7 @@
     "model": "addresses.address",
     "pk": 11,
     "fields": {
-      "street": "Calle Nueva 808",
+      "street": "Calle Nueva",
       "city": "Valladolid",
       "number": "11",
       "country": "ES",
@@ -641,7 +641,7 @@
     "model": "addresses.address",
     "pk": 12,
     "fields": {
-      "street": "Calle Vieja 909",
+      "street": "Calle Vieja",
       "city": "Vigo",
       "number": "12",
       "country": "ES",
@@ -652,7 +652,7 @@
     "model": "addresses.address",
     "pk": 13,
     "fields": {
-      "street": "Calle Principal 1010",
+      "street": "Calle Principal",
       "city": "Gijón",
       "number": "13",
       "country": "ES",
@@ -663,7 +663,7 @@
     "model": "addresses.address",
     "pk": 14,
     "fields": {
-      "street": "Calle Secundaria 1111",
+      "street": "Calle Secundaria",
       "city": "Alicante",
       "number": "14",
       "country": "ES",
@@ -674,7 +674,7 @@
     "model": "addresses.address",
     "pk": 15,
     "fields": {
-      "street": "Calle Peatonal 1212",
+      "street": "Calle Peatonal",
       "city": "Córdoba",
       "number": "15",
       "country": "ES",
@@ -685,7 +685,7 @@
     "model": "addresses.address",
     "pk": 16,
     "fields": {
-      "street": "Calle Comercial 1313",
+      "street": "Calle Comercial",
       "city": "Vitoria",
       "number": "16",
       "country": "ES",
@@ -867,6 +867,54 @@
     "pk": 2,
     "fields": {
       "user_ptr_id": 6
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 1,
+    "fields": {
+      "name": "Room 0101",
+      "description": "Health examination space with adjustable lighting.",
+      "location": "1st Floor, East Wing",
+      "capacity": 5,
+      "medical_specialty": 1,
+      "is_available": true
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 2,
+    "fields": {
+      "name": "Room 0202",
+      "description": "Consultation room with a view.",
+      "location": "2nd Floor, West Wing",
+      "capacity": 3,
+      "medical_specialty": 2,
+      "is_available": true
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 3,
+    "fields": {
+      "name": "Room 0303",
+      "description": "Pediatric examination room with toys.",
+      "location": "3rd Floor, North Wing",
+      "capacity": 4,
+      "medical_specialty": 3,
+      "is_available": true
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 4,
+    "fields": {
+      "name": "Room 0404",
+      "description": "Gynecological examination room with privacy curtains.",
+      "location": "4th Floor, South Wing",
+      "capacity": 2,
+      "medical_specialty": 4,
+      "is_available": true
     }
   }
 ]

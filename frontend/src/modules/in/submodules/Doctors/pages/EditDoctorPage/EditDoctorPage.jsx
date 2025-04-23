@@ -22,7 +22,7 @@ function EditDoctorPage() {
 
   const [loading, setLoading] = useState(true);
   const [doctor, setDoctor] = useState(null);
-  const [medicalSpecialties, setMedicalSpecialties] = useState([]);
+  const [medicalSpecialties, setMedicalSpecialties] = useState(null);
   const [loadingForm, setLoadingForm] = useState(false);
   const [error, setError] = useState(null);
 
@@ -72,7 +72,7 @@ function EditDoctorPage() {
     <>
       <Header
         title="Edit a doctor"
-        subtitle="Here you can update a doctor."
+        subtitle="Here you can update the doctor information."
         link={ROUTES.IN.DOCTORS.BASE}
       />
 

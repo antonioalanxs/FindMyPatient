@@ -46,4 +46,5 @@ urlpatterns = [
     include_api_path('doctors'),
     include_api_path('administrators'),
     include_api_path('groups'),
+    include_api_path('rooms'),
 ]

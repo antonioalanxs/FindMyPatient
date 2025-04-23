@@ -9,14 +9,12 @@ import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFee
 import Load from "@/shared/components/Load/Load";
 
 function DoctorInformation({ doctor }) {
-  const [loading, setLoading] = useState(true);
-  const [medicalSpecialties, setMedicalSpecialties] = useState([]);
+  const [medicalSpecialties, setMedicalSpecialties] = useState(null);
 
   useEffect(() => {
     medicalSpecialtyService
       .medicalSpecialtiesWithoutPagination()
-      .then(({ data }) => setMedicalSpecialties(data))
-      .finally(() => setLoading(false));
+      .then(({ data }) => setMedicalSpecialties(data));
   }, []);
 
   const [loadingForm, setLoadingForm] = useState(false);
@@ -39,7 +37,7 @@ function DoctorInformation({ doctor }) {
 
   return (
     <BaseCard title="Doctor Information">
-      {loading || !doctor ? (
+      {!medicalSpecialties || !doctor ? (
         <Load />
       ) : (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -121,7 +119,7 @@ function DoctorInformation({ doctor }) {
               <button
                 type="submit"
                 className="w-100 btn btn-primary"
-                disabled={loadingForm}
+                disabled={loadingForm || !medicalSpecialties}
               >
                 <i className="me-2_5 bi bi-pencil-square"></i>
                 <span>Update</span>

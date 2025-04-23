@@ -55,6 +55,17 @@ class MedicalSpecialtyService {
   medicalSpecialtiesWithoutPagination = () => {
     return axiosInstance.get(`${this._prefix}/`);
   };
+
+  roomsByMedicalSpecialty = (
+    id,
+    query,
+    page,
+    pageSize = DEFAULT_PAGINATION_SIZE
+  ) => {
+    return axiosInstance.get(
+      `${this._prefix}/${id}/rooms?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
+    );
+  };
 }
 
 export const medicalSpecialtyService = MedicalSpecialtyService.instance;
