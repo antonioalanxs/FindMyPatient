@@ -32,6 +32,10 @@ class RoomService {
   room = (id) => {
     return axiosInstance.get(`${this._prefix}/${id}/`);
   };
+
+  create = (data) => {
+    return axiosInstance.post(`${this._prefix}/`, data);
+  };
 }
 
 export const roomService = RoomService.instance;
