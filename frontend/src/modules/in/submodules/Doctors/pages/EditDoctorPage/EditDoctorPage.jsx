@@ -72,7 +72,7 @@ function EditDoctorPage() {
     <>
       <Header
         title="Edit a doctor"
-        subtitle="Here you can update a doctor."
+        subtitle="Here you can update the doctor information."
         link={ROUTES.IN.DOCTORS.BASE}
       />
 
