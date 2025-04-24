@@ -904,17 +904,5 @@
       "medical_specialty": 3,
       "is_available": true
     }
-  },
-  {
-    "model": "rooms.room",
-    "pk": 4,
-    "fields": {
-      "name": "Room 0404",
-      "description": "Gynecological examination room with privacy curtains.",
-      "location": "4th Floor, South Wing",
-      "capacity": 2,
-      "medical_specialty": 4,
-      "is_available": true
-    }
   }
 ]

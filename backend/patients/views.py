@@ -65,7 +65,7 @@ class PatientViewSet(
         return Response(
             self.list_serializer_class(queryset, many=True).data,
             status=status.HTTP_200_OK
-        )   
+        )
 
     @method_permission_classes([IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf])
     def partial_update(self, request, *args, **kwargs):
