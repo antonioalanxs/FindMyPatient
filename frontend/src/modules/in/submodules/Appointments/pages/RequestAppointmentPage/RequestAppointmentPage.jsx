@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useTitle } from "@/core/hooks/useTitle";
 import { patientService } from "@/core/services/PatientService";
 import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
-// import { appointmentService } from "@/core/services/AppointmentService";
+import { appointmentService } from "@/core/services/AppointmentService";
 import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import Alert from "@/shared/components/Form/Alert/Alert";
@@ -53,18 +53,15 @@ function RequestAppointmentPage() {
         ? parseInt(data.medical_specialty)
         : undefined,
       hour_preference: parseInt(data.hour_preference),
+      is_sender_patient: user?.role === ROLES.PATIENT,
     };
 
-    // appointmentService
-    //   .request(data)
-    //   .catch(({ message }) => {
-    //     setError(message);
-    //   })
-    //   .finally(() => setLoading(false));
-
-    console.log(data);
-
-    setLoading(false);
+    appointmentService
+      .request(data)
+      .catch(({ message }) => {
+        setError(message);
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
