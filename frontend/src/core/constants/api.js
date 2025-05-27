@@ -25,3 +25,5 @@ export const PAGINATION_PAGE_SIZE_PARAMETER = import.meta.env
   .VITE_PAGINATION_PAGE_SIZE_PARAMETER;
 
 export const SEARCH_PARAMETER = import.meta.env.VITE_SEARCH_PARAMETER;
+
+export const DEFAULT_VALUE = import.meta.env.VITE_DEFAULT_VALUE;
