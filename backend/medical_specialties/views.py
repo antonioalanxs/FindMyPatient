@@ -22,9 +22,8 @@ from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
-from permissions.users import IsAdministrator, IsDoctorOrIsAdministrator
+from permissions.users import IsAdministrator
 from .models import MedicalSpecialty
-from doctors.models import Doctor
 from rooms.models import Room
 
 
