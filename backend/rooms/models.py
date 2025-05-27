@@ -32,6 +32,7 @@ class Room(models.Model):
         MedicalSpecialty,
         on_delete=models.CASCADE,
         related_name="rooms",
+        blank=True,
         null=True,
     )
 
