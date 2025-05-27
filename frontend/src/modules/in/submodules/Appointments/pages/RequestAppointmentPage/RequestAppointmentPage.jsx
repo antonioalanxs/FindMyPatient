@@ -11,7 +11,6 @@ import Alert from "@/shared/components/Form/Alert/Alert";
 import InvalidFeedback from "@/shared/components/Form/InvalidFeedback/InvalidFeedback";
 import Load from "@/shared/components/Load/Load";
 import AuthenticationContext from "@/core/contexts/AuthenticationContext";
-// import { ROUTES } from "@/core/constants/routes";
 import { ROLES } from "@/core/constants/roles";
 
 function RequestAppointmentPage() {
@@ -48,12 +47,12 @@ function RequestAppointmentPage() {
 
     data = {
       ...data,
-      patient: data.patient ? parseInt(data.patient) : undefined,
+      patient:
+        user?.role === ROLES.PATIENT ? user?.user_id : parseInt(data.patient),
       medical_specialty: data.medical_specialty
         ? parseInt(data.medical_specialty)
         : undefined,
-      hour_preference: parseInt(data.hour_preference),
-      is_sender_patient: user?.role === ROLES.PATIENT,
+      time_preference: parseInt(data.time_preference),
     };
 
     appointmentService
@@ -187,7 +186,7 @@ function RequestAppointmentPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="hour_preference" className="form-label mb-2">
+                  <label htmlFor="time_preference" className="form-label mb-2">
                     Time preference
                   </label>
 
@@ -197,11 +196,11 @@ function RequestAppointmentPage() {
                       type="radio"
                       value="0"
                       defaultChecked
-                      {...register("hour_preference", {
+                      {...register("time_preference", {
                         required: "Time preference is required.",
                       })}
                       className={`form-check-input ${
-                        errors?.hour_preference && "is-invalid"
+                        errors?.time_preference && "is-invalid"
                       }`}
                     />
                     <label
@@ -217,11 +216,11 @@ function RequestAppointmentPage() {
                       id="hourPreference2"
                       type="radio"
                       value="1"
-                      {...register("hour_preference", {
+                      {...register("time_preference", {
                         required: "Time preference is required.",
                       })}
                       className={`form-check-input ${
-                        errors?.hour_preference && "is-invalid"
+                        errors?.time_preference && "is-invalid"
                       }`}
                     />
                     <label
@@ -237,11 +236,11 @@ function RequestAppointmentPage() {
                       id="hourPreference3"
                       type="radio"
                       value="2"
-                      {...register("hour_preference", {
+                      {...register("time_preference", {
                         required: "Time preference is required.",
                       })}
                       className={`form-check-input ${
-                        errors?.hour_preference && "is-invalid"
+                        errors?.time_preference && "is-invalid"
                       }`}
                     />
                     <label
@@ -252,7 +251,7 @@ function RequestAppointmentPage() {
                     </label>
                   </div>
 
-                  <InvalidFeedback message={errors?.hour_preference?.message} />
+                  <InvalidFeedback message={errors?.time_preference?.message} />
                 </div>
               </div>
 

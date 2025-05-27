@@ -20,7 +20,7 @@ class AppointmentService {
   }
 
   request = (data) => {
-    return axiosInstance.post(`${this._prefix}/request`, data);
+    return axiosInstance.post(`${this._prefix}/`, data);
   };
 }
 
