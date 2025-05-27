@@ -213,6 +213,17 @@ SEARCH_PARAMETER = os.getenv('VITE_SEARCH_PARAMETER')
 # Brand settings
 BRAND_NAME = os.getenv('VITE_BRAND_NAME')
 
+# Default value settings
+DEFAULT_VALUE = os.getenv('VITE_DEFAULT_VALUE', 'N / A')
+
+# Date format settings
+DATE_FORMAT = '%Y-%m-%d'
+HOUR_FORMAT = '%H:%M'
+EXTENDED_DATE_FORMAT = f'{DATE_FORMAT} {HOUR_FORMAT}'
+GOOGLE_CALENDAR_DATE_FORMAT = '%Y%m%dT%H%M%S'
+EMAIL_DATE_FORMAT = f'%m/%d/%Y {HOUR_FORMAT}'
+
+
 # Internationalization settings
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
