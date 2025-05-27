@@ -1,11 +1,8 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from .views import RequestAppointmentAPIView
+from .views import AppointmentViewSet
 
-urlpatterns = [
-    path(
-        "request",
-        RequestAppointmentAPIView.as_view(),
-        name="request_appointment",
-    ),
-]
+router = DefaultRouter()
+router.register(r'', AppointmentViewSet, basename='appointments')
+
+urlpatterns = router.urls
