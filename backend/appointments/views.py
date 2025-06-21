@@ -15,8 +15,14 @@ from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
+from permissions.users import IsDoctorOrIsPatient
+from doctors.models import Doctor
 from .exceptions import AppointmentException
-from .serializers import AppointmentSerializer
+from .models import Appointment
+from .serializers import (
+    CreateAppointmentSerializer,
+    AppointmentPreviewSerializer
+)
 from .algorithm import solve
 
 
@@ -27,7 +33,9 @@ class AppointmentViewSet(
     SerializerValidationErrorResponseMixin,
     EmailMixin
 ):
-    serializer_class = AppointmentSerializer
+    serializer_class = CreateAppointmentSerializer
+    list_serializer_class = AppointmentPreviewSerializer
+    model = Appointment
 
     @method_permission_classes([IsAuthenticated])
     def create(self, request, *args, **kwargs):
@@ -64,7 +72,7 @@ class AppointmentViewSet(
             )
 
             return Response(
-                {"message": "The appointment has been assigned, check your inbox or the appointments section."},
+                {"message": "The appointment has been assigned, check your inbox or the 'Appointments' section."},
                 status=status.HTTP_200_OK
             )
         except AppointmentException as exception:
@@ -74,3 +82,22 @@ class AppointmentViewSet(
                 {"detail": str(exception)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+    @method_permission_classes([IsAuthenticated, IsDoctorOrIsPatient])
+    def list(self, request, *args, **kwargs):
+        if Doctor.objects.filter(id=request.user.id).exists():
+            base_queryset = self.model.objects.filter(doctor_id=request.user.id)
+        else:
+            base_queryset = self.model.objects.filter(patient_id=request.user.id)
+
+        queryset = self.search(
+            self.model,
+            request,
+            base_queryset=base_queryset
+        )
+
+        return self.get_paginated_response_(
+            request,
+            queryset,
+            self.list_serializer_class
+        )

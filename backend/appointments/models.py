@@ -5,6 +5,7 @@ from config.settings import (
 )
 
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 from urllib.parse import quote
 
@@ -52,8 +53,10 @@ class Appointment(models.Model):
 
     reason = models.CharField(
         max_length=100,
-        blank=True,
-        null=True,
+        validators=[MinLengthValidator(5)],
+        blank=False,
+        null=False,
+        default=DEFAULT_VALUE,
     )
 
     observations = models.TextField(
