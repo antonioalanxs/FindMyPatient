@@ -101,14 +101,12 @@ class TestSetUp(APITestCase):
         self.medical_specialty = MedicalSpecialty.objects.create(
             **self.medical_specialty_input
         )
-        self.medical_specialty_id = self.medical_specialty.id
 
         self.doctor.medical_specialties.add(self.medical_specialty)
-
         self.another_doctor.medical_specialties.add(self.medical_specialty)
 
         self.room_input = {
-            "name": "Room test",
+            "name": "Test Room",
             "location": "test",
             "capacity": 1,
         }
@@ -116,7 +114,13 @@ class TestSetUp(APITestCase):
         self.room = Room.objects.create(**self.room_input)
         self.room.medical_specialty = self.medical_specialty
 
+        self.room_input["name"] = "Another Room Test"
+
+        self.another_room = Room.objects.create(**self.room_input)
+        self.another_room.medical_specialty = self.medical_specialty
+
         self.room.save()
+        self.another_room.save()
         self.doctor.save()
         self.another_doctor.save()
 

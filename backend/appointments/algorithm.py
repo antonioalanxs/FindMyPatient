@@ -1,4 +1,6 @@
 from config.settings import (
+    APPOINTMENT_SCHEDULING_END_TIME,
+    APPOINTMENT_DURATION_MINUTES,
     DATE_FORMAT,
     EXTENDED_DATE_FORMAT,
     HOUR_FORMAT
@@ -36,14 +38,14 @@ from rooms.models import Room
 from utilities.models import get_id
 
 START_DATE = (datetime.now() + timedelta(days=1)).strftime(DATE_FORMAT)  # Tomorrow
-END_DATE = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT)  # Next 30 days
+END_DATE = APPOINTMENT_SCHEDULING_END_TIME
 
 MORNING_START_TIME = 9
 MORNING_END_TIME = 14
 AFTERNOON_START_TIME = 15
 AFTERNOON_END_TIME = 21
 
-APPOINTMENT_DURATION = 30  # (minutes)
+APPOINTMENT_DURATION = APPOINTMENT_DURATION_MINUTES
 
 
 def solve(sender, data, appointment_instance):
@@ -285,7 +287,7 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
         return range_end > last_end + duration
 
     # Patient does not select a medical specialty when requesting an appointment
-    if Patient.objects.filter(id=sender).exists() and medical_specialty is None:
+    if Patient.objects.filter(id=sender).exists() or medical_specialty is None:
         doctors = Doctor.objects.filter(patients__id=sender)
     else:
         doctors = Doctor.objects.filter(medical_specialties=medical_specialty)
@@ -472,7 +474,8 @@ def handle_result(sender, X, appointment, available_doctors, days, hours, rooms)
         end_time=start_time + timedelta(minutes=APPOINTMENT_DURATION)
     )
     appointment.room = Room.objects.get(id=int(room))
-    appointment.medical_specialty = None if Patient.objects.filter(id=sender).exists() else doctor.medical_specialties.first()
+    appointment.medical_specialty = None if Patient.objects.filter(
+        id=sender).exists() else doctor.medical_specialties.first()
     appointment.status = Appointment.STATUS_SCHEDULED
 
     appointment.save()
