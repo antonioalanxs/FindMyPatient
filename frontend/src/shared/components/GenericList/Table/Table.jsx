@@ -75,7 +75,7 @@ const Table = ({
 
   const handleDeleteClick = (id) => {
     notificationService.showConfirmDialog(
-      "Really delete?",
+      `Really ${actions?.delete?.verb ? actions?.delete?.verb : "delete"}?`,
       "This action could be irreversible.",
       async () =>
         await actions?.delete
@@ -118,9 +118,11 @@ const Table = ({
             sortedData.map((item, index) => (
               <tr key={index}>
                 {columns.map(({ field }, index_) => (
-                  <td className="px-4" key={index_}>
-                    {item[field]}
-                  </td>
+                  <td
+                    className="px-4"
+                    key={index_}
+                    dangerouslySetInnerHTML={{ __html: item[field] || "" }}
+                  />
                 ))}
 
                 {(actions?.view || actions?.edit || actions?.delete) && (
@@ -142,14 +144,24 @@ const Table = ({
                     )}
 
                     {actions?.delete && (
-                      <TooltipTrigger tooltip="Delete">
+                      <TooltipTrigger
+                        tooltip={
+                          actions?.delete?.tooltip
+                            ? actions?.delete?.tooltip
+                            : "Delete"
+                        }
+                      >
                         <div
                           role="button"
                           onClick={() =>
                             handleDeleteClick(item?.id || item?.ID)
                           }
                         >
-                          <TrashIcon />
+                          {actions?.delete?.icon ? (
+                            actions?.delete?.icon
+                          ) : (
+                            <TrashIcon />
+                          )}
                         </div>
                       </TooltipTrigger>
                     )}
