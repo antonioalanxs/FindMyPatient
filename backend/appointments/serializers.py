@@ -2,6 +2,10 @@ from config.settings import EMAIL_DATE_FORMAT
 
 from rest_framework import serializers
 
+from doctors.serializers import DoctorSqueezeSerializer
+from medical_specialties.serializers import MedicalSpecialtySqueezeSerializer
+from patients.serializers import PatientObliteratedSerializer
+from rooms.serializers import RoomSqueezeSerializer
 from .models import Appointment
 
 
@@ -12,6 +16,32 @@ class CreateAppointmentSerializer(serializers.ModelSerializer):
 
 
 class AppointmentPreviewSerializer(serializers.ModelSerializer):
+    request_date = serializers.DateTimeField(format=EMAIL_DATE_FORMAT)
+    start_date = serializers.DateTimeField(
+        source='schedule.start_time',
+        format=EMAIL_DATE_FORMAT,
+    )
+    room = RoomSqueezeSerializer(read_only=True)
+    medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
+    patient = PatientObliteratedSerializer(read_only=True)
+    doctor = DoctorSqueezeSerializer(read_only=True)
+
+    class Meta:
+        model = Appointment
+        fields = [
+            "id",
+            "request_date",
+            "start_date",
+            "status",
+            "reason",
+            "room",
+            "medical_specialty",
+            "patient",
+            "doctor"
+        ]
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
     request_date = serializers.DateTimeField(format=EMAIL_DATE_FORMAT)
     patient = serializers.SerializerMethodField()
     doctor = serializers.SerializerMethodField()

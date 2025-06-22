@@ -9,6 +9,19 @@ from .models import Patient
 from utilities.password import generate_random_password
 
 
+class PatientObliteratedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Patient
+        fields = ['id']
+
+    def to_representation(self, instance):
+        return f"{instance.first_name} {instance.last_name}"
+
+    def to_internal_value(self, data):
+        if isinstance(data, int):
+            return Patient.objects.get(id=data)
+        return super().to_internal_value(data)
+
 class PatientPreviewSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
 

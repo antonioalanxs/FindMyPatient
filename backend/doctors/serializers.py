@@ -7,6 +7,20 @@ from .models import Doctor
 from utilities.password import generate_random_password
 
 
+class DoctorSqueezeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ['id']
+
+    def to_representation(self, instance):
+        return f"{instance.first_name} {instance.last_name}"
+
+    def to_internal_value(self, data):
+        if isinstance(data, int):
+            return Doctor.objects.get(id=data)
+        return super().to_internal_value(data)
+
+
 class DoctorCompressSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     medical_specialties = MedicalSpecialtySqueezeSerializer(many=True, read_only=True)

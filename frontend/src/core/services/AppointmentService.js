@@ -22,6 +22,12 @@ class AppointmentService {
   request = (data) => {
     return axiosInstance.post(`${this._prefix}/`, data);
   };
+
+  appointments = (query, page, pageSize = DEFAULT_PAGINATION_SIZE) => {
+    return axiosInstance.get(
+      `${this._prefix}/?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
+    );
+  };
 }
 
 export const appointmentService = AppointmentService.instance;

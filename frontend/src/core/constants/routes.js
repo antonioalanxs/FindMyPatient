@@ -65,6 +65,7 @@ export const ROUTES = {
     }),
     APPOINTMENTS: createModuleRoutes("/in/appointments", {
       REQUEST: "request",
+      DETAIL: (id = ":id") => id,
     }),
   },
 };
