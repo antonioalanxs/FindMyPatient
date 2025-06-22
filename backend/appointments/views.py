@@ -17,10 +17,11 @@ from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from patients.models import Patient
 from permissions.decorators import method_permission_classes
-from permissions.users import IsDoctorOrIsPatient
+from permissions.users import IsDoctor
 from .serializers import (
     CreateAppointmentSerializer,
-    AppointmentPreviewSerializer
+    AppointmentPreviewSerializer,
+    AppointmentCalendarSerializer
 )
 from doctors.models import Doctor
 from .models import Appointment
@@ -44,6 +45,18 @@ class CancelAppointmentAPIView(views.APIView):
 
         return Response(
             {"message": "The appointment has been successfully cancelled."},
+            status=status.HTTP_200_OK
+        )
+
+
+class AppointmentCalendarAPIView(views.APIView):
+    permission_classes = [IsAuthenticated, IsDoctor]
+    serializer_class = AppointmentCalendarSerializer
+
+    def get(self, request, *args, **kwargs):
+        appointments = Appointment.objects.filter(doctor=request.user)
+        return Response(
+            self.serializer_class(appointments, many=True).data,
             status=status.HTTP_200_OK
         )
 

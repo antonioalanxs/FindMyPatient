@@ -77,3 +77,13 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "collegiate_code": obj.doctor.collegiate_code,
             "email": obj.doctor.email,
         }
+
+
+class AppointmentCalendarSerializer(serializers.ModelSerializer):
+    start = serializers.DateTimeField(source='schedule.start_time')
+    end = serializers.DateTimeField(source='schedule.end_time')
+    title = PatientObliteratedSerializer(read_only=True, source='patient')
+
+    class Meta:
+        model = Appointment
+        fields = ['start', 'end', 'title']
