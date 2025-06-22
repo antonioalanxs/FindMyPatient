@@ -28,6 +28,10 @@ class AppointmentService {
       `${this._prefix}/?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
     );
   };
+
+  cancel = (id) => {
+    return axiosInstance.patch(`${this._prefix}/${id}/cancellation`);
+  };
 }
 
 export const appointmentService = AppointmentService.instance;
