@@ -15,6 +15,7 @@ from mixins.emails import EmailMixin
 from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
+from patients.models import Patient
 from permissions.decorators import method_permission_classes
 from permissions.users import IsDoctorOrIsPatient
 from .serializers import (
@@ -28,7 +29,7 @@ from .algorithm import solve
 
 
 class CancelAppointmentAPIView(views.APIView):
-    permission_classes = [IsAuthenticated, IsDoctorOrIsPatient]
+    permission_classes = [IsAuthenticated]
 
     def patch(self, request, *args, **kwargs):
         appointment = Appointment.objects.filter(
@@ -104,12 +105,14 @@ class AppointmentViewSet(
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-    @method_permission_classes([IsAuthenticated, IsDoctorOrIsPatient])
+    @method_permission_classes([IsAuthenticated])
     def list(self, request, *args, **kwargs):
         if Doctor.objects.filter(id=request.user.id).exists():
             base_queryset = self.model.objects.filter(doctor_id=request.user.id)
-        else:
+        elif Patient.objects.filter(id=request.user.id).exists():
             base_queryset = self.model.objects.filter(patient_id=request.user.id)
+        else:
+            base_queryset = self.model.objects.all()
 
         queryset = self.search(
             self.model,

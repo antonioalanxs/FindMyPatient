@@ -22,7 +22,7 @@ class AppointmentListTestCase(TestSetUp):
     def test_list_appointments_with_administrator(self):
         self.client.force_authenticate(user=self.administrator)
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_list_appointments_with_non_authenticated_user(self):
         response = self.client.get(self.url)
@@ -47,7 +47,7 @@ class AppointmentCancellationTestCase(TestSetUp):
     def test_cancel_appointment_with_administrator(self):
         self.client.force_authenticate(user=self.administrator)
         response = self.client.patch(self.url(self.appointment.id))
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_cancel_appointment_with_non_authenticated_user(self):
         response = self.client.patch(self.url(self.appointment.id))

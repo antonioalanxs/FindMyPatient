@@ -31,7 +31,6 @@ function SideBar() {
       link: ROUTES.IN.APPOINTMENTS.BASE,
       icon: <i className="bi bi-journal-medical"></i>,
       label: "Appointments",
-      roles: [ROLES.PATIENT, ROLES.DOCTOR],
     },
     {
       link: null,
