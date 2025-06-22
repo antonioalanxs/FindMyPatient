@@ -5,6 +5,7 @@ from config.settings import (
 
 from rest_framework import (
     status,
+    views,
     viewsets
 )
 from rest_framework.permissions import IsAuthenticated
@@ -16,14 +17,34 @@ from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
 from permissions.users import IsDoctorOrIsPatient
-from doctors.models import Doctor
-from .exceptions import AppointmentException
-from .models import Appointment
 from .serializers import (
     CreateAppointmentSerializer,
     AppointmentPreviewSerializer
 )
+from doctors.models import Doctor
+from .models import Appointment
+from .exceptions import AppointmentException
 from .algorithm import solve
+
+
+class CancelAppointmentAPIView(views.APIView):
+    permission_classes = [IsAuthenticated, IsDoctorOrIsPatient]
+
+    def patch(self, request, *args, **kwargs):
+        appointment = Appointment.objects.filter(
+            id=kwargs.get("id")
+        ).first()
+
+        if not appointment:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        appointment.status = Appointment.STATUS_CANCELLED
+        appointment.save()
+
+        return Response(
+            {"message": "The appointment has been successfully cancelled."},
+            status=status.HTTP_200_OK
+        )
 
 
 class AppointmentViewSet(
