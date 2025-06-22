@@ -32,6 +32,10 @@ class AppointmentService {
   cancel = (id) => {
     return axiosInstance.patch(`${this._prefix}/${id}/cancellation`);
   };
+
+  calendar = () => {
+    return axiosInstance.get(`${this._prefix}/calendar`);
+  };
 }
 
 export const appointmentService = AppointmentService.instance;

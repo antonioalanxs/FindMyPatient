@@ -25,6 +25,9 @@ function AppointmentsPage() {
           view: {
             path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.DETAIL(id),
           },
+          edit: {
+            path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.EDIT(id),
+          },
           delete: {
             action: (id) => appointmentService.cancel(id),
             tooltip: "Cancel",
