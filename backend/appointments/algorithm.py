@@ -290,7 +290,7 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
     if Patient.objects.filter(id=sender).exists() or medical_specialty is None:
         doctors = Doctor.objects.filter(patients__id=sender)
     else:
-        doctors = Doctor.objects.filter(medical_specialties=medical_specialty)
+        doctors = Doctor.objects.filter(medical_specialty=medical_specialty)
 
     # Doctors without commitments spanning the entire range
     doctors = doctors.filter(
@@ -362,11 +362,8 @@ def get_rooms():
 
 
 def get_medical_specialty_rooms(doctor_id):
-    medical_specialty = (
-        Doctor.objects.get(id=int(doctor_id))
-        .medical_specialties
-        .first()
-    )
+    medical_specialty = Doctor.objects.get(id=int(doctor_id)).medical_specialty
+
 
     medical_specialty_rooms = get_id(
         Room.objects.filter(
@@ -475,7 +472,7 @@ def handle_result(sender, X, appointment, available_doctors, days, hours, rooms)
     )
     appointment.room = Room.objects.get(id=int(room))
     appointment.medical_specialty = None if Patient.objects.filter(
-        id=sender).exists() else doctor.medical_specialties.first()
+        id=sender).exists() else doctor.medical_specialty
     appointment.status = Appointment.STATUS_SCHEDULED
 
     appointment.save()

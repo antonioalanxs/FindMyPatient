@@ -104,8 +104,8 @@ class TestSetUp(APITestCase):
             **self.medical_specialty_input
         )
 
-        self.doctor.medical_specialties.add(self.medical_specialty)
-        self.another_doctor.medical_specialties.add(self.medical_specialty)
+        self.doctor.medical_specialty = self.medical_specialty
+        self.another_doctor.medical_specialty = self.medical_specialty
 
         self.room_input = {
             "name": "Test Room",

@@ -16,7 +16,7 @@ const AppointmentsRouter = () => {
       />
 
       <Route
-        path={ROUTES.IN.APPOINTMENTS.RELATIVE.SCHEDULE}
+        path={ROUTES.IN.APPOINTMENTS.RELATIVE.CALENDAR}
         element={<SchedulePage />}
       />
 

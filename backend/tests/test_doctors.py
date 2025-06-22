@@ -153,7 +153,7 @@ class DoctorCreateTestCase(TestSetUp):
             "birth_date": "2002-07-04",
             "gender": "M",
             "nationality": "ES",
-            "medical_specialties": [self.medical_specialty_id]
+            "medical_specialty": self.medical_specialty.id
         }
 
     def test_create_doctor(self):

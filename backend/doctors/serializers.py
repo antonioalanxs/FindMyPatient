@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group
 
 from rest_framework import serializers
 
-from medical_specialties.serializers import MedicalSpecialtySqueezeSerializer
+from medical_specialties.serializers import MedicalSpecialtySqueezeSerializer, MedicalSpecialtyCompressSerializer
 from .models import Doctor
 from utilities.password import generate_random_password
 
@@ -23,7 +23,7 @@ class DoctorSqueezeSerializer(serializers.ModelSerializer):
 
 class DoctorCompressSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
-    medical_specialties = MedicalSpecialtySqueezeSerializer(many=True, read_only=True)
+    medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
 
     class Meta:
         model = Doctor
@@ -31,7 +31,7 @@ class DoctorCompressSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "collegiate_code",
-            "medical_specialties",
+            "medical_specialty",
         ]
 
     def get_name(self, obj):
@@ -39,7 +39,7 @@ class DoctorCompressSerializer(serializers.ModelSerializer):
 
 
 class DoctorSerializer(serializers.ModelSerializer):
-    medical_specialties = MedicalSpecialtySqueezeSerializer(many=True, read_only=True)
+    medical_specialty = MedicalSpecialtyCompressSerializer(read_only=True)
 
     class Meta:
         model = Doctor
@@ -53,7 +53,7 @@ class DoctorSerializer(serializers.ModelSerializer):
             "email",
             "phone_number",
             "collegiate_code",
-            "medical_specialties",
+            "medical_specialty",
         ]
 
 
@@ -70,12 +70,10 @@ class DoctorUpsetSerializer(serializers.ModelSerializer):
             "email",
             "phone_number",
             "collegiate_code",
-            "medical_specialties",
+            "medical_specialty",
         ]
 
     def create(self, validated_data):
-        medical_specialties = validated_data.pop("medical_specialties", [])
-
         doctor = Doctor.objects.create(
             username=validated_data.get("identity_card_number"),
             **validated_data
@@ -84,8 +82,6 @@ class DoctorUpsetSerializer(serializers.ModelSerializer):
         doctor.groups.add(
             Group.objects.get(name=doctor.get_default_group_name())
         )
-
-        doctor.medical_specialties.set(medical_specialties)
 
         random_password = generate_random_password()
         doctor.set_password(random_password)
@@ -97,6 +93,7 @@ class DoctorUpsetSerializer(serializers.ModelSerializer):
 
 class DoctorPreviewSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
+    medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
 
     class Meta:
         model = Doctor
@@ -106,6 +103,7 @@ class DoctorPreviewSerializer(serializers.ModelSerializer):
             "collegiate_code",
             "phone_number",
             "email",
+            "medical_specialty",
         ]
 
     def get_name(self, obj):

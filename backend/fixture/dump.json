@@ -497,10 +497,7 @@
     "pk": 1,
     "fields": {
       "collegiate_code": "123456",
-      "medical_specialties": [
-        1,
-        2
-      ],
+      "medical_specialty": 1,
       "user_ptr_id": 2
     }
   },
@@ -509,10 +506,7 @@
     "pk": 2,
     "fields": {
       "collegiate_code": "654321",
-      "medical_specialties": [
-        3,
-        4
-      ],
+      "medical_specialty": 3,
       "user_ptr_id": 5
     }
   },

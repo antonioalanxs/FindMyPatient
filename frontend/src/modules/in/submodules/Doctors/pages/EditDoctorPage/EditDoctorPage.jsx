@@ -55,7 +55,7 @@ function EditDoctorPage() {
     data = {
       ...data,
       birth_date: datePipe.transform(data.birth_date, datePipe.OPTIONS.BACKEND),
-      medical_specialties: data.medical_specialties.map((id) => parseInt(id)),
+      medical_specialty: parseInt(data.medical_specialty),
     };
 
     doctorService
@@ -317,47 +317,47 @@ function EditDoctorPage() {
                   </div>
 
                   <div className="col-md-8 col-lg-7 form-group">
-                    <label htmlFor="medical_specialties" className="form-label">
-                      Medical specialties
+                    <label htmlFor="medical_specialty" className="form-label">
+                      Medical specialty
                     </label>
-                    <Controller
-                      name="medical_specialties"
-                      control={control}
-                      rules={{
-                        required: "At least one medical specialty is required.",
-                      }}
-                      render={({ field }) => (
-                        <select
-                          multiple
-                          defaultValue={
-                            medicalSpecialties
-                              ?.filter(({ name }) =>
-                                doctor?.medical_specialties?.includes(name)
-                              )
-                              .map(({ id }) => id)
-                              .filter(Boolean) || []
-                          }
-                          className={`py-2 form-select ${
-                            errors?.medical_specialties && "is-invalid"
-                          }`}
-                          onChange={(event) => {
-                            const selectedOptions = Array.from(
-                              event.target.selectedOptions
-                            ).map((option) => option.value);
-                            field.onChange(selectedOptions);
+
+                    {!medicalSpecialties ? (
+                      <>
+                        <Load phrases={false} classes="mt-1" />
+                        <p className="d-none form-control-static">
+                          Loading medical specialties...
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <Controller
+                          name="medical_specialty"
+                          control={control}
+                          defaultValue={doctor?.medical_specialty.id}
+                          rules={{
+                            required: "Medical specialty is required.",
                           }}
-                        >
-                          {medicalSpecialties.map(({ id, name }) => (
-                            <option key={id} value={id}>
-                              {name}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    />
-                    <InvalidFeedback
-                      message={errors?.medical_specialties?.message}
-                    />
+                          render={({ field }) => (
+                            <select
+                              {...field}
+                              className={`form-select ${
+                                errors?.medical_specialty && "is-invalid"
+                              }`}
+                            >
+                              {medicalSpecialties &&
+                                medicalSpecialties.map(({ id, name }) => (
+                                  <option key={id} value={id}>
+                                    {name}
+                                  </option>
+                                ))}
+                            </select>
+                          )}
+                        />
+                        <InvalidFeedback
+                          message={errors?.medical_specialty?.message}
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
               </BaseCard>

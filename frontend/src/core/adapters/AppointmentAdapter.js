@@ -23,7 +23,7 @@ class AppointmentAdapter {
               value === "cancelled"
                 ? "danger"
                 : "scheduled"
-                ? "success"
+                ? "info"
                 : "secondary"
             } rounded-pill">${textPipe.transform(value)}</span>`
           : value;

@@ -45,9 +45,9 @@ function SideBar() {
       roles: [ROLES.PATIENT],
     },
     {
-      link: ROUTES.IN.APPOINTMENTS.ABSOLUTE.SCHEDULE,
+      link: ROUTES.IN.APPOINTMENTS.ABSOLUTE.CALENDAR,
       icon: <i className="bi bi-calendar2-event-fill"></i>,
-      label: "Schedule",
+      label: "Calendar",
       roles: [ROLES.DOCTOR],
     },
     {

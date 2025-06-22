@@ -33,11 +33,10 @@ class AppointmentPreviewSerializer(serializers.ModelSerializer):
             "request_date",
             "start_date",
             "status",
-            "reason",
             "room",
             "medical_specialty",
+            "doctor",
             "patient",
-            "doctor"
         ]
 
 

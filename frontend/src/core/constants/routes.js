@@ -67,7 +67,7 @@ export const ROUTES = {
       REQUEST: "request",
       DETAIL: (id = ":id") => id,
       EDIT: (id = ":id") => `${id}/edition`,
-      SCHEDULE: "schedule",
+      CALENDAR: "calendar",
     }),
   },
 };
