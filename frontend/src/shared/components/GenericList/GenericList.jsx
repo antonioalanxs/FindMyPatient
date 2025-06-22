@@ -39,12 +39,11 @@ const GenericList = ({
 
   const fetchData = () => {
     setLoading(true);
-    fetchService(searchTerm, page, pageSize)
-      .then(({ data }) => {
-        data.results = adapter.run(data.results);
-        setData(data);
-      })
-      .finally(() => setLoading(false));
+    fetchService(searchTerm, page, pageSize).then(({ data }) => {
+      data.results = adapter.run(data.results);
+      setData(data);
+      setLoading(false);
+    });
   };
 
   useEffect(() => {
