@@ -57,3 +57,27 @@ class AppointmentCancellationTestCase(TestSetUp):
         self.client.force_authenticate(user=self.doctor)
         response = self.client.patch(self.url(self.non_existing_id))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+class AppointmentCalendarTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("appointments-calendar")
+
+    def test_get_calendar_with_doctor(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_calendar_with_patient(self):
+        self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_calendar_with_administrator(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_calendar_with_non_authenticated_user(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
