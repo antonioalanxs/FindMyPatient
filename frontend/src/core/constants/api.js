@@ -27,3 +27,8 @@ export const PAGINATION_PAGE_SIZE_PARAMETER = import.meta.env
 export const SEARCH_PARAMETER = import.meta.env.VITE_SEARCH_PARAMETER;
 
 export const DEFAULT_VALUE = import.meta.env.VITE_DEFAULT_VALUE;
+
+export const EXCEL_EXTENSION = import.meta.env.VITE_EXCEL_EXTENSION;
+export const JSON_EXTENSION = import.meta.env.VITE_JSON_EXTENSION;
+export const EXPORT_EXTENSION_PARAMETER = import.meta.env
+  .VITE_EXPORT_EXTENSION_PARAMETER;

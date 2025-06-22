@@ -69,5 +69,6 @@ export const ROUTES = {
       EDIT: (id = ":id") => `${id}/edition`,
       CALENDAR: "calendar",
     }),
+    DATABASE: createModuleRoutes("/in/database", {}),
   },
 };

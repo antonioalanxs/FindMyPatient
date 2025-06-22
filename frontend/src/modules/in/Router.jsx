@@ -10,6 +10,7 @@ import AdministratorsRouter from "@/modules/in/submodules/Administrators/Router"
 import DoctorsRouter from "@/modules/in/submodules/Doctors/Router";
 import RoomsRouter from "@/modules/in/submodules/Rooms/Router";
 import AppointmentsRouter from "@/modules/in/submodules/Appointments/Router";
+import DatabaseRouter from "@/modules/in/submodules/Database/Router";
 import { ROUTES } from "@/core/constants/routes";
 
 const InRouter = () => {
@@ -49,6 +50,11 @@ const InRouter = () => {
         <Route
           path={ROUTES.IN.APPOINTMENTS.ANYWHERE}
           element={<AppointmentsRouter />}
+        />
+
+        <Route
+          path={ROUTES.IN.DATABASE.ANYWHERE}
+          element={<DatabaseRouter />}
         />
 
         <Route

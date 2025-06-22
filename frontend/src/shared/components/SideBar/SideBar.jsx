@@ -86,6 +86,12 @@ function SideBar() {
       label: "Rooms",
       roles: [ROLES.ADMINISTRATOR],
     },
+    {
+      link: ROUTES.IN.DATABASE.BASE,
+      icon: <i class="bi bi-database-down"></i>,
+      label: "Database",
+      roles: [ROLES.ADMINISTRATOR, ROLES.DOCTOR],
+    },
   ];
 
   const dropdownOptions = [
