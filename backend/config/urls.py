@@ -50,4 +50,5 @@ urlpatterns = [
     include_api_path('schedules'),
     include_api_path('treatments'),
     include_api_path('medical_tests'),
+    include_api_path('database'),
 ]

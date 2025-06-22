@@ -78,6 +78,7 @@ LOCAL_APPS = [
     'schedules',
     'treatments',
     'medical_tests',
+    'database',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -234,6 +235,11 @@ if 'test' in sys.argv or os.getenv('FAST_APPOINTMENT_TESTS') == 'true':
 else:
     APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT)  # Next 30 days
     APPOINTMENT_DURATION_MINUTES = 30
+
+# Data Export Settings
+EXPORT_EXTENSION_PARAMETER = os.getenv('VITE_EXPORT_EXTENSION_PARAMETER', 'export_format')
+EXCEL_EXTENSION = os.getenv('VITE_EXCEL_EXTENSION', 'xlsx')
+JSON_EXTENSION = os.getenv('VITE_JSON_EXTENSION', 'json')
 
 # Internationalization settings
 LANGUAGE_CODE = 'en-us'

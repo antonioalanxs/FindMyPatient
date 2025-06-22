@@ -1,3 +1,5 @@
+from config.settings import EMAIL_DATE_FORMAT
+
 from django.db import models
 
 from doctors.models import Doctor
@@ -19,3 +21,6 @@ class Schedule(models.Model):
         blank=True,
         null=True
     )
+
+    def __str__(self):
+        return f"{self.start_time.strftime(EMAIL_DATE_FORMAT)} - {self.end_time.strftime(EMAIL_DATE_FORMAT)}"

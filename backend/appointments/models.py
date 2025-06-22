@@ -119,3 +119,6 @@ class Appointment(models.Model):
         event = f"https://calendar.google.com/calendar/render?action=TEMPLATE&text={title}&details={description}&dates={start_date}/{end_date}&ctz=Europe/Madrid"
 
         return event
+    
+    def __str__(self):
+        return str(self.schedule)

@@ -380,11 +380,11 @@ def get_medical_specialty_rooms(doctor_id):
 
 def get_data(sender, data, appointment):
     """
-    Prepare the data needed for the appointment scheduling algorithm.
+    Prepare the database needed for the appointment scheduling algorithm.
 
     Args:
         - sender (int): The ID of the person who requested the appointment.
-        - data (dict): A dictionary containing the appointment request details with the following keys:
+        - database (dict): A dictionary containing the appointment request details with the following keys:
             - time_preference (int): The preferred time slot for the appointment (0: no preference, 1: morning,
             2: afternoon).
             - medical_specialty (int, optional): The ID of the medical specialty for the appointment. Defaults to None.
