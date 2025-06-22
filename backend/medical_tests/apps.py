@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ClinicalHistoryConfig(AppConfig):
+class MedicalTestsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'clinical_history'
+    name = 'medical_tests'

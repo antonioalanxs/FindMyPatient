@@ -708,9 +708,6 @@
     "fields": {
       "social_security_code": "987654321098",
       "primary_doctor": 2,
-      "clinical_history": [
-        2
-      ],
       "address": 2,
       "user_ptr_id": 4
     }

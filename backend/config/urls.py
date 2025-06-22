@@ -42,11 +42,12 @@ urlpatterns = [
     include_api_path('jwt_', 'tokens'),
     include_api_path('patients'),
     include_api_path('medical_specialties'),
-    include_api_path('clinical_history'),
     include_api_path('doctors'),
     include_api_path('administrators'),
     include_api_path('groups'),
     include_api_path('rooms'),
     include_api_path('appointments'),
     include_api_path('schedules'),
+    include_api_path('treatments'),
+    include_api_path('medical_tests'),
 ]

@@ -2,7 +2,6 @@ from django.db import models
 
 from base.models import User
 from doctors.models import Doctor
-from clinical_history.models import ClinicalHistory
 from addresses.models import Address
 
 
@@ -30,8 +29,6 @@ class Patient(User):
         null=True,
         blank=True,
     )
-
-    clinical_history = models.ManyToManyField(ClinicalHistory)
 
     address = models.ForeignKey(
         Address,

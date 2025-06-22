@@ -70,13 +70,14 @@ LOCAL_APPS = [
     'doctors',
     'administrators',
     'tracking',
-    'clinical_history',
     'medical_specialties',
     'addresses',
     'groups',
     'rooms',
     'appointments',
     'schedules',
+    'treatments',
+    'medical_tests',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -228,10 +229,10 @@ EMAIL_DATE_FORMAT = f'%m/%d/%Y {HOUR_FORMAT}'
 
 # Appointment settings
 if 'test' in sys.argv or os.getenv('FAST_APPOINTMENT_TESTS') == 'true':
-    APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=1)).strftime(DATE_FORMAT) # Same day
+    APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=1)).strftime(DATE_FORMAT)  # Same day
     APPOINTMENT_DURATION_MINUTES = 120
 else:
-    APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT) # Next 30 days
+    APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT)  # Next 30 days
     APPOINTMENT_DURATION_MINUTES = 30
 
 # Internationalization settings
