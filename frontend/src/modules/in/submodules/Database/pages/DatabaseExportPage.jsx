@@ -34,11 +34,8 @@ function DatabaseExportPage() {
 
       <div className="row">
         <div className="col-12 col-md-8 col-lg-7 col-xxl-6">
-          <BaseCard
-            title="Formats"
-            subtitle="Select the format you want to export the database to."
-          >
-            <div className="mb-4 d-flex flex-column gap-3">
+          <BaseCard>
+            <div className="mb-3 d-flex flex-column gap-3">
               <p>
                 If you are an <strong>administrator</strong>, the exported file
                 will contain <strong>all the data</strong> from the database,
