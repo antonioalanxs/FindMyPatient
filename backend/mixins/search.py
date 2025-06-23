@@ -36,7 +36,7 @@ class SearchMixin:
         query = request.query_params.get(self.search_parameter, None)
 
         if not query:
-            return base_queryset if base_queryset is not None else model.objects.all()
+            return base_queryset if base_queryset is not None and base_queryset is not False else model.objects.all()
 
         query_object = self.__build_query_object(model, query)
 
