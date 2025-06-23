@@ -21,6 +21,22 @@ class DoctorSqueezeSerializer(serializers.ModelSerializer):
         return super().to_internal_value(data)
 
 
+class DoctorWhoPrescribedTreatmentSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Doctor
+        fields = [
+            "name",
+            "collegiate_code",
+            "email",
+            "phone_number",
+        ]
+
+    def get_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
+
 class DoctorCompressSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
