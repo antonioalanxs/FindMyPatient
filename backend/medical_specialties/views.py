@@ -25,6 +25,7 @@ from permissions.decorators import method_permission_classes
 from permissions.users import IsAdministrator
 from .models import MedicalSpecialty
 from rooms.models import Room
+from doctors.models import Doctor
 
 
 class ListDoctorsByMedicalSpecialtyAPIView(
@@ -43,7 +44,7 @@ class ListDoctorsByMedicalSpecialtyAPIView(
         queryset = self.search(
             Room,
             request,
-            base_queryset=medical_specialty.doctor_set.all()
+            base_queryset=Doctor.objects.filter(medical_specialty=medical_specialty)
         )
 
         return self.get_paginated_response_(
