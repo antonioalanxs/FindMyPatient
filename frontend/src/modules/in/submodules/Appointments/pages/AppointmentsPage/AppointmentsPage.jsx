@@ -22,19 +22,8 @@ function AppointmentsPage() {
           search: {
             label: "Search for an appointment",
           },
-          view: {
-            path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.DETAIL(id),
-          },
           edit: {
             path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.EDIT(id),
-          },
-          delete: {
-            action: (id) => appointmentService.cancel(id),
-            tooltip: "Cancel",
-            icon: (
-              <i className="d-inline-block mt-1 bi bi-x-circle text-primary"></i>
-            ),
-            verb: "cancel",
           },
         }}
       />

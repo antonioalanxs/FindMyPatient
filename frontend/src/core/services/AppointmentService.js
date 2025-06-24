@@ -29,6 +29,17 @@ class AppointmentService {
     );
   };
 
+  appointmentsByPatient = (
+    id,
+    query,
+    page,
+    pageSize = DEFAULT_PAGINATION_SIZE
+  ) => {
+    return axiosInstance.get(
+      `${this._prefix}/patients/${id}/?${SEARCH_PARAMETER}=${query}&${PAGINATION_PARAMETER}=${page}&${PAGINATION_PAGE_SIZE_PARAMETER}=${pageSize}`
+    );
+  };
+
   cancel = (id) => {
     return axiosInstance.patch(`${this._prefix}/${id}/cancellation`);
   };

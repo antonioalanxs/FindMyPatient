@@ -21,16 +21,14 @@ class DoctorSqueezeSerializer(serializers.ModelSerializer):
         return super().to_internal_value(data)
 
 
-class DoctorWhoPrescribedTreatmentSerializer(serializers.ModelSerializer):
+class DoctorWhoPrescribedSomethingSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
 
     class Meta:
         model = Doctor
         fields = [
             "name",
-            "collegiate_code",
             "email",
-            "phone_number",
         ]
 
     def get_name(self, obj):

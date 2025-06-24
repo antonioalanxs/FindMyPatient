@@ -33,13 +33,13 @@ function SideBar() {
       label: "Appointments",
     },
     {
-      link: null,
+      link: ROUTES.IN.ABSOLUTE.TREATMENTS,
       icon: <i className="bi bi-capsule"></i>,
       label: "Treatments",
       roles: [ROLES.PATIENT],
     },
     {
-      link: null,
+      link: ROUTES.IN.ABSOLUTE.MEDICAL_TESTS,
       icon: <i className="bi bi-clipboard2-pulse-fill"></i>,
       label: "Medical tests",
       roles: [ROLES.PATIENT],
@@ -87,8 +87,8 @@ function SideBar() {
       roles: [ROLES.ADMINISTRATOR],
     },
     {
-      link: ROUTES.IN.DATABASE.BASE,
-      icon: <i class="bi bi-database-down"></i>,
+      link: ROUTES.IN.ABSOLUTE.DATABASE,
+      icon: <i className="bi bi-database-down"></i>,
       label: "Database",
       roles: [ROLES.ADMINISTRATOR, ROLES.DOCTOR],
     },

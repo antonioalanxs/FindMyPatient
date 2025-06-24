@@ -1,6 +1,7 @@
 from config.settings import (
     DEFAULT_VALUE,
-    EMAIL_DATE_FORMAT
+    EMAIL_DATE_FORMAT,
+    PATIENT_QUERY_PARAMETER
 )
 
 from rest_framework import (
@@ -17,6 +18,7 @@ from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from patients.models import Patient
 from permissions.decorators import method_permission_classes
+from permissions.patients import IsAdministratorOrIsPatientAssignedDoctor
 from permissions.users import IsDoctor
 from .serializers import (
     CreateAppointmentSerializer,
@@ -58,6 +60,30 @@ class AppointmentCalendarAPIView(views.APIView):
         return Response(
             self.serializer_class(appointments, many=True).data,
             status=status.HTTP_200_OK
+        )
+
+
+class ListAppointmentsByPatientAPIView(
+    views.APIView,
+    SearchMixin,
+    PaginationMixin
+):
+    permission_classes = [IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctor]
+    model = Appointment
+    list_serializer_class = AppointmentPreviewSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.search(
+            Appointment,
+            request,
+            base_queryset=self.model.objects.filter(
+                patient_id=kwargs.get("patient_id")
+            )
+        )
+        return self.get_paginated_response_(
+            request,
+            queryset,
+            self.list_serializer_class
         )
 
 

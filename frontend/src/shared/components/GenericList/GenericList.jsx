@@ -20,6 +20,7 @@ const GenericList = ({
   card = null,
   showID = false,
   actions = null,
+  id = null,
 }) => {
   const [searchParameters, setSearchParameters] = useSearchParams();
 
@@ -39,7 +40,11 @@ const GenericList = ({
 
   const fetchData = () => {
     setLoading(true);
-    fetchService(searchTerm, page, pageSize).then(({ data }) => {
+
+    let args = [searchTerm, page, pageSize];
+    if (id) args.push(id);
+
+    fetchService(...args).then(({ data }) => {
       data.results = adapter.run(data.results);
       setData(data);
       setLoading(false);

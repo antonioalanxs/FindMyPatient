@@ -1,5 +1,5 @@
 from config.settings import (
-    EXPORT_EXTENSION_PARAMETER,
+    EXPORT_EXTENSION_QUERY_PARAMETER,
     JSON_EXTENSION,
     EXCEL_EXTENSION
 )
@@ -25,7 +25,7 @@ class DatabaseAPIView(views.APIView):
 
     def get(self, request, *args, **kwargs):
         extension = request.GET.get(
-            EXPORT_EXTENSION_PARAMETER,
+            EXPORT_EXTENSION_QUERY_PARAMETER,
             EXCEL_EXTENSION
         ).lower()
 

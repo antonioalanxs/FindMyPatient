@@ -236,10 +236,13 @@ else:
     APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT)  # Next 30 days
     APPOINTMENT_DURATION_MINUTES = 30
 
-# Data Export Settings
-EXPORT_EXTENSION_PARAMETER = os.getenv('VITE_EXPORT_EXTENSION_PARAMETER', 'export_format')
+# Data Export settings
 EXCEL_EXTENSION = os.getenv('VITE_EXCEL_EXTENSION', 'xlsx')
 JSON_EXTENSION = os.getenv('VITE_JSON_EXTENSION', 'json')
+
+# Query Parameters settings
+EXPORT_EXTENSION_QUERY_PARAMETER = os.getenv('VITE_EXPORT_EXTENSION_QUERY_PARAMETER', 'export_format')
+PATIENT_QUERY_PARAMETER = os.getenv('VITE_PATIENT_QUERY_PARAMETER', 'patient')
 
 # Internationalization settings
 LANGUAGE_CODE = 'en-us'

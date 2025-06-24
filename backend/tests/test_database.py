@@ -1,5 +1,5 @@
 from config.settings import (
-    EXPORT_EXTENSION_PARAMETER,
+    EXPORT_EXTENSION_QUERY_PARAMETER,
     EXCEL_EXTENSION,
     JSON_EXTENSION
 )
@@ -12,7 +12,7 @@ from .tests_helper import TestSetUp
 class DatabaseAPIViewTestCase(TestSetUp):
     def setUp(self):
         super().setUp()
-        self.url = lambda extension: f"{reverse('database-export')}?{EXPORT_EXTENSION_PARAMETER}={extension}"
+        self.url = lambda extension: f"{reverse('database-export')}?{EXPORT_EXTENSION_QUERY_PARAMETER}={extension}"
         self.non_existing_extension = "test"
 
     def test_export_database_with_patient(self):

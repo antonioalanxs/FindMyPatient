@@ -1,8 +1,13 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import InPage from "@/modules/in/pages/InPage/InPage";
+
 import HomePage from "@/modules/in/submodules/Home/pages/HomePage";
 import ProfilePage from "@/modules/in/submodules/Profile/pages/ProfilePage";
+import DatabaseExportPage from "@/modules/in/submodules/Database/pages/DatabaseExportPage";
+import TreatmentsPage from "@/modules/in/submodules/Treatments/pages/TreatmentsPage";
+import MedicalTestsPage from "@/modules/in/submodules/MedicalTests/pages/MedicalTestsPage";
+
 import PatientsRouter from "@/modules/in/submodules/Patients/Router";
 import GroupsRouter from "@/modules/in/submodules/Groups/Router";
 import MedicalSpecialtiesRouter from "@/modules/in/submodules/MedicalSpecialties/Router";
@@ -10,7 +15,7 @@ import AdministratorsRouter from "@/modules/in/submodules/Administrators/Router"
 import DoctorsRouter from "@/modules/in/submodules/Doctors/Router";
 import RoomsRouter from "@/modules/in/submodules/Rooms/Router";
 import AppointmentsRouter from "@/modules/in/submodules/Appointments/Router";
-import DatabaseRouter from "@/modules/in/submodules/Database/Router";
+
 import { ROUTES } from "@/core/constants/routes";
 
 const InRouter = () => {
@@ -53,8 +58,18 @@ const InRouter = () => {
         />
 
         <Route
-          path={ROUTES.IN.DATABASE.ANYWHERE}
-          element={<DatabaseRouter />}
+          path={ROUTES.IN.RELATIVE.DATABASE}
+          element={<DatabaseExportPage />}
+        />
+
+        <Route
+          path={ROUTES.IN.RELATIVE.TREATMENTS}
+          element={<TreatmentsPage />}
+        />
+
+        <Route
+          path={ROUTES.IN.RELATIVE.MEDICAL_TESTS}
+          element={<MedicalTestsPage />}
         />
 
         <Route

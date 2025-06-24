@@ -1,11 +1,11 @@
 import { axiosInstance } from "@/core/services/AxiosService";
-import { EXPORT_EXTENSION_PARAMETER } from "@/core/constants/api";
+import { EXPORT_EXTENSION_QUERY_PARAMETER } from "@/core/constants/api";
 
 class DatabaseExportService {
   static instance = new DatabaseExportService();
 
   _prefix = "/database";
-  _queryParameter = EXPORT_EXTENSION_PARAMETER;
+  _queryParameter = EXPORT_EXTENSION_QUERY_PARAMETER;
 
   constructor() {
     if (DatabaseExportService.instance) {

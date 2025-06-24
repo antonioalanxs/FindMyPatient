@@ -3,11 +3,16 @@ import { useParams } from "react-router-dom";
 
 import { useTitle } from "@/core/hooks/useTitle";
 import { userService } from "@/core/services/UserService";
+import { appointmentService } from "@/core/services/AppointmentService";
+import { appointmentAdapter } from "@/core/adapters/AppointmentAdapter";
 import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
 import NavigationBar from "@/shared/components/NavigationBar/NavigationBar";
 import PatientRealTimeLocationCard from "@/modules/in/submodules/Patients/components/PatientRealTimeLocationCard/PatientRealTimeLocationCard";
 import PatientSheetPage from "@/modules/in/submodules/Patients/pages/PatientSheetPage/PatientSheetPage";
+import TreatmentsList from "@/modules/in/components/TreatmentsList/TreatmentsList";
+import MedicalTestsList from "@/modules/in/components/MedicalTestsList/MedicalTestsList";
+import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
 
 function PatientPage() {
@@ -46,19 +51,39 @@ function PatientPage() {
       id: "clinical-history",
       label: "Clinical history",
       icon: <i className="bi bi-journal-medical"></i>,
-      content: null,
+      content: (
+        <GenericList
+          fetchService={(searchTerm, page, pageSize) =>
+            appointmentService.appointmentsByPatient(
+              id,
+              searchTerm,
+              page,
+              pageSize
+            )
+          }
+          adapter={appointmentAdapter}
+          actions={{
+            search: {
+              label: "Search for an appointment",
+            },
+            edit: {
+              path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.EDIT(id),
+            },
+          }}
+        />
+      ),
     },
     {
       id: "treatments",
       label: "Treatments",
       icon: <i className="bi bi-capsule"></i>,
-      content: null,
+      content: <TreatmentsList patientId={id} />,
     },
     {
       id: "medical-tests",
       label: "Medical tests",
       icon: <i className="bi bi-clipboard2-pulse-fill"></i>,
-      content: null,
+      content: <MedicalTestsList patientId={id} />,
     },
   ];
 
