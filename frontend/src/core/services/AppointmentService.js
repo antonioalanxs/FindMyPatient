@@ -40,12 +40,20 @@ class AppointmentService {
     );
   };
 
+  appointment(id) {
+    return axiosInstance.get(`${this._prefix}/${id}/`);
+  }
+
   cancel = (id) => {
     return axiosInstance.patch(`${this._prefix}/${id}/cancellation`);
   };
 
   calendar = () => {
     return axiosInstance.get(`${this._prefix}/calendar`);
+  };
+
+  update = (id, data) => {
+    return axiosInstance.patch(`${this._prefix}/${id}/`, data);
   };
 }
 

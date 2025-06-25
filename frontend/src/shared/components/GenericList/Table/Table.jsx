@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { notificationService } from "@/core/services/NotificationService";
 import TooltipTrigger from "@/shared/components/Tooltip/TooltipTrigger/TooltipTrigger";
@@ -92,6 +92,8 @@ const Table = ({
     );
   };
 
+  const navigate = useNavigate();
+
   return (
     <div ref={containerReference} className="table-responsive border rounded">
       <table className={`table table-hover mb-0 ${striped && "table-striped"}`}>
@@ -116,7 +118,14 @@ const Table = ({
         <tbody className="text-nowrap">
           {hasData ? (
             sortedData.map((item, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                className={actions?.touch && "cursor-pointer"}
+                onClick={() =>
+                  actions?.touch?.path &&
+                  navigate(actions?.touch?.path(item?.id || item?.ID))
+                }
+              >
                 {columns.map(({ field }, index_) => (
                   <td
                     className="px-4"

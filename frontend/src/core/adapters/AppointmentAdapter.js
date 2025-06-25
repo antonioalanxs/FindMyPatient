@@ -22,10 +22,14 @@ class AppointmentAdapter {
           ? `<span class="py-1 px-2 badge bg-${
               value === "cancelled"
                 ? "danger"
-                : "scheduled"
-                ? "info"
+                : value === "scheduled"
+                ? "primary"
+                : value === "in_progress"
+                ? "warning"
+                : value === "completed"
+                ? "success"
                 : "secondary"
-            } rounded-pill">${textPipe.transform(value)}</span>`
+            } rounded-lg">${textPipe.transform(value)}</span>`
           : value;
 
       result[newKey] = newValue;

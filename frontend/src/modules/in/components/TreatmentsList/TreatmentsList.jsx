@@ -61,7 +61,7 @@ const TreatmentsList = ({ patientId = null }) => {
 
       <div style={{ marginBottom: "-1.25rem" }}>
         {data?.results?.length === 0 ? (
-          <p>No treatments at the moment.</p>
+          <BaseCard>No treatments at the moment.</BaseCard>
         ) : (
           data?.results?.map((treatment) => (
             <BaseCard key={treatment.id} title={treatment.description}>

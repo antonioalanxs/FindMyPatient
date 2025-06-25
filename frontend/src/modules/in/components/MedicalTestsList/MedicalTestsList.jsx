@@ -62,7 +62,7 @@ const MedicalTestsList = ({ patientId = null }) => {
 
       <div style={{ marginBottom: "-1.25rem" }}>
         {data?.results?.length === 0 ? (
-          <p>No treatments at the moment.</p>
+          <BaseCard>No medical tests at the moment.</BaseCard>
         ) : (
           data?.results?.map((medicalTest) => (
             <BaseCard

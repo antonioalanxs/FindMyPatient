@@ -5,6 +5,8 @@ import { useTitle } from "@/core/hooks/useTitle";
 import { medicalSpecialtyService } from "@/core/services/MedicalSpecialtyService";
 import { userAdapter } from "@/core/adapters/UserAdapter";
 import { notificationService } from "@/core/services/NotificationService";
+import { doctorService } from "@/core/services/DoctorService";
+import { roomService } from "@/core/services/RoomService";
 import { textPipe } from "@/core/pipes/textPipe";
 import Load from "@/shared/components/Load/Load";
 import Header from "@/modules/in/components/Header/Header";
@@ -12,6 +14,7 @@ import BaseCard from "@/shared/components/BaseCard/BaseCard";
 import GenericList from "@/shared/components/GenericList/GenericList";
 import { ROUTES } from "@/core/constants/routes";
 import { genericEntityAdapter } from "@/core/adapters/GenericEntityAdapter";
+import { userService } from "@/core/services/UserService";
 
 function MedicalSpecialtyPage() {
   useTitle({ title: "Medical specialty" });
@@ -118,6 +121,15 @@ function MedicalSpecialtyPage() {
                 search: {
                   label: "Search for a doctor",
                 },
+                view: {
+                  path: ROUTES.IN.DOCTORS.ABSOLUTE.DETAIL,
+                },
+                edit: {
+                  path: ROUTES.IN.DOCTORS.ABSOLUTE.EDIT,
+                },
+                delete: {
+                  action: (id) => userService.destroy(id),
+                },
               }}
             />
 
@@ -139,6 +151,15 @@ function MedicalSpecialtyPage() {
               actions={{
                 search: {
                   label: "Search for a room",
+                },
+                view: {
+                  path: ROUTES.IN.ROOMS.ABSOLUTE.DETAIL,
+                },
+                edit: {
+                  path: ROUTES.IN.ROOMS.ABSOLUTE.EDIT,
+                },
+                delete: {
+                  action: (id) => roomService.destroy(id),
                 },
               }}
             />

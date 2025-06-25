@@ -4,12 +4,15 @@ from rest_framework import serializers
 
 from doctors.serializers import DoctorSqueezeSerializer
 from medical_specialties.serializers import MedicalSpecialtySqueezeSerializer
-from patients.serializers import PatientObliteratedSerializer
+from patients.serializers import (
+    PatientObliteratedSerializer,
+    PatientAppointmentSerializer
+)
 from rooms.serializers import RoomSqueezeSerializer
 from .models import Appointment
 
 
-class CreateAppointmentSerializer(serializers.ModelSerializer):
+class AppointmentUpsetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = "__all__"
@@ -40,42 +43,29 @@ class AppointmentPreviewSerializer(serializers.ModelSerializer):
         ]
 
 
-class AppointmentSerializer(serializers.ModelSerializer):
-    request_date = serializers.DateTimeField(format=EMAIL_DATE_FORMAT)
-    patient = serializers.SerializerMethodField()
-    doctor = serializers.SerializerMethodField()
+class AppointmentDetailSerializer(serializers.ModelSerializer):
     start_date = serializers.DateTimeField(
         source='schedule.start_time',
         format=EMAIL_DATE_FORMAT,
     )
+    request_date = serializers.DateTimeField(format=EMAIL_DATE_FORMAT)
+    patient = PatientAppointmentSerializer(read_only=True)
+    medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
+    room = RoomSqueezeSerializer(read_only=True)
 
     class Meta:
         model = Appointment
         fields = [
             "id",
             "request_date",
+            "start_date",
             "status",
-            "reason",
-            "medical_specialty",
-            "patient",
-            "doctor",
             "room",
-            "start_date"
+            "medical_specialty",
+            "reason",
+            "observations",
+            "patient",
         ]
-
-    def get_patient(self, obj):
-        return {
-            "name": f"{obj.patient.first_name} {obj.patient.last_name}",
-            "social_security_code": obj.patient.social_security_code,
-            "phone_number": obj.patient.phone_number,
-        }
-
-    def get_doctor(self, obj):
-        return {
-            "name": f"{obj.doctor.first_name} {obj.doctor.last_name}",
-            "collegiate_code": obj.doctor.collegiate_code,
-            "email": obj.doctor.email,
-        }
 
 
 class AppointmentCalendarSerializer(serializers.ModelSerializer):

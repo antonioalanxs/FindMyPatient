@@ -52,7 +52,7 @@ const Map = ({ position, path, address }) => {
         style={{ zIndex: 400 }}
       >
         <h5 className="mb-2 fs-6">{address}</h5>
-        <h6 className="text-secondary fw-normal">{position}</h6>
+        <h6 className="text-secondary fw-normal">{position.join(", ")}</h6>
       </div>
     </MapContainer>
   );

@@ -1,3 +1,6 @@
+from django.shortcuts import get_object_or_404
+
+from administrators.models import Administrator
 from config.settings import (
     DEFAULT_VALUE,
     EMAIL_DATE_FORMAT,
@@ -21,9 +24,10 @@ from permissions.decorators import method_permission_classes
 from permissions.patients import IsAdministratorOrIsPatientAssignedDoctor
 from permissions.users import IsDoctor
 from .serializers import (
-    CreateAppointmentSerializer,
+    AppointmentUpsetSerializer,
     AppointmentPreviewSerializer,
-    AppointmentCalendarSerializer
+    AppointmentCalendarSerializer,
+    AppointmentDetailSerializer
 )
 from doctors.models import Doctor
 from .models import Appointment
@@ -94,13 +98,20 @@ class AppointmentViewSet(
     SerializerValidationErrorResponseMixin,
     EmailMixin
 ):
-    serializer_class = CreateAppointmentSerializer
+    upset_serializer_class = AppointmentUpsetSerializer
     list_serializer_class = AppointmentPreviewSerializer
+    serializer_class = AppointmentDetailSerializer
     model = Appointment
+
+    def get_object(self):
+        return get_object_or_404(
+            self.model,
+            id=self.kwargs.get("pk"),
+        )
 
     @method_permission_classes([IsAuthenticated])
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.upset_serializer_class(data=request.data)
 
         if not serializer.is_valid():
             return self.handle_serializer_is_not_valid_response(serializer)
@@ -163,4 +174,42 @@ class AppointmentViewSet(
             request,
             queryset,
             self.list_serializer_class
+        )
+
+    @method_permission_classes([IsAuthenticated])
+    def retrieve(self, request, *args, **kwargs):
+        appointment = self.get_object()
+
+        if Patient.objects.filter(id=request.user.id).exists() or \
+                not Administrator.objects.filter(id=request.user.id).exists() and \
+                not self.model.objects.filter(patient_id=appointment.patient.id, doctor_id=request.user.id).exists():
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        return Response(
+            self.serializer_class(appointment).data,
+            status=status.HTTP_200_OK
+        )
+
+    @method_permission_classes([IsAuthenticated])
+    def partial_update(self, request, *args, **kwargs):
+        appointment = self.get_object()
+
+        if Patient.objects.filter(id=request.user.id).exists() or \
+                not Administrator.objects.filter(id=request.user.id).exists() and \
+                not self.model.objects.filter(patient_id=appointment.patient.id, doctor_id=request.user.id).exists():
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        serializer = self.upset_serializer_class(
+            appointment,
+            data=request.data,
+            partial=True
+        )
+
+        if not serializer.is_valid():
+            return self.handle_serializer_is_not_valid_response(serializer)
+
+        serializer.save()
+        return Response(
+            {"message": "The status of the appointment has been updated."},
+            status=status.HTTP_200_OK
         )

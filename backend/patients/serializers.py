@@ -9,6 +9,22 @@ from .models import Patient
 from utilities.password import generate_random_password
 
 
+class PatientAppointmentSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Patient
+        fields = [
+            "id",
+            "name",
+            "social_security_code",
+            "birth_date",
+            "gender",
+        ]
+
+    def get_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+
 class PatientObliteratedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
@@ -108,6 +124,8 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class PatientSqueezeSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Patient
         fields = [
@@ -116,3 +134,6 @@ class PatientSqueezeSerializer(serializers.ModelSerializer):
             "identity_card_number",
             "social_security_code",
         ]
+
+    def get_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"

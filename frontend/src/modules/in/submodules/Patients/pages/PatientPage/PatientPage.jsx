@@ -66,8 +66,8 @@ function PatientPage() {
             search: {
               label: "Search for an appointment",
             },
-            edit: {
-              path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.EDIT(id),
+            touch: {
+              path: (id) => ROUTES.IN.APPOINTMENTS.ABSOLUTE.DETAIL(id),
             },
           }}
         />

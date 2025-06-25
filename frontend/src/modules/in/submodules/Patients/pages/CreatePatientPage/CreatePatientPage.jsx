@@ -94,7 +94,7 @@ function CreatePatientPage() {
             <option value="">Select a primary doctor</option>
             {doctors?.map((doctor) => (
               <option value={doctor?.id} key={doctor?.id}>
-                {`${doctor?.name} - ${doctor?.medical_specialties.join(", ")}`}
+                {`${doctor?.name} - ${doctor?.medical_specialty}`}
               </option>
             ))}
           </select>

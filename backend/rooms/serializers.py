@@ -10,7 +10,7 @@ class RoomSqueezeSerializer(serializers.ModelSerializer):
         fields = ['id']
 
     def to_representation(self, instance):
-        return instance.name
+        return f"{instance.name} ({instance.location})" if instance.location else instance.name
 
     def to_internal_value(self, data):
         if isinstance(data, int):
