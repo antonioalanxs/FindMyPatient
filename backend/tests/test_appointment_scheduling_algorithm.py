@@ -63,34 +63,36 @@ class AppointmentSchedulingAlgorithmTest(TestSetUp):
     def test_scheduling_algorithm_with_no_doctors_available(self):
         self.client.force_authenticate(user=self.administrator)
 
-        self.another_doctor.delete()
-        flag = True
+        while (Schedule.objects.filter(doctor=self.doctor).exists() and \
+               Schedule.objects.filter(doctor=self.another_doctor).exists()):
+            self.client.post(self.url, self.input, format="json")
 
-        while flag:
-            response = self.client.post(self.url, self.input, format="json")
-            flag = response.status_code == status.HTTP_200_OK
+        self.doctor.delete()
+        self.another_doctor.delete()
+
+        response = self.client.post(self.url, self.input, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_scheduling_algorithm_with_assigns_busy_room_and_falls_back_to_another(self):
         self.client.force_authenticate(user=self.administrator)
 
-        flag = True
-
-        while flag:
+        while not Appointment.objects.filter(room=self.another_room).exists():
             response = self.client.post(self.url, self.input, format="json")
-            flag = response.status_code == status.HTTP_200_OK
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(Appointment.objects.filter(room=self.another_room).exists())
 
     def test_scheduling_algorithm_with_no_rooms_available(self):
         self.client.force_authenticate(user=self.administrator)
 
-        self.another_room.delete()
-        flag = True
+        while (Appointment.objects.filter(room=self.room).exists() and \
+               Appointment.objects.filter(room=self.another_room).exists()):
+            self.client.post(self.url, self.input, format="json")
 
-        while flag:
-            response = self.client.post(self.url, self.input, format="json")
-            flag = response.status_code == status.HTTP_200_OK
+        self.room.delete()
+        self.another_room.delete()
+
+        response = self.client.post(self.url, self.input, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
