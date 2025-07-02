@@ -52,6 +52,7 @@ class AppointmentDetailSerializer(serializers.ModelSerializer):
     patient = PatientAppointmentSerializer(read_only=True)
     medical_specialty = MedicalSpecialtySqueezeSerializer(read_only=True)
     room = RoomSqueezeSerializer(read_only=True)
+    doctor_id = serializers.SerializerMethodField()
 
     class Meta:
         model = Appointment
@@ -65,7 +66,11 @@ class AppointmentDetailSerializer(serializers.ModelSerializer):
             "reason",
             "observations",
             "patient",
+            "doctor_id"
         ]
+
+    def get_doctor_id(self, obj):
+        return obj.doctor.id if obj.doctor else None
 
 
 class AppointmentCalendarSerializer(serializers.ModelSerializer):
