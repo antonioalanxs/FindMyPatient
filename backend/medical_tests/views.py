@@ -19,7 +19,7 @@ from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
-from permissions.patients import IsAdministratorOrIsPatientOrIsPatientAssignedDoctor
+from permissions.patients import IsAdministratorOrIsPatientOrIsPatientAssignedDoctor, IsPatientAssignedDoctor
 from permissions.users import IsDoctor
 from patients.models import Patient
 from doctors.models import Doctor
@@ -76,7 +76,7 @@ class MedicalTestViewSet(
             self.list_serializer_class
         )
 
-    @method_permission_classes([IsAuthenticated, IsDoctor])
+    @method_permission_classes([IsAuthenticated, IsPatientAssignedDoctor])
     def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
