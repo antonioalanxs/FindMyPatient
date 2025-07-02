@@ -36,6 +36,10 @@ class TreatmentService {
 
     return axiosInstance.get(`${this._prefix}/?${parameters.toString()}`);
   };
+
+  create = (data) => {
+    return axiosInstance.post(`${this._prefix}/`, data);
+  };
 }
 
 export const treatmentService = TreatmentService.instance;

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 
+import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { appointmentService } from "@/core/services/AppointmentService";
 import { useTitle } from "@/core/hooks/useTitle";
 import { textPipe } from "@/core/pipes/textPipe";
@@ -8,8 +9,11 @@ import { datePipe } from "@/core/pipes/datePipe";
 import { genderPipe } from "@/core/pipes/genderPipe";
 import Header from "@/modules/in/components/Header/Header";
 import BaseCard from "@/shared/components/BaseCard/BaseCard";
+import TreatmentsList from "@/modules/in/components/TreatmentsList/TreatmentsList";
+import MedicalTestsList from "@/modules/in/components/MedicalTestsList/MedicalTestsList";
 import Load from "@/shared/components/Load/Load";
 import { ROUTES } from "@/core/constants/routes";
+import { ROLES } from "@/core/constants/roles";
 
 function AppointmentPage() {
   useTitle({ title: "Appointment" });
@@ -18,12 +22,13 @@ function AppointmentPage() {
 
   const [appointment, setAppointment] = useState(null);
   const [status, setStatus] = useState(null);
+  const [observations, setObservations] = useState(null);
 
   useEffect(() => {
     appointmentService.appointment(id).then(({ data }) => {
-      console.log(data);
       setAppointment(data);
       setStatus(data.status);
+      setObservations(data?.observations || "");
     });
   }, [id]);
 
@@ -32,9 +37,25 @@ function AppointmentPage() {
       .update(appointment.id, { status: newStatus })
       .then(() => {
         setStatus(newStatus);
-        setAppointment((previous) => ({ ...previous, status: newStatus }));
+        setAppointment((previousAppointment) => ({
+          ...previousAppointment,
+          status: newStatus,
+        }));
       });
   };
+
+  const handleObservationsClick = () => {
+    appointmentService
+      .update(appointment.id, { observations: observations })
+      .then(() => {
+        setAppointment((previousAppointment) => ({
+          ...previousAppointment,
+          observations: observations,
+        }));
+      });
+  };
+
+  const { user } = useContext(AuthenticationContext);
 
   return appointment ? (
     <>
@@ -126,26 +147,26 @@ function AppointmentPage() {
           <BaseCard title="Patient Information">
             <form className="row g-3">
               <div className="col-sm-6">
-                <label htmlFor="name" class="form-label">
+                <label htmlFor="name" className="form-label">
                   Name
                 </label>
-                <p id="name" class="form-control-static">
+                <p id="name" className="form-control-static">
                   {appointment?.patient?.name}
                 </p>
               </div>
               <div className="col-sm-6">
-                <label htmlFor="social_security_code" class="form-label">
+                <label htmlFor="social_security_code" className="form-label">
                   Social security code
                 </label>
-                <p id="social_security_code" class="form-control-static">
+                <p id="social_security_code" className="form-control-static">
                   {appointment?.patient?.social_security_code}
                 </p>
               </div>
               <div className="col-sm-6">
-                <label htmlFor="birth_date" class="form-label">
+                <label htmlFor="birth_date" className="form-label">
                   Date of birth
                 </label>
-                <p id="birth_date" class="form-control-static">
+                <p id="birth_date" className="form-control-static">
                   {datePipe.transform(
                     appointment?.patient?.birth_date,
                     datePipe.OPTIONS.SHORT
@@ -153,10 +174,10 @@ function AppointmentPage() {
                 </p>
               </div>
               <div className="col-sm-6">
-                <label htmlFor="gender" class="form-label">
+                <label htmlFor="gender" className="form-label">
                   Gender
                 </label>
-                <p id="gender" class="form-control-static">
+                <p id="gender" className="form-control-static">
                   {genderPipe.transform(appointment?.patient?.gender)}
                 </p>
               </div>
@@ -190,13 +211,21 @@ function AppointmentPage() {
             <p>{appointment?.reason}</p>
 
             <div className="mt-3">
-              <div>
-                <h4 className="mb-3 fs-5">Observations</h4>
+              <div className="d-flex align-items-center justify-content-between">
+                <h4 className="fs-5">Observations</h4>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={handleObservationsClick}
+                >
+                  <i className="bi bi-check2"></i>
+                  <span className="ms-1">Update</span>
+                </button>
               </div>
               <textarea
-                className="form-control"
+                className="form-control mt-2"
                 rows="4"
-                defaultValue={appointment?.observations ?? ""}
+                value={observations}
+                onChange={(event) => setObservations(event?.target?.value)}
                 placeholder="Observations about the patient..."
                 style={{ resize: "none" }}
               ></textarea>
@@ -204,6 +233,23 @@ function AppointmentPage() {
           </BaseCard>
         </div>
       </div>
+
+      {user?.role === ROLES.DOCTOR && (
+        <>
+          <h4 className="fs-5 mb-4">Treatments</h4>
+          <TreatmentsList
+            patientId={appointment?.patient?.id}
+            create={true}
+            appointment={appointment}
+          />
+          <h4 className="fs-5 mt-4 mb-4">Medical tests</h4>
+          <MedicalTestsList
+            patientId={appointment?.patient?.id}
+            create={true}
+            appointment={appointment}
+          />
+        </>
+      )}
     </>
   ) : (
     <Load center />

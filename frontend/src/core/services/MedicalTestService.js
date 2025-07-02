@@ -36,6 +36,10 @@ class MedicalTestService {
 
     return axiosInstance.get(`${this._prefix}/?${parameters.toString()}`);
   };
+
+  create = (data) => {
+    return axiosInstance.post(`${this._prefix}/`, data);
+  };
 }
 
 export const medicalTestService = MedicalTestService.instance;
