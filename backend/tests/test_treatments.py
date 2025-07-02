@@ -54,3 +54,51 @@ class TreatmentListTestCase(TestSetUp):
         self.client.force_authenticate(user=self.doctor)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class CreateTreatmentTestCase(TestSetUp):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse('treatments-list')
+        self.input = {
+            "description": "Test description",
+            "duration": "2 tests",
+            "start_date": "2023-10-01",
+            "comments": "Test comments",
+            "application_frequency": "Once a test",
+            "dosage": "500tests",
+            "patient": self.patient_with_address_and_primary_doctor.id,
+            "doctor": self.doctor.id,
+            "appointment": self.appointment.id
+        }
+
+    def test_create_treatment_with_non_authenticated_user(self):
+        response = self.client.post(self.url, data=self.input)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_treatment_with_patient(self):
+        self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
+        response = self.client.post(self.url, data=self.input)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_treatment_with_doctor_with_an_assigned_patient(self):
+        self.client.force_authenticate(user=self.doctor)
+        response = self.client.post(self.url, data=self.input)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_treatment_with_doctor_without_an_assigned_patient(self):
+        self.client.force_authenticate(user=self.another_doctor)
+        response = self.client.post(self.url, data=self.input)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_treatment_with_administrator(self):
+        self.client.force_authenticate(user=self.administrator)
+        response = self.client.post(self.url, data=self.input)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_treatment_with_malformed_input(self):
+        self.client.force_authenticate(user=self.doctor)
+        malformed_input = self.input.copy()
+        malformed_input['start_date'] = 'invalid-date'
+        response = self.client.post(self.url, data=malformed_input)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
