@@ -12,7 +12,7 @@ class Treatment(models.Model):
         verbose_name = "Treatment"
         verbose_name_plural = "Treatments"
 
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=50)
     duration = models.CharField(max_length=25)
     start_date = models.DateField()
     comments = models.TextField(max_length=255, blank=True, null=True)
