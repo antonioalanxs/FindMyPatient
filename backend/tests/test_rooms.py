@@ -97,7 +97,7 @@ class RoomCreateTestCase(TestSetUp):
         self.input = self.room_input.copy()
 
         self.input["name"] = "Room testtest"
-        self.input["medical_specialty"] = self.medical_specialty_id
+        self.input["medical_specialty"] = self.medical_specialty.id
         self.input["availability"] = True
 
     def test_create_room(self):
@@ -143,6 +143,7 @@ class RoomUpdateTestCase(TestSetUp):
 
     def test_update_room(self):
         self.client.force_authenticate(user=self.administrator)
+        self.room_input["name"] = "Another Room Test 2"
         response = self.client.patch(self.url(self.room.id), data=self.room_input, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
