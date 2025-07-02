@@ -2,7 +2,20 @@ from rest_framework import serializers
 
 from medical_specialties.serializers import MedicalSpecialtySqueezeSerializer
 from .models import Room
-from medical_specialties.models import MedicalSpecialty
+
+
+class RoomSqueezeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ['id']
+
+    def to_representation(self, instance):
+        return f"{instance.name} ({instance.location})" if instance.location else instance.name
+
+    def to_internal_value(self, data):
+        if isinstance(data, int):
+            return Room.objects.get(id=data)
+        return super().to_internal_value(data)
 
 
 class RoomPreviewSerializer(serializers.ModelSerializer):

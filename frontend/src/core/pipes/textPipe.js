@@ -1,4 +1,4 @@
-import { DEFAULT_VALUE } from "@/core/constants/default";
+import { DEFAULT_VALUE } from "@/core/constants/api";
 
 class TextPipe {
   static instance = new TextPipe();

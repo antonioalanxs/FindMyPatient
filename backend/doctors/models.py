@@ -3,6 +3,7 @@ from django.db import models
 from base.models import User
 from medical_specialties.models import MedicalSpecialty
 
+
 # Create your models here.
 
 class Doctor(User):
@@ -11,4 +12,10 @@ class Doctor(User):
         verbose_name_plural = "Doctors"
 
     collegiate_code = models.CharField(max_length=10, unique=True, null=False, blank=False)
-    medical_specialties = models.ManyToManyField(MedicalSpecialty)
+    medical_specialty = models.ForeignKey(
+        MedicalSpecialty,
+        on_delete=models.CASCADE,
+        related_name="doctors",
+        null=True,
+        blank=True,
+    )

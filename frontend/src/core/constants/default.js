@@ -5,5 +5,3 @@ export const DEFAULT_PAGINATION_SIZE = import.meta.env
 
 export const DEFAULT_NAME = "Antonio José";
 export const DEFAULT_INITIAL_LETTER = "A";
-
-export const DEFAULT_VALUE = "N / A";

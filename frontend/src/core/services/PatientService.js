@@ -36,6 +36,10 @@ class PatientService {
   patient = (id) => {
     return axiosInstance.get(`${this._prefix}/${id}/`);
   };
+
+  patientsWithoutPagination = () => {
+    return axiosInstance.get(`${this._prefix}/`);
+  };
 }
 
 export const patientService = PatientService.instance;

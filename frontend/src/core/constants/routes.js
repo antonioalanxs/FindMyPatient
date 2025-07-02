@@ -33,6 +33,9 @@ export const ROUTES = {
     ...createModuleRoutes("/in", {
       HOME: "home",
       PROFILE: "profile",
+      DATABASE: "database",
+      TREATMENTS: "treatments",
+      MEDICAL_TESTS: "medical-tests",
     }),
     PATIENTS: createModuleRoutes("/in/patients", {
       DETAIL: (id = ":id") => id,
@@ -62,6 +65,11 @@ export const ROUTES = {
       DETAIL: (id = ":id") => id,
       CREATE: "new",
       EDIT: (id = ":id") => `${id}/edition`,
+    }),
+    APPOINTMENTS: createModuleRoutes("/in/appointments", {
+      REQUEST: "request",
+      DETAIL: (id = ":id") => id,
+      CALENDAR: "calendar",
     }),
   },
 };

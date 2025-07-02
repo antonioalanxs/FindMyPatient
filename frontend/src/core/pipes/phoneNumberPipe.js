@@ -1,6 +1,6 @@
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
-import { DEFAULT_VALUE } from "@/core/constants/default";
+import { DEFAULT_VALUE } from "@/core/constants/api";
 
 class PhoneNumberPipe {
   static instance = new PhoneNumberPipe();

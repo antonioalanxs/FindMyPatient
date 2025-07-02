@@ -71,7 +71,7 @@ function DoctorInformation({ doctor }) {
 
             <div className="col-md-8 col-lg-6 form-group">
               <label htmlFor="medical_specialties" className="form-label">
-                Medical specialties
+                Medical specialty
               </label>
               <Controller
                 name="medical_specialties"

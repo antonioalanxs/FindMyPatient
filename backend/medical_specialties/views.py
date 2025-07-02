@@ -22,10 +22,10 @@ from mixins.search import SearchMixin
 from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from permissions.decorators import method_permission_classes
-from permissions.users import IsAdministrator, IsDoctorOrIsAdministrator
+from permissions.users import IsAdministrator
 from .models import MedicalSpecialty
-from doctors.models import Doctor
 from rooms.models import Room
+from doctors.models import Doctor
 
 
 class ListDoctorsByMedicalSpecialtyAPIView(
@@ -44,7 +44,7 @@ class ListDoctorsByMedicalSpecialtyAPIView(
         queryset = self.search(
             Room,
             request,
-            base_queryset=medical_specialty.doctor_set.all()
+            base_queryset=Doctor.objects.filter(medical_specialty=medical_specialty)
         )
 
         return self.get_paginated_response_(
@@ -99,7 +99,7 @@ class MedicalSpecialtyViewSet(
             id=self.kwargs.get("pk")
         )
 
-    @method_permission_classes([IsAuthenticated, IsDoctorOrIsAdministrator])
+    @method_permission_classes([IsAuthenticated])
     def list(self, request, *args, **kwargs):
         queryset = self.search(self.model, request)
 

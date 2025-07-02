@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
 
-from permissions.users import is_administrator, is_self, is_doctor
+from permissions.users import is_administrator, is_self, is_doctor, is_patient
 from doctors.models import Doctor
 
 

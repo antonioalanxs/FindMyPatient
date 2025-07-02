@@ -32,9 +32,13 @@ class Room(models.Model):
         MedicalSpecialty,
         on_delete=models.CASCADE,
         related_name="rooms",
+        blank=True,
         null=True,
     )
 
     is_available = models.BooleanField(
         default=True,
     )
+
+    def __str__(self):
+        return f"{self.name} ({self.location})"

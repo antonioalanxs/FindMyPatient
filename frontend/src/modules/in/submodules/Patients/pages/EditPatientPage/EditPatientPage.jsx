@@ -73,11 +73,11 @@ function EditPatientPage() {
           </div>
 
           <div className="col-md-7 form-group">
-            <label htmlFor="medical_specialties" className="form-label">
+            <label htmlFor="medical_specialty" className="form-label">
               Medical specialties
             </label>
-            <div id="medical_specialties" className="form-control-static">
-              <Badges items={doctor?.doctor?.medical_specialties} />
+            <div id="medical_specialty" className="form-control-static">
+              <Badges items={[doctor?.doctor?.medical_specialty]} />
             </div>
           </div>
         </div>
@@ -102,7 +102,7 @@ function EditPatientPage() {
           >
             {doctors?.map((doctor) => (
               <option value={doctor?.id} key={doctor?.id}>
-                {`${doctor?.name} - ${doctor?.medical_specialties.join(", ")}`}
+                {`${doctor?.name} - ${doctor?.medical_specialty}`}
               </option>
             ))}
           </select>

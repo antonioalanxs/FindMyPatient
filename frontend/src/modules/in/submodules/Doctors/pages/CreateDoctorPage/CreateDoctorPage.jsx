@@ -43,7 +43,7 @@ function CreateDoctorPage() {
     data = {
       ...data,
       birth_date: datePipe.transform(data.birth_date, datePipe.OPTIONS.BACKEND),
-      medical_specialties: data.medical_specialties.map((id) => parseInt(id)),
+      medical_specialty: parseInt(data.medical_specialty),
     };
 
     doctorService
@@ -296,8 +296,8 @@ function CreateDoctorPage() {
                 </div>
 
                 <div className="col-md-6 form-group">
-                  <label htmlFor="medical_specialties" className="form-label">
-                    Medical specialties
+                  <label htmlFor="medical_specialty" className="form-label">
+                    Medical specialty
                   </label>
 
                   {!medicalSpecialties ? (
@@ -310,35 +310,30 @@ function CreateDoctorPage() {
                   ) : (
                     <>
                       <Controller
-                        name="medical_specialties"
+                        name="medical_specialty"
                         control={control}
                         rules={{
-                          required:
-                            "At least one medical specialty is required.",
+                          required: "Medical specialty is required.",
                         }}
                         render={({ field }) => (
                           <select
-                            multiple
-                            className={`py-2 form-select ${
-                              errors?.medical_specialties && "is-invalid"
+                            {...field}
+                            className={`form-select ${
+                              errors?.medical_specialty && "is-invalid"
                             }`}
-                            onChange={(event) => {
-                              const selectedOptions = Array.from(
-                                event.target.selectedOptions
-                              ).map((option) => option.value);
-                              field.onChange(selectedOptions);
-                            }}
                           >
-                            {medicalSpecialties.map(({ id, name }) => (
-                              <option key={id} value={id}>
-                                {name}
-                              </option>
-                            ))}
+                            <option value="">Select a medical specialty</option>
+                            {medicalSpecialties &&
+                              medicalSpecialties.map(({ id, name }) => (
+                                <option key={id} value={id}>
+                                  {name}
+                                </option>
+                              ))}
                           </select>
                         )}
                       />
                       <InvalidFeedback
-                        message={errors?.medical_specialties?.message}
+                        message={errors?.medical_specialty?.message}
                       />
                     </>
                   )}

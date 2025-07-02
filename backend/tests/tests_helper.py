@@ -1,3 +1,4 @@
+from appointments.models import Appointment
 from config.settings import ROLES
 
 from django.contrib.auth.models import Group
@@ -11,6 +12,7 @@ from doctors.models import Doctor
 from administrators.models import Administrator
 from medical_specialties.models import MedicalSpecialty
 from rooms.models import Room
+from schedules.models import Schedule
 
 
 class TestSetUp(APITestCase):
@@ -101,14 +103,12 @@ class TestSetUp(APITestCase):
         self.medical_specialty = MedicalSpecialty.objects.create(
             **self.medical_specialty_input
         )
-        self.medical_specialty_id = self.medical_specialty.id
 
-        self.doctor.medical_specialties.add(self.medical_specialty)
-
-        self.another_doctor.medical_specialties.add(self.medical_specialty)
+        self.doctor.medical_specialty = self.medical_specialty
+        self.another_doctor.medical_specialty = self.medical_specialty
 
         self.room_input = {
-            "name": "Room test",
+            "name": "Test Room",
             "location": "test",
             "capacity": 1,
         }
@@ -116,13 +116,34 @@ class TestSetUp(APITestCase):
         self.room = Room.objects.create(**self.room_input)
         self.room.medical_specialty = self.medical_specialty
 
+        self.room_input["name"] = "Another Room Test"
+
+        self.another_room = Room.objects.create(**self.room_input)
+        self.another_room.medical_specialty = self.medical_specialty
+
         self.room.save()
+        self.another_room.save()
         self.doctor.save()
         self.another_doctor.save()
+
+    def __set_appointments(self):
+        self.appointment_input = {
+            "schedule": Schedule.objects.create(
+                start_time="2024-07-04T10:00:00Z",
+                end_time="2024-07-04T11:00:00Z"
+            ),
+            "patient": self.patient_with_address_and_primary_doctor,
+            "doctor": self.doctor,
+            "medical_specialty": self.medical_specialty,
+            "room": self.room,
+        }
+
+        self.appointment = Appointment.objects.create(**self.appointment_input)
 
     def setUp(self):
         self.non_existing_id = 999999
         self.__set_users()
         self.__set_medical_specialties()
+        self.__set_appointments()
 
         return super().setUp()

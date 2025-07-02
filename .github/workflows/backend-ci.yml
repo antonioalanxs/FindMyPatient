@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - develop
+      - main
 
 jobs:
   build:
@@ -30,6 +31,9 @@ jobs:
 
       - name: Set SQLite fallback
         run: echo "USE_SQLITE_IN_CI=true" >> $GITHUB_ENV
+
+      - name: Reduce execution times in the Appointment Scheduling Algorithm tests
+        run: echo "FAST_APPOINTMENT_TESTS=true" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |

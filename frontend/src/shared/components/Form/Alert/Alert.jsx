@@ -1,9 +1,11 @@
 function Alert({ content, onClose, classes = "" }) {
+  
+  
   if (!content) return null;
 
   return (
     <div
-      className={`alert alert-danger alert-dismissible show fade ${classes}`}
+      className={`alert alert-warning alert-dismissible show fade ${classes}`}
     >
       <p dangerouslySetInnerHTML={{ __html: content }} className="truncate"></p>
       <button

@@ -1,5 +1,5 @@
 import { COUNTRIES } from "@/core/constants/countries";
-import { DEFAULT_VALUE } from "@/core/constants/default";
+import { DEFAULT_VALUE } from "@/core/constants/api";
 
 class CountryPipe {
   static instance = new CountryPipe();

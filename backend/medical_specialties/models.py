@@ -33,3 +33,6 @@ class MedicalSpecialty(models.Model):
             MaxLengthValidator(100, message='Description must be at most 100 characters long.')
         ]
     )
+
+    def __str__(self):
+        return self.name

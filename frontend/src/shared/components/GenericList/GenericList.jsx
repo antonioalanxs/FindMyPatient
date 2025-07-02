@@ -20,6 +20,7 @@ const GenericList = ({
   card = null,
   showID = false,
   actions = null,
+  id = null,
 }) => {
   const [searchParameters, setSearchParameters] = useSearchParams();
 
@@ -39,12 +40,15 @@ const GenericList = ({
 
   const fetchData = () => {
     setLoading(true);
-    fetchService(searchTerm, page, pageSize)
-      .then(({ data }) => {
-        data.results = adapter.run(data.results);
-        setData(data);
-      })
-      .finally(() => setLoading(false));
+
+    let args = [searchTerm, page, pageSize];
+    if (id) args.push(id);
+
+    fetchService(...args).then(({ data }) => {
+      data.results = adapter.run(data.results);
+      setData(data);
+      setLoading(false);
+    });
   };
 
   useEffect(() => {

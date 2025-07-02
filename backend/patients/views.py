@@ -1,3 +1,5 @@
+from config.settings import PAGINATION_PARAMETER
+
 from django.shortcuts import get_object_or_404
 
 from rest_framework import (
@@ -10,7 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from .serializers import (
     PatientPreviewSerializer,
-    PatientSerializer
+    PatientSerializer,
+    PatientSqueezeSerializer
 )
 from permissions.decorators import method_permission_classes
 from permissions.users import IsDoctorOrIsAdministrator
@@ -36,6 +39,7 @@ class PatientViewSet(
     queryset = None
     list_serializer_class = PatientPreviewSerializer
     serializer_class = PatientSerializer
+    compress_serializer_class = PatientSqueezeSerializer
 
     def get_object(self):
         return get_object_or_404(self.model, id=self.kwargs['id'])
@@ -51,10 +55,16 @@ class PatientViewSet(
             base_queryset=base_queryset
         )
 
-        return self.get_paginated_response_(
-            request,
-            queryset,
-            self.list_serializer_class
+        if request.query_params.get(PAGINATION_PARAMETER, None):
+            return self.get_paginated_response_(
+                request,
+                queryset,
+                self.list_serializer_class
+            )
+
+        return Response(
+            self.list_serializer_class(queryset, many=True).data,
+            status=status.HTTP_200_OK
         )
 
     @method_permission_classes([IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf])

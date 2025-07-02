@@ -38,9 +38,7 @@ function SideBarMenu({ options = defaultOptions }) {
             <li
               key={index}
               className={`sidebar-item ${
-                (location.pathname === option.link ||
-                  location.pathname.includes(option.link)) &&
-                "active"
+                location.pathname === option.link && "active"
               }`}
             >
               <Link to={option.link} className="sidebar-link">

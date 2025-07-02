@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 import sys
 
-from datetime import timedelta
+from datetime import (
+    datetime,
+    timedelta,
+)
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -67,11 +70,15 @@ LOCAL_APPS = [
     'doctors',
     'administrators',
     'tracking',
-    'clinical_history',
     'medical_specialties',
     'addresses',
     'groups',
     'rooms',
+    'appointments',
+    'schedules',
+    'treatments',
+    'medical_tests',
+    'database',
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -210,6 +217,32 @@ SEARCH_PARAMETER = os.getenv('VITE_SEARCH_PARAMETER')
 
 # Brand settings
 BRAND_NAME = os.getenv('VITE_BRAND_NAME')
+
+# Default value settings
+DEFAULT_VALUE = os.getenv('VITE_DEFAULT_VALUE', 'N / A')
+
+# Date format settings
+DATE_FORMAT = '%Y-%m-%d'
+HOUR_FORMAT = '%H:%M'
+EXTENDED_DATE_FORMAT = f'{DATE_FORMAT} {HOUR_FORMAT}'
+GOOGLE_CALENDAR_DATE_FORMAT = '%Y%m%dT%H%M%S'
+EMAIL_DATE_FORMAT = f'%m/%d/%Y {HOUR_FORMAT}'
+
+# Appointment settings
+if 'test' in sys.argv or os.getenv('FAST_APPOINTMENT_TESTS') == 'true':
+    APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=1)).strftime(DATE_FORMAT)  # Same day
+    APPOINTMENT_DURATION_MINUTES = 120
+else:
+    APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=30)).strftime(DATE_FORMAT)  # Next 30 days
+    APPOINTMENT_DURATION_MINUTES = 30
+
+# Data Export settings
+EXCEL_EXTENSION = os.getenv('VITE_EXCEL_EXTENSION', 'xlsx')
+JSON_EXTENSION = os.getenv('VITE_JSON_EXTENSION', 'json')
+
+# Query Parameters settings
+EXPORT_EXTENSION_QUERY_PARAMETER = os.getenv('VITE_EXPORT_EXTENSION_QUERY_PARAMETER', 'export_format')
+PATIENT_QUERY_PARAMETER = os.getenv('VITE_PATIENT_QUERY_PARAMETER', 'patient')
 
 # Internationalization settings
 LANGUAGE_CODE = 'en-us'

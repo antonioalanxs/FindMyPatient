@@ -48,9 +48,9 @@ function DoctorPage() {
                       {key}
                     </label>
 
-                    {key === "Medical specialties" ? (
+                    {key === "Medical specialty" ? (
                       <div id={key} className="form-control-static">
-                        <Badges items={value} />
+                        <Badges items={[value.name]} />
                       </div>
                     ) : (
                       <p id={key} className="form-control-static">

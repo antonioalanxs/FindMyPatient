@@ -22,33 +22,32 @@ function SideBar() {
       label: "Home",
     },
     {
-      link: null,
-      icon: <i className="bi bi-journal-medical"></i>,
-      label: "Appointments",
-      roles: [ROLES.PATIENT],
+      link: ROUTES.IN.APPOINTMENTS.ABSOLUTE.REQUEST,
+      icon: <i className="bi bi-calendar-plus"></i>,
+      label: "Request visit",
+      roles: [ROLES.PATIENT, ROLES.DOCTOR, ROLES.ADMINISTRATOR],
     },
     {
-      link: null,
+      link: ROUTES.IN.APPOINTMENTS.BASE,
+      icon: <i className="bi bi-journal-medical"></i>,
+      label: "Appointments",
+    },
+    {
+      link: ROUTES.IN.ABSOLUTE.TREATMENTS,
       icon: <i className="bi bi-capsule"></i>,
       label: "Treatments",
       roles: [ROLES.PATIENT],
     },
     {
-      link: null,
+      link: ROUTES.IN.ABSOLUTE.MEDICAL_TESTS,
       icon: <i className="bi bi-clipboard2-pulse-fill"></i>,
       label: "Medical tests",
       roles: [ROLES.PATIENT],
     },
     {
-      link: null,
+      link: ROUTES.IN.APPOINTMENTS.ABSOLUTE.CALENDAR,
       icon: <i className="bi bi-calendar2-event-fill"></i>,
-      label: "Schedule",
-      roles: [ROLES.DOCTOR],
-    },
-    {
-      link: null,
-      icon: <i className="bi bi-journal-medical"></i>,
-      label: "Appointments",
+      label: "Calendar",
       roles: [ROLES.DOCTOR],
     },
     {
@@ -86,6 +85,12 @@ function SideBar() {
       icon: <i className="bi bi-buildings-fill"></i>,
       label: "Rooms",
       roles: [ROLES.ADMINISTRATOR],
+    },
+    {
+      link: ROUTES.IN.ABSOLUTE.DATABASE,
+      icon: <i className="bi bi-database-down"></i>,
+      label: "Database",
+      roles: [ROLES.ADMINISTRATOR, ROLES.DOCTOR],
     },
   ];
 

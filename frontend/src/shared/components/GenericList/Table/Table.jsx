@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { notificationService } from "@/core/services/NotificationService";
 import TooltipTrigger from "@/shared/components/Tooltip/TooltipTrigger/TooltipTrigger";
@@ -75,7 +75,7 @@ const Table = ({
 
   const handleDeleteClick = (id) => {
     notificationService.showConfirmDialog(
-      "Really delete?",
+      `Really ${actions?.delete?.verb ? actions?.delete?.verb : "delete"}?`,
       "This action could be irreversible.",
       async () =>
         await actions?.delete
@@ -91,6 +91,8 @@ const Table = ({
           })
     );
   };
+
+  const navigate = useNavigate();
 
   return (
     <div ref={containerReference} className="table-responsive border rounded">
@@ -116,11 +118,20 @@ const Table = ({
         <tbody className="text-nowrap">
           {hasData ? (
             sortedData.map((item, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                className={actions?.touch && "cursor-pointer"}
+                onClick={() =>
+                  actions?.touch?.path &&
+                  navigate(actions?.touch?.path(item?.id || item?.ID))
+                }
+              >
                 {columns.map(({ field }, index_) => (
-                  <td className="px-4" key={index_}>
-                    {item[field]}
-                  </td>
+                  <td
+                    className="px-4"
+                    key={index_}
+                    dangerouslySetInnerHTML={{ __html: item[field] || "" }}
+                  />
                 ))}
 
                 {(actions?.view || actions?.edit || actions?.delete) && (
@@ -142,14 +153,24 @@ const Table = ({
                     )}
 
                     {actions?.delete && (
-                      <TooltipTrigger tooltip="Delete">
+                      <TooltipTrigger
+                        tooltip={
+                          actions?.delete?.tooltip
+                            ? actions?.delete?.tooltip
+                            : "Delete"
+                        }
+                      >
                         <div
                           role="button"
                           onClick={() =>
                             handleDeleteClick(item?.id || item?.ID)
                           }
                         >
-                          <TrashIcon />
+                          {actions?.delete?.icon ? (
+                            actions?.delete?.icon
+                          ) : (
+                            <TrashIcon />
+                          )}
                         </div>
                       </TooltipTrigger>
                     )}
