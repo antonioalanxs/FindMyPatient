@@ -79,9 +79,9 @@ def solve(sender, data, appointment_instance):
 
     """
     Objective Function
-    
+
     Minimize the total time until the appointment is scheduled.
-    
+
     The strategy is to subtract the current time from each possible appointment time (all in minutes), then choose the 
     one with the smallest positive difference.
     """
@@ -98,7 +98,7 @@ def solve(sender, data, appointment_instance):
 
     """
     Scheduled Appointments Restriction
-    
+
     Each scheduled appointment must have its corresponding variable set to 1, as it is already confirmed.
     """
     for appointment, doctor, day, hour, room in scheduled_appointments:
@@ -106,7 +106,7 @@ def solve(sender, data, appointment_instance):
 
     """
     Appointment Doctor Assignment Restriction
-    
+
     An appointment cannot be assigned to more than one doctor at a time.
     """
     for appointment in appointments:
@@ -122,7 +122,7 @@ def solve(sender, data, appointment_instance):
 
     """
     Doctor Availability Restriction
-        
+
     A doctor cannot be assigned to more than one appointment at a time (a doctor cannot be in two places at once).        
     """
     for doctor in available_doctors:
@@ -138,7 +138,7 @@ def solve(sender, data, appointment_instance):
 
     """
     Hour Preference Restriction
-    
+
     The appointment must be scheduled within the preferred time range.
     """
     problem += (
@@ -154,7 +154,7 @@ def solve(sender, data, appointment_instance):
 
     """
     Appointment Medical Specialty-Based Room Assignment Restriction
-        
+
     Each appointment must be assigned to a room that matches its medical specialty.
     """
     for room in rooms:
@@ -171,7 +171,7 @@ def solve(sender, data, appointment_instance):
 
     """
     Room Availability Restriction
-    
+
     A room cannot be assigned to more than one appointment at a time (a room cannot be in two places at once).
     """
     for room in rooms:
@@ -242,8 +242,15 @@ def get_time_range(time_preference):
     return hours, prime_hours
 
 
-def get_scheduled_appointments():
-    appointments = Appointment.objects.filter(status__in=[Appointment.STATUS_SCHEDULED, Appointment.STATUS_IN_PROGRESS])
+def get_scheduled_appointments(start_date, end_date):
+    appointments = Appointment.objects.filter(
+        status__in=[
+            Appointment.STATUS_SCHEDULED,
+            Appointment.STATUS_IN_PROGRESS
+        ],
+        schedule__start_time__gte=start_date,
+        schedule__end_time__lte=end_date
+    )
     scheduled_appointments = []
 
     for appointment in appointments:
@@ -364,7 +371,6 @@ def get_rooms():
 def get_medical_specialty_rooms(doctor_id):
     medical_specialty = Doctor.objects.get(id=int(doctor_id)).medical_specialty
 
-
     medical_specialty_rooms = get_id(
         Room.objects.filter(
             medical_specialty=medical_specialty,
@@ -412,7 +418,7 @@ def get_data(sender, data, appointment):
     start_date, end_date, days = get_date_range()
     hours, prime_hours = get_time_range(time_preference)
 
-    scheduled_appointments = get_scheduled_appointments()
+    scheduled_appointments = get_scheduled_appointments(start_date, end_date)
     appointments = [get_id(appointment)] + [
         scheduled_appointment[0]
         for scheduled_appointment in scheduled_appointments
