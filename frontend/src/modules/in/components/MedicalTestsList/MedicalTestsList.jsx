@@ -43,7 +43,6 @@ const MedicalTestsList = ({
     medicalTestService
       .medicalTests(searchTerm, page, pageSize, patientId)
       .then(({ data }) => {
-        console.log("Medical tests data:", data);
         setData(data);
         setLoading(false);
       });

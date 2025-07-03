@@ -18,7 +18,7 @@ def is_administrator(user):
 
 
 def is_self(request, view):
-    return request.user.id == int(view.kwargs.get('id'))
+    return request.user.id == int(view.kwargs.get('id') or view.kwargs.get('patient_id'))
 
 
 class IsPatient(BasePermission):
