@@ -4,6 +4,7 @@ import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { useTitle } from "@/core/hooks/useTitle";
 import HomeDoctorPage from "@/modules/in/submodules/Home/pages/HomeDoctorPage/HomeDoctorPage";
 import HomePatientPage from "@/modules/in/submodules/Home/pages/HomePatientPage/HomePatientPage";
+import HomeAdministratorPage from "@/modules/in/submodules/Home/pages/HomeAdministratorPage/HomeAdministratorPage";
 import { ROLES } from "@/core/constants/roles";
 
 function HomePage() {
@@ -17,6 +18,10 @@ function HomePage() {
 
   if (user?.role === ROLES.PATIENT) {
     return <HomePatientPage />;
+  }
+
+  if (user?.role === ROLES.ADMINISTRATOR) {
+    return <HomeAdministratorPage />;
   }
 }
 

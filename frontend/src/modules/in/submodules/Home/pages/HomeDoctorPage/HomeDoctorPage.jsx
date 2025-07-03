@@ -119,7 +119,7 @@ function HomeDoctorPage() {
           <ActionCard
             icon="bi bi-database-down"
             title="Export database"
-            description="For backup or self-research."
+            description="Export your related data in the system. For backup or self-research."
             to={ROUTES.IN.ABSOLUTE.DATABASE}
           />
         </div>
