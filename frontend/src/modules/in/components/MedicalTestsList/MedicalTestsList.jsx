@@ -218,16 +218,13 @@ const MedicalTestsList = ({
                         <strong>Description</strong> - {medicalTest.description}
                       </p>
                       <p>
-                        <strong>Result</strong> - {medicalTest.result}
+                        <strong>Medical specialty</strong> -{" "}
+                        {medicalTest.medical_specialty}
                       </p>
                     </div>
                     <div className="col-md-6">
                       <p>
-                        <strong>Files attached</strong> - 0
-                      </p>
-                      <p>
-                        <strong>Medical specialty</strong> -{" "}
-                        {medicalTest.medical_specialty}
+                        <strong>Result</strong> - {medicalTest.result}
                       </p>
                     </div>
                   </div>
