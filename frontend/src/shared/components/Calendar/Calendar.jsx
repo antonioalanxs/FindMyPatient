@@ -6,6 +6,8 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
+const EmptyToolbar = () => null;
+
 export default function CalendarWrapper({ events, onlyDay = false }) {
   const [currentView, setCurrentView] = useState(
     onlyDay ? Views.DAY : Views.MONTH
@@ -15,7 +17,7 @@ export default function CalendarWrapper({ events, onlyDay = false }) {
     <div style={{ overflow: "hidden", height: "75vh" }}>
       <Calendar
         localizer={localizer}
-        events={events}
+        events={events ?? []}
         culture="es"
         popup
         defaultView={onlyDay ? Views.DAY : Views.MONTH}
@@ -26,6 +28,7 @@ export default function CalendarWrapper({ events, onlyDay = false }) {
         }
         view={currentView}
         onView={setCurrentView}
+        components={onlyDay ? { toolbar: EmptyToolbar } : {}}
         eventPropGetter={() => {
           if (
             currentView === Views.DAY ||

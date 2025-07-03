@@ -80,4 +80,4 @@ class AppointmentCalendarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['start', 'end', 'title']
+        fields = ['id', 'start', 'end', 'title']
