@@ -180,7 +180,7 @@ const MedicalTestsList = ({
         </div>
       )}
 
-      <div className="row">
+      <div className="row" style={{ marginTop: "-1.5rem" }}>
         <div className="col-sm-9 col-md-7 col-xl-6 col-xxl-5">
           <SearchBar
             onSearchSubmitted={(term) => {
