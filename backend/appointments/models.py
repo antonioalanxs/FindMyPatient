@@ -39,7 +39,6 @@ class Appointment(models.Model):
     class Meta:
         verbose_name = "Appointment"
         verbose_name_plural = "Appointments"
-        ordering = ["request_date"]
 
     request_date = models.DateTimeField(
         auto_now_add=True,

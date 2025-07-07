@@ -1,3 +1,5 @@
+from config.settings import PAGINATION_PARAMETER
+
 from django.shortcuts import get_object_or_404
 
 from administrators.models import Administrator
@@ -21,7 +23,8 @@ from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from patients.models import Patient
 from permissions.decorators import method_permission_classes
-from permissions.patients import IsAdministratorOrIsPatientAssignedDoctor
+from permissions.patients import IsAdministratorOrIsPatientAssignedDoctor, \
+    IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
 from permissions.users import IsDoctor
 from .serializers import (
     AppointmentUpsetSerializer,
@@ -72,7 +75,7 @@ class ListAppointmentsByPatientAPIView(
     SearchMixin,
     PaginationMixin
 ):
-    permission_classes = [IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctor]
+    permission_classes = [IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf]
     model = Appointment
     list_serializer_class = AppointmentPreviewSerializer
 
@@ -84,10 +87,17 @@ class ListAppointmentsByPatientAPIView(
                 patient_id=kwargs.get("patient_id")
             )
         )
-        return self.get_paginated_response_(
-            request,
-            queryset,
-            self.list_serializer_class
+
+        if request.query_params.get(PAGINATION_PARAMETER, None):
+            return self.get_paginated_response_(
+                request,
+                queryset,
+                self.list_serializer_class
+            )
+
+        return Response(
+            self.list_serializer_class(queryset, many=True).data,
+            status=status.HTTP_200_OK
         )
 
 

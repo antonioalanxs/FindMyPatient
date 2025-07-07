@@ -36,7 +36,7 @@ class ListAppointmentsByPatientTestCase(TestSetUp):
 
     def test_list_appointments_by_patient_with_patient(self):
         self.client.force_authenticate(user=self.patient_with_address_and_primary_doctor)
-        response = self.client.get(self.url(self.patient_with_address_and_primary_doctor.id))
+        response = self.client.get(self.url(self.patient_without_address_and_primary_doctor.id))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_list_appointments_by_patient_with_doctor(self):

@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from "react";
 
 import AuthenticationContext from "@/core/contexts/AuthenticationContext";
 import { DEFAULT_NAME } from "@/core/constants/default";
+import { ROLES } from "@/core/constants/roles";
 
 function WelcomeCard() {
   const { user } = useContext(AuthenticationContext);
@@ -15,15 +16,25 @@ function WelcomeCard() {
 
     if (currentHour >= 6 && currentHour < 12) {
       setGreetings("Good morning");
-      setMessage("May your day be full of energy and achievements!");
+      setMessage(
+        user?.role === ROLES.PATIENT
+          ? "We hope you had a restful night and are ready for a new day."
+          : "May your day be full of energy and achievements!"
+      );
     } else if (currentHour >= 12 && currentHour < 20) {
       setGreetings("Good afternoon");
       setMessage(
-        "May your afternoon be filled with productivity and satisfaction!"
+        user?.role === ROLES.PATIENT
+          ? "We hope your day is going well and you are taking care of yourself."
+          : "May your afternoon be filled with productivity and satisfaction!"
       );
     } else {
       setGreetings("Good evening");
-      setMessage("May your night be filled with peace and sweet dreams!");
+      setMessage(
+        user?.role === ROLES.PATIENT
+          ? "We hope you had a peaceful evening and are ready for a good night's sleep."
+          : "May your night be filled with peace and sweet dreams!"
+      );
     }
   }
 

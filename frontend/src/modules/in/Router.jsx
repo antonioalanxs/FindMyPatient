@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import InPage from "@/modules/in/pages/InPage/InPage";
 
-import HomePage from "@/modules/in/submodules/Home/pages/HomePage";
+import HomePage from "@/modules/in/submodules/Home/pages/HomePage/HomePage";
 import ProfilePage from "@/modules/in/submodules/Profile/pages/ProfilePage";
 import DatabaseExportPage from "@/modules/in/submodules/Database/pages/DatabaseExportPage";
 import TreatmentsPage from "@/modules/in/submodules/Treatments/pages/TreatmentsPage";

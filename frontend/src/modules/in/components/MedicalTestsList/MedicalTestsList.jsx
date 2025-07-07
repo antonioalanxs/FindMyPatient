@@ -43,7 +43,6 @@ const MedicalTestsList = ({
     medicalTestService
       .medicalTests(searchTerm, page, pageSize, patientId)
       .then(({ data }) => {
-        console.log("Medical tests data:", data);
         setData(data);
         setLoading(false);
       });
@@ -181,7 +180,7 @@ const MedicalTestsList = ({
         </div>
       )}
 
-      <div className="row">
+      <div className="row" style={{ marginTop: "-1.5rem" }}>
         <div className="col-sm-9 col-md-7 col-xl-6 col-xxl-5">
           <SearchBar
             onSearchSubmitted={(term) => {
@@ -219,16 +218,13 @@ const MedicalTestsList = ({
                         <strong>Description</strong> - {medicalTest.description}
                       </p>
                       <p>
-                        <strong>Result</strong> - {medicalTest.result}
+                        <strong>Medical specialty</strong> -{" "}
+                        {medicalTest.medical_specialty}
                       </p>
                     </div>
                     <div className="col-md-6">
                       <p>
-                        <strong>Files attached</strong> - 0
-                      </p>
-                      <p>
-                        <strong>Medical specialty</strong> -{" "}
-                        {medicalTest.medical_specialty}
+                        <strong>Result</strong> - {medicalTest.result}
                       </p>
                     </div>
                   </div>

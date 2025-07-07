@@ -40,6 +40,12 @@ class AppointmentService {
     );
   };
 
+  appointmentsByPatientWithoutPagination = (id, query = "") => {
+    return axiosInstance.get(
+      `${this._prefix}/patients/${id}/?${SEARCH_PARAMETER}=${query}`
+    );
+  };
+
   appointment(id) {
     return axiosInstance.get(`${this._prefix}/${id}/`);
   }
