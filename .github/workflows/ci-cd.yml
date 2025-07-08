@@ -97,5 +97,5 @@ jobs:
         run: chmod +x docker/build_and_push_image.sh
 
       - name: Run script
-        run: ./build_and_push_image.sh ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient:${{ github.sha }} ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: ./build_and_push_image.sh ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
         working-directory: docker
