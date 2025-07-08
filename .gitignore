@@ -1,13 +1,13 @@
 # Environment files
-*.env
-!.env.local
+**/*.env
+!**/*.env.local
 
 # macOS
-.DS_Store
+**/.DS_Store
 
 # Windows
-Thumbs.db
+**/Thumbs.db
 
 # Docker
-/mysql
-/redis
+**/mysql
+**/redis
