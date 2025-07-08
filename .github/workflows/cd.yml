@@ -21,7 +21,7 @@ jobs:
           check-name: |
             Backend CI
             Frontend CI
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
 
   build-and-push-docker-image-to-docker-hub:
     name: Build and Push Docker Image to Docker Hub
