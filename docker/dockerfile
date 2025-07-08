@@ -1,0 +1,35 @@
+FROM python:3.10-slim as base
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update && \
+    apt-get install -y build-essential curl git pkg-config libmariadb-dev libmariadb-dev-compat nodejs npm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+
+WORKDIR /app
+
+COPY backend/ ./backend/
+COPY frontend/ ./frontend/
+COPY .env .env
+COPY ./docker/entrypoint.sh ./entrypoint.sh
+
+RUN pip install --upgrade pip && \
+    pip install -r backend/requirements.txt
+
+WORKDIR /app/frontend
+
+RUN rm -rf node_modules package-lock.json && \
+    npm install && \
+    npm run build && \
+    npm install -g serve
+
+WORKDIR /app
+
+RUN chmod +x entrypoint.sh
+
+EXPOSE 8001 5173
+
+CMD ["./entrypoint.sh"]
