@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - main
   pull_request:
     branches:
       - develop
@@ -78,15 +79,13 @@ jobs:
         run: npm run test
         working-directory: frontend
 
-  cd:
+  build-and-push-image-to-docker-hub:
     name: Build and Push Docker Image to Docker Hub
     needs: [backend-ci, frontend-ci]
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Set up Docker
         uses: docker/setup-buildx-action@v3
 
