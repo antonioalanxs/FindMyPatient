@@ -3,14 +3,10 @@ from config.settings import (
     APPOINTMENT_DURATION_MINUTES,
     DATE_FORMAT,
     EXTENDED_DATE_FORMAT,
-    HOUR_FORMAT
+    HOUR_FORMAT,
 )
 
-from datetime import (
-    datetime,
-    timedelta,
-    time
-)
+from datetime import datetime, timedelta, time
 
 from itertools import product
 
@@ -20,12 +16,7 @@ from django.db.models import (
     OuterRef,
 )
 
-from pulp import (
-    LpMinimize,
-    LpProblem,
-    LpVariable,
-    lpSum
-)
+from pulp import LpMinimize, LpProblem, LpVariable, lpSum
 
 from appointments.exceptions import AppointmentException
 
@@ -58,7 +49,7 @@ def solve(sender, data, appointment_instance):
         medical_specialty_rooms,
         days,
         hours,
-        prime_hours
+        prime_hours,
     ) = get_data(sender, data, appointment_instance)
 
     problem = LpProblem("AppointmentScheduling", LpMinimize)
@@ -74,7 +65,7 @@ def solve(sender, data, appointment_instance):
             for hour in hours
             for room in rooms
         ),
-        cat="Binary"
+        cat="Binary",
     )
 
     """
@@ -86,9 +77,14 @@ def solve(sender, data, appointment_instance):
     one with the smallest positive difference.
     """
     problem += lpSum(
-        ((datetime.strptime(f"{day} {hour}", EXTENDED_DATE_FORMAT) - datetime.now()).total_seconds() / 60)
-        *
-        X[appointment, doctor, day, hour, room]
+        (
+            (
+                datetime.strptime(f"{day} {hour}", EXTENDED_DATE_FORMAT)
+                - datetime.now()
+            ).total_seconds()
+            / 60
+        )
+        * X[appointment, doctor, day, hour, room]
         for appointment in appointments
         for doctor in doctors
         for day in days
@@ -111,13 +107,14 @@ def solve(sender, data, appointment_instance):
     """
     for appointment in appointments:
         problem += (
-                lpSum(
-                    X[appointment, doctor, day, hour, room]
-                    for doctor in available_doctors
-                    for day in days
-                    for hour in hours
-                    for room in rooms
-                ) == 1
+            lpSum(
+                X[appointment, doctor, day, hour, room]
+                for doctor in available_doctors
+                for day in days
+                for hour in hours
+                for room in rooms
+            )
+            == 1
         )
 
     """
@@ -129,11 +126,12 @@ def solve(sender, data, appointment_instance):
         for day in days:
             for hour in hours:
                 problem += (
-                        lpSum(
-                            X[appointment, doctor, day, hour, room]
-                            for appointment in appointments
-                            for room in rooms
-                        ) <= 1
+                    lpSum(
+                        X[appointment, doctor, day, hour, room]
+                        for appointment in appointments
+                        for room in rooms
+                    )
+                    <= 1
                 )
 
     """
@@ -142,14 +140,15 @@ def solve(sender, data, appointment_instance):
     The appointment must be scheduled within the preferred time range.
     """
     problem += (
-            lpSum(
-                X[get_id(appointment_instance), doctor, day, hour, room]
-                for doctor in available_doctors
-                for day in days
-                for hour in hours
-                for room in rooms
-                if hour not in prime_hours
-            ) == 0
+        lpSum(
+            X[get_id(appointment_instance), doctor, day, hour, room]
+            for doctor in available_doctors
+            for day in days
+            for hour in hours
+            for room in rooms
+            if hour not in prime_hours
+        )
+        == 0
     )
 
     """
@@ -160,13 +159,14 @@ def solve(sender, data, appointment_instance):
     for room in rooms:
         if room not in medical_specialty_rooms:
             problem += (
-                    lpSum(
-                        X[appointment, doctor, day, hour, room]
-                        for appointment in appointments
-                        for doctor in available_doctors
-                        for day in days
-                        for hour in hours
-                    ) == 0
+                lpSum(
+                    X[appointment, doctor, day, hour, room]
+                    for appointment in appointments
+                    for doctor in available_doctors
+                    for day in days
+                    for hour in hours
+                )
+                == 0
             )
 
     """
@@ -178,19 +178,24 @@ def solve(sender, data, appointment_instance):
         for day in days:
             for hour in hours:
                 problem += (
-                        lpSum(
-                            X[appointment, doctor, day, hour, room]
-                            for appointment in appointments
-                            for doctor in available_doctors
-                        ) <= 1
+                    lpSum(
+                        X[appointment, doctor, day, hour, room]
+                        for appointment in appointments
+                        for doctor in available_doctors
+                    )
+                    <= 1
                 )
 
     problem.solve()
 
     if problem.status != 1:
-        raise AppointmentException("The appointment could not be assigned. Please, try again later.")
+        raise AppointmentException(
+            "The appointment could not be assigned. Please, try again later."
+        )
 
-    handle_result(sender, X, appointment_instance, available_doctors, days, hours, rooms)
+    handle_result(
+        sender, X, appointment_instance, available_doctors, days, hours, rooms
+    )
 
 
 def get_date_range():
@@ -244,23 +249,22 @@ def get_time_range(time_preference):
 
 def get_scheduled_appointments(start_date, end_date):
     appointments = Appointment.objects.filter(
-        status__in=[
-            Appointment.STATUS_SCHEDULED,
-            Appointment.STATUS_IN_PROGRESS
-        ],
+        status__in=[Appointment.STATUS_SCHEDULED, Appointment.STATUS_IN_PROGRESS],
         schedule__start_time__gte=start_date,
-        schedule__end_time__lte=end_date
+        schedule__end_time__lte=end_date,
     )
     scheduled_appointments = []
 
     for appointment in appointments:
-        scheduled_appointments.append((
-            str(appointment.id),
-            str(appointment.doctor.id),
-            appointment.schedule.start_time.strftime(DATE_FORMAT),
-            appointment.schedule.start_time.strftime(HOUR_FORMAT),
-            str(appointment.room.id)
-        ))
+        scheduled_appointments.append(
+            (
+                str(appointment.id),
+                str(appointment.doctor.id),
+                appointment.schedule.start_time.strftime(DATE_FORMAT),
+                appointment.schedule.start_time.strftime(HOUR_FORMAT),
+                str(appointment.room.id),
+            )
+        )
 
     return scheduled_appointments
 
@@ -269,7 +273,9 @@ def get_doctors():
     doctors = get_id(Doctor.objects.all())
 
     if not doctors:
-        raise AppointmentException("No doctors available at this time. Please, try again later.")
+        raise AppointmentException(
+            "No doctors available at this time. Please, try again later."
+        )
 
     return doctors
 
@@ -282,8 +288,11 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
             doctor=doctor,
             end_time__gt=range_start,
             start_time__lt=range_end,
-            appointments__status__in=[Appointment.STATUS_SCHEDULED, Appointment.STATUS_IN_PROGRESS]
-        ).order_by('start_time')
+            appointments__status__in=[
+                Appointment.STATUS_SCHEDULED,
+                Appointment.STATUS_IN_PROGRESS,
+            ],
+        ).order_by("start_time")
 
         last_end = range_start
         for schedule in schedules:
@@ -303,10 +312,13 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
     doctors = doctors.filter(
         ~Exists(
             Schedule.objects.filter(
-                doctor=OuterRef('id'),
+                doctor=OuterRef("id"),
                 start_time__lte=start_date,
                 end_time__gte=end_date,
-                appointments__status__in=[Appointment.STATUS_SCHEDULED, Appointment.STATUS_IN_PROGRESS]
+                appointments__status__in=[
+                    Appointment.STATUS_SCHEDULED,
+                    Appointment.STATUS_IN_PROGRESS,
+                ],
             )
         )
     )
@@ -319,10 +331,13 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
     for doctor in doctors:
         # Check if doctor has no commitments in range (completely free)
         if not Schedule.objects.filter(
-                doctor=doctor,
-                end_time__gt=start_date,
-                start_time__lt=end_date,
-                appointments__status__in=[Appointment.STATUS_SCHEDULED, Appointment.STATUS_IN_PROGRESS]
+            doctor=doctor,
+            end_time__gt=start_date,
+            start_time__lt=end_date,
+            appointments__status__in=[
+                Appointment.STATUS_SCHEDULED,
+                Appointment.STATUS_IN_PROGRESS,
+            ],
         ).exists():
             available_doctors.append(get_id(doctor))
             continue
@@ -336,16 +351,18 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
                 doctor,
                 datetime.combine(current_day, time(MORNING_START_TIME), tzinfo=tz),
                 datetime.combine(current_day, time(MORNING_END_TIME), tzinfo=tz),
-                APPOINTMENT_DURATION
+                APPOINTMENT_DURATION,
             )
 
             # If morning availability, break the loop. Else check afternoon availability
             if not has_availability_in_period:
                 has_availability_in_period = has_availability_in_range(
                     doctor,
-                    datetime.combine(current_day, time(AFTERNOON_START_TIME), tzinfo=tz),
+                    datetime.combine(
+                        current_day, time(AFTERNOON_START_TIME), tzinfo=tz
+                    ),
                     datetime.combine(current_day, time(AFTERNOON_END_TIME), tzinfo=tz),
-                    APPOINTMENT_DURATION
+                    APPOINTMENT_DURATION,
                 )
 
             current_day += timedelta(days=1)
@@ -354,7 +371,9 @@ def get_available_doctors(sender, medical_specialty, start_date, end_date):
             available_doctors.append(get_id(doctor))
 
     if not available_doctors:
-        raise AppointmentException("No doctors available at this time. Please, try again later.")
+        raise AppointmentException(
+            "No doctors available at this time. Please, try again later."
+        )
 
     return available_doctors
 
@@ -363,7 +382,9 @@ def get_rooms():
     rooms = get_id(Room.objects.filter(is_available=True))
 
     if not rooms:
-        raise AppointmentException("No rooms available at this time. Please, try again later.")
+        raise AppointmentException(
+            "No rooms available at this time. Please, try again later."
+        )
 
     return rooms
 
@@ -372,14 +393,13 @@ def get_medical_specialty_rooms(doctor_id):
     medical_specialty = Doctor.objects.get(id=int(doctor_id)).medical_specialty
 
     medical_specialty_rooms = get_id(
-        Room.objects.filter(
-            medical_specialty=medical_specialty,
-            is_available=True
-        )
+        Room.objects.filter(medical_specialty=medical_specialty, is_available=True)
     )
 
     if not medical_specialty_rooms:
-        raise AppointmentException("No rooms available at this time. Please, try again later.")
+        raise AppointmentException(
+            "No rooms available at this time. Please, try again later."
+        )
 
     return medical_specialty_rooms
 
@@ -420,11 +440,12 @@ def get_data(sender, data, appointment):
 
     scheduled_appointments = get_scheduled_appointments(start_date, end_date)
     appointments = [get_id(appointment)] + [
-        scheduled_appointment[0]
-        for scheduled_appointment in scheduled_appointments
+        scheduled_appointment[0] for scheduled_appointment in scheduled_appointments
     ]
     doctors = get_doctors()
-    available_doctors = get_available_doctors(sender, medical_specialty, start_date, end_date)
+    available_doctors = get_available_doctors(
+        sender, medical_specialty, start_date, end_date
+    )
     rooms = get_rooms()
     medical_specialty_rooms = get_medical_specialty_rooms(available_doctors[0])
 
@@ -437,7 +458,7 @@ def get_data(sender, data, appointment):
         medical_specialty_rooms,
         days,
         hours,
-        prime_hours
+        prime_hours,
     )
 
 
@@ -462,7 +483,7 @@ def handle_result(sender, X, appointment, available_doctors, days, hours, rooms)
             for doctor, day, hour, room in combinations
             if X[get_id(appointment), doctor, day, hour, room].varValue == 1
         ),
-        None
+        None,
     )
 
     doctor, day, hour, room = result
@@ -474,11 +495,12 @@ def handle_result(sender, X, appointment, available_doctors, days, hours, rooms)
     appointment.schedule = Schedule.objects.create(
         doctor=doctor,
         start_time=start_time,
-        end_time=start_time + timedelta(minutes=APPOINTMENT_DURATION)
+        end_time=start_time + timedelta(minutes=APPOINTMENT_DURATION),
     )
     appointment.room = Room.objects.get(id=int(room))
-    appointment.medical_specialty = None if Patient.objects.filter(
-        id=sender).exists() else doctor.medical_specialty
+    appointment.medical_specialty = (
+        None if Patient.objects.filter(id=sender).exists() else doctor.medical_specialty
+    )
     appointment.status = Appointment.STATUS_SCHEDULED
 
     appointment.save()
