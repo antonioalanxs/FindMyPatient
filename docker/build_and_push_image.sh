@@ -12,7 +12,7 @@ DOCKER_USERNAME=$2
 DOCKER_PASSWORD=$3
 
 cd ..
-docker build -t "$IMAGE_NAME" -f docker/Dockerfile .
+docker build -t "$IMAGE_NAME" -f docker/dockerfile .
 cd docker
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 docker push "$IMAGE_NAME"

@@ -2,9 +2,9 @@
 
 cd /app/backend
 
-python manage.py makemigrations 
-python manage.py migrate 
-python manage.py loaddata dump.json 
+python manage.py makemigrations
+python manage.py migrate
+python manage.py loaddata dump.json
 
 daphne -b 0.0.0.0 -p 8001 config.asgi:application &
 
