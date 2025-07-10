@@ -98,6 +98,6 @@ jobs:
 
       - name: Run script
         run: |
-          docker/build_and_push_image.sh backend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-backend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
-          docker/build_and_push_image.sh frontend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
+          ./build_and_push_image.sh backend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-backend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
+          ./build_and_push_image.sh frontend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
         working-directory: docker
