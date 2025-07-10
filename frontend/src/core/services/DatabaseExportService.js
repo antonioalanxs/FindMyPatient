@@ -5,7 +5,6 @@ class DatabaseExportService {
   static instance = new DatabaseExportService();
 
   _prefix = "/database";
-  _queryParameter = EXPORT_EXTENSION_QUERY_PARAMETER;
 
   constructor() {
     if (DatabaseExportService.instance) {
@@ -17,7 +16,7 @@ class DatabaseExportService {
 
   export = (extension) => {
     return axiosInstance.get(
-      `${this._prefix}/?${this._queryParameter}=${extension}`,
+      `${this._prefix}/?${EXPORT_EXTENSION_QUERY_PARAMETER}=${extension}`,
       {
         responseType: "blob",
       }
