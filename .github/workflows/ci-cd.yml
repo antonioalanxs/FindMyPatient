@@ -79,11 +79,11 @@ jobs:
         run: npm run test
         working-directory: frontend
 
-  build-and-push-image-to-docker-hub:
-    name: Build and Push Docker Image to Docker Hub
+  build-and-push-images-to-docker-hub:
+    name: Build and Push Docker Images to Docker Hub
     needs: [backend-ci, frontend-ci]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Set up Docker
@@ -96,5 +96,7 @@ jobs:
         run: chmod +x docker/build_and_push_image.sh
 
       - name: Run script
-        run: ./build_and_push_image.sh ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          ./build_and_push_image.sh backend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-backend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
+          ./build_and_push_image.sh frontend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
         working-directory: docker

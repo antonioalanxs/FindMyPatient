@@ -1,8 +1,5 @@
-version: "3"
+version: '3'
 
 services:
-  application:
-    image: antonioalanis/findmypatient:latest
-    ports:
-      - "8001:8001"
-      - "5173:5173"
+  test:
+    image: antonioalanis/findmypatient-backend:latest
