@@ -32,10 +32,10 @@ jobs:
         run: grep -v '^#' ./.env.local | xargs >> $GITHUB_ENV
 
       - name: Set SQLite fallback
-        run: echo "USE_SQLITE_IN_CI=true" >> $GITHUB_ENV
+        run: echo "USE_SQLITE_IN_CI=True" >> $GITHUB_ENV
 
       - name: Reduce execution times in the Appointment Scheduling Algorithm tests
-        run: echo "FAST_APPOINTMENT_TESTS=true" >> $GITHUB_ENV
+        run: echo "FAST_APPOINTMENT_TESTS=True" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |

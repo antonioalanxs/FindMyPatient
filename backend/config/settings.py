@@ -18,12 +18,14 @@ from datetime import (
     timedelta,
 )
 from pathlib import Path
+from urllib.parse import quote_plus
 
 from dotenv import load_dotenv
 
 # Path configurations
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
+CERTIFICATES_DIR = BASE_DIR / "certificates"
 
 # Load environment variables
 environment_path = ROOT_DIR / ".env"
@@ -111,18 +113,8 @@ MIDDLEWARE = BASE_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE + LOCAL_MIDDLEWARE
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-# Channels settings for real-time features
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [(os.getenv("REDIS_HOST"), os.getenv("REDIS_PORT"))],
-        },
-    }
-}
-
 # Database settings
-if "test" in sys.argv or os.getenv("USE_SQLITE_IN_CI") == "true":
+if "test" in sys.argv or os.getenv("USE_SQLITE_IN_CI", "False") == "True":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -138,8 +130,44 @@ else:
             "PASSWORD": os.getenv("DATABASE_PASSWORD"),
             "HOST": os.getenv("DATABASE_HOST"),
             "PORT": os.getenv("DATABASE_PORT"),
+            "OPTIONS": (
+                {"ssl": {"ca": CERTIFICATES_DIR / "BaltimoreCyberTrustRoot.crt.pem"}}
+                if os.getenv("DATABASE_REQUIRES_SSL", "False") == "True"
+                else {}
+            ),
         },
     }
+
+# Channels settings for real-time features
+if os.getenv("REDIS_USES_PASSWORD", "False") == "True":
+    REDIS_PASSWORD = quote_plus(os.getenv("REDIS_PASSWORD", ""))
+    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+    REDIS_PORT = os.getenv("REDIS_PORT", "6379")
+    REDIS_REQUIRES_SSL = os.getenv("REDIS_REQUIRES_SSL", "True") == "True"
+
+    redis_scheme = "rediss" if REDIS_REQUIRES_SSL else "redis"
+    redis_authentication = f":{REDIS_PASSWORD}@"
+
+    REDIS_URL = f"{redis_scheme}://{redis_authentication}{REDIS_HOST}:{REDIS_PORT}"
+
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [REDIS_URL],
+            },
+        },
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [(os.getenv("REDIS_HOST"), os.getenv("REDIS_PORT"))],
+            },
+        }
+    }
+
 
 # Custom user model
 AUTH_USER_MODEL = "base.User"
@@ -236,7 +264,7 @@ GOOGLE_CALENDAR_DATE_FORMAT = "%Y%m%dT%H%M%S"
 EMAIL_DATE_FORMAT = f"%m/%d/%Y {HOUR_FORMAT}"
 
 # Appointment settings
-if "test" in sys.argv or os.getenv("FAST_APPOINTMENT_TESTS") == "true":
+if "test" in sys.argv or os.getenv("FAST_APPOINTMENT_TESTS", "False") == "True":
     APPOINTMENT_SCHEDULING_END_TIME = (datetime.now() + timedelta(days=1)).strftime(
         DATE_FORMAT
     )  # Same day
