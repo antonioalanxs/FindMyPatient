@@ -7,7 +7,7 @@ function Error() {
   return (
     <>
       <div
-        className="h-100 p-3 d-flex justify-content-center align-items-center"
+        className="h-100_ p-3 d-flex justify-content-center align-items-center"
         style={{ marginTop: "-3rem" }}
       >
         <div className="text-center">
