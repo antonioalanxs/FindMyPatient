@@ -11,73 +11,73 @@ on:
       - main
 
 jobs:
-  # backend-ci:
-  #   name: Backend CI
-  #   runs-on: ubuntu-latest
+  backend-ci:
+    name: Backend CI
+    runs-on: ubuntu-latest
 
-  #   strategy:
-  #     matrix:
-  #       python-version: [3.10.x]
+    strategy:
+      matrix:
+        python-version: [3.10.x]
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Set up Python ${{ matrix.python-version }}
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
-  #     - name: Load .env.local file into GitHub Actions environment
-  #       run: grep -v '^#' ./.env.local | xargs >> $GITHUB_ENV
+      - name: Load .env.local file into GitHub Actions environment
+        run: grep -v '^#' ./.env.local | xargs >> $GITHUB_ENV
 
-  #     - name: Set SQLite fallback
-  #       run: echo "USE_SQLITE_IN_CI=True" >> $GITHUB_ENV
+      - name: Set SQLite fallback
+        run: echo "USE_SQLITE_IN_CI=True" >> $GITHUB_ENV
 
-  #     - name: Reduce execution times in the Appointment Scheduling Algorithm tests
-  #       run: echo "FAST_APPOINTMENT_TESTS=True" >> $GITHUB_ENV
+      - name: Reduce execution times in the Appointment Scheduling Algorithm tests
+        run: echo "FAST_APPOINTMENT_TESTS=True" >> $GITHUB_ENV
 
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install -r requirements.txt
-  #       working-directory: backend
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: backend
 
-  #     - name: Apply database migrations
-  #       run: |
-  #         python manage.py makemigrations
-  #         python manage.py migrate
-  #       working-directory: backend
+      - name: Apply database migrations
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+        working-directory: backend
 
-  #     - name: Run backend tests
-  #       run: python manage.py test
-  #       working-directory: backend
+      - name: Run backend tests
+        run: python manage.py test
+        working-directory: backend
 
-  # frontend-ci:
-  #   name: Frontend CI
-  #   runs-on: ubuntu-latest
+  frontend-ci:
+    name: Frontend CI
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '22.7.0'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22.7.0'
 
-  #     - name: Clean node_modules folder and package-lock.json file
-  #       run: |
-  #         rm -rf frontend/node_modules
-  #         rm -f frontend/package-lock.json
+      - name: Clean node_modules folder and package-lock.json file
+        run: |
+          rm -rf frontend/node_modules
+          rm -f frontend/package-lock.json
 
-  #     - name: Install dependencies
-  #       run: npm install --legacy-peer-deps
-  #       working-directory: frontend
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+        working-directory: frontend
 
-  #     - name: Run frontend tests
-  #       run: npm run test
-  #       working-directory: frontend
+      - name: Run frontend tests
+        run: npm run test
+        working-directory: frontend
 
   build-and-push-images-to-docker-hub:
     name: Build and Push Docker Images to Docker Hub
