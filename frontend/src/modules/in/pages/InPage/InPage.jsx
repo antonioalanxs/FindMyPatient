@@ -14,7 +14,7 @@ function InPage() {
 
   return (
     <>
-      <div className="h-100 pb-2" id="in">
+      <div className="h-100_ pb-2" id="in">
         <main id="container">
           <SideBar />
 

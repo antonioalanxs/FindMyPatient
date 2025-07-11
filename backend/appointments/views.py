@@ -3,17 +3,9 @@ from config.settings import PAGINATION_PARAMETER
 from django.shortcuts import get_object_or_404
 
 from administrators.models import Administrator
-from config.settings import (
-    DEFAULT_VALUE,
-    EMAIL_DATE_FORMAT,
-    PATIENT_QUERY_PARAMETER
-)
+from config.settings import DEFAULT_VALUE, EMAIL_DATE_FORMAT, PATIENT_QUERY_PARAMETER
 
-from rest_framework import (
-    status,
-    views,
-    viewsets
-)
+from rest_framework import status, views, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -23,14 +15,16 @@ from mixins.pagination import PaginationMixin
 from mixins.serializers import SerializerValidationErrorResponseMixin
 from patients.models import Patient
 from permissions.decorators import method_permission_classes
-from permissions.patients import IsAdministratorOrIsPatientAssignedDoctor, \
-    IsAdministratorOrIsPatientAssignedDoctorOrIsSelf
+from permissions.patients import (
+    IsAdministratorOrIsPatientAssignedDoctor,
+    IsAdministratorOrIsPatientAssignedDoctorOrIsSelf,
+)
 from permissions.users import IsDoctor
 from .serializers import (
     AppointmentUpsetSerializer,
     AppointmentPreviewSerializer,
     AppointmentCalendarSerializer,
-    AppointmentDetailSerializer
+    AppointmentDetailSerializer,
 )
 from doctors.models import Doctor
 from .models import Appointment
@@ -42,9 +36,7 @@ class CancelAppointmentAPIView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, *args, **kwargs):
-        appointment = Appointment.objects.filter(
-            id=kwargs.get("id")
-        ).first()
+        appointment = Appointment.objects.filter(id=kwargs.get("id")).first()
 
         if not appointment:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -54,7 +46,7 @@ class CancelAppointmentAPIView(views.APIView):
 
         return Response(
             {"message": "The appointment has been successfully cancelled."},
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
 
 
@@ -66,16 +58,15 @@ class AppointmentCalendarAPIView(views.APIView):
         appointments = Appointment.objects.filter(doctor=request.user)
         return Response(
             self.serializer_class(appointments, many=True).data,
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
 
 
-class ListAppointmentsByPatientAPIView(
-    views.APIView,
-    SearchMixin,
-    PaginationMixin
-):
-    permission_classes = [IsAuthenticated, IsAdministratorOrIsPatientAssignedDoctorOrIsSelf]
+class ListAppointmentsByPatientAPIView(views.APIView, SearchMixin, PaginationMixin):
+    permission_classes = [
+        IsAuthenticated,
+        IsAdministratorOrIsPatientAssignedDoctorOrIsSelf,
+    ]
     model = Appointment
     list_serializer_class = AppointmentPreviewSerializer
 
@@ -85,19 +76,17 @@ class ListAppointmentsByPatientAPIView(
             request,
             base_queryset=self.model.objects.filter(
                 patient_id=kwargs.get("patient_id")
-            )
+            ),
         )
 
         if request.query_params.get(PAGINATION_PARAMETER, None):
             return self.get_paginated_response_(
-                request,
-                queryset,
-                self.list_serializer_class
+                request, queryset, self.list_serializer_class
             )
 
         return Response(
             self.list_serializer_class(queryset, many=True).data,
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
 
 
@@ -106,7 +95,7 @@ class AppointmentViewSet(
     SearchMixin,
     PaginationMixin,
     SerializerValidationErrorResponseMixin,
-    EmailMixin
+    EmailMixin,
 ):
     upset_serializer_class = AppointmentUpsetSerializer
     list_serializer_class = AppointmentPreviewSerializer
@@ -146,23 +135,34 @@ class AppointmentViewSet(
                     "date": appointment.schedule.start_time.strftime(EMAIL_DATE_FORMAT),
                     "doctor": f"{appointment.doctor.first_name} {appointment.doctor.last_name}",
                     "medical_specialty": getattr(
-                        getattr(appointment, "medical_specialty", None), "name",
-                        DEFAULT_VALUE
+                        getattr(appointment, "medical_specialty", None),
+                        "name",
+                        DEFAULT_VALUE,
                     ),
                     "location": f"{appointment.room.name} ({appointment.room.location})",
-                }
+                },
             )
 
             return Response(
-                {"message": "The appointment has been assigned, check your inbox or the 'Appointments' section."},
-                status=status.HTTP_200_OK
+                {
+                    "message": "The appointment has been assigned, check your inbox or the 'Appointments' section."
+                },
+                status=status.HTTP_200_OK,
             )
         except AppointmentException as exception:
             appointment.delete()
 
             return Response(
-                {"detail": str(exception)},
-                status=status.HTTP_400_BAD_REQUEST
+                {"detail": str(exception)}, status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as exception:
+            appointment.delete()
+
+            print(exception)
+
+            return Response(
+                {"detail": "A server error occurred. Please, try again later."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
     @method_permission_classes([IsAuthenticated])
@@ -174,45 +174,44 @@ class AppointmentViewSet(
         else:
             base_queryset = self.model.objects.all()
 
-        queryset = self.search(
-            self.model,
-            request,
-            base_queryset=base_queryset
-        )
+        queryset = self.search(self.model, request, base_queryset=base_queryset)
 
         return self.get_paginated_response_(
-            request,
-            queryset,
-            self.list_serializer_class
+            request, queryset, self.list_serializer_class
         )
 
     @method_permission_classes([IsAuthenticated])
     def retrieve(self, request, *args, **kwargs):
         appointment = self.get_object()
 
-        if Patient.objects.filter(id=request.user.id).exists() or \
-                not Administrator.objects.filter(id=request.user.id).exists() and \
-                not self.model.objects.filter(patient_id=appointment.patient.id, doctor_id=request.user.id).exists():
+        if (
+            Patient.objects.filter(id=request.user.id).exists()
+            or not Administrator.objects.filter(id=request.user.id).exists()
+            and not self.model.objects.filter(
+                patient_id=appointment.patient.id, doctor_id=request.user.id
+            ).exists()
+        ):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         return Response(
-            self.serializer_class(appointment).data,
-            status=status.HTTP_200_OK
+            self.serializer_class(appointment).data, status=status.HTTP_200_OK
         )
 
     @method_permission_classes([IsAuthenticated])
     def partial_update(self, request, *args, **kwargs):
         appointment = self.get_object()
 
-        if Patient.objects.filter(id=request.user.id).exists() or \
-                not Administrator.objects.filter(id=request.user.id).exists() and \
-                not self.model.objects.filter(patient_id=appointment.patient.id, doctor_id=request.user.id).exists():
+        if (
+            Patient.objects.filter(id=request.user.id).exists()
+            or not Administrator.objects.filter(id=request.user.id).exists()
+            and not self.model.objects.filter(
+                patient_id=appointment.patient.id, doctor_id=request.user.id
+            ).exists()
+        ):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.upset_serializer_class(
-            appointment,
-            data=request.data,
-            partial=True
+            appointment, data=request.data, partial=True
         )
 
         if not serializer.is_valid():
@@ -221,5 +220,5 @@ class AppointmentViewSet(
         serializer.save()
         return Response(
             {"message": "The status of the appointment has been updated."},
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
