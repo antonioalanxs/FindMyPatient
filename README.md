@@ -7,7 +7,6 @@
   - [Overview](#overview)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
-    - [Cloning the repository](#cloning-the-repository)
     - [Run the application](#run-the-application)
   - [Dockerize the application](#dockerize-the-application)
   - [Documentation](#documentation)
@@ -45,14 +44,13 @@ Built using [React.js](https://es.react.dev/), [Bootstrap](https://getbootstrap.
 
 - Have a [Docker Hub](https://hub.docker.com/) account.
 
-### Cloning the repository
-
-```shell
-git clone https://github.com/antonioalanxs/FindMyPatient
-cd FindMyPatient
-```
-
 ### Run the application
+
+- Clone the repository:
+    ```shell
+    git clone https://github.com/antonioalanxs/FindMyPatient
+    cd FindMyPatient
+    ```
 
 - Go to the Docker development directory:
     ```shell
@@ -119,12 +117,6 @@ Use the `build_and_push_image.sh` script to build and push your Docker images to
 - <image>: The name and tag of the image that will be created and pushed to Docker Hub (e.g., username/appname:tag)
 - <docker_hub_username>: Your Docker Hub username
 - <docker_hub_password>: Your Docker Hub password
-
-**Example**:
-
-```shell
-./build_and_push_image.sh backend.dockerfile antonioalanis/findmypatient-backend:latest antonioalanis dckr_pat_FAKE_EXAMPLE_TOKEN123
-```
 
 ## Documentation
 
@@ -228,13 +220,12 @@ There are more users, but these are the most representative.
 
 | Category                                 | URI                                                                                     |
 |------------------------------------------|------------------------------------------------------------------------------------------|
-| Brand                                    | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/logo.png)     |
 | [NM1] - Anonymous Navigation Map         | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-anonymous.png) |
 | [NM2] - Patient Navigation Map           | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-patient.png)   |
 | [NM3] - Doctor Navigation Map            | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-doctor.png)    |
 | [NM4] - Administrator Navigation Map     | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-admin.png)     |
 | [NM5] - Screen / Error Navigation Map    | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-screens.png)   |
 | Architecture Diagram                     | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/architecture-diagram-v2.png) |
-| E / R diagram                            | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/er-diagram.png)       |
-| Database diagram                         | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png) |
-| Real-time tracking of patients diagram   | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png) |
+| E / R Diagram                            | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/er-diagram.png)       |
+| Database Diagram                         | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png) |
+| Real-Time Tracking of Patients Diagram   | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png) |
