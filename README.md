@@ -113,10 +113,10 @@ Use the `build_and_push_image.sh` script to build and push your Docker images to
 ./build_and_push_image.sh <dockerfile> <image> <docker_hub_username> <docker_hub_password>
 ```
 
-- <dockerfile>: Dockerfile name inside the docker/ folder
-- <image>: The name and tag of the image that will be created and pushed to Docker Hub (e.g., username/appname:tag)
-- <docker_hub_username>: Your Docker Hub username
-- <docker_hub_password>: Your Docker Hub password
+- `<dockerfile>`: Dockerfile name inside the docker/ folder
+- `<image>`: The name and tag of the image that will be created and pushed to Docker Hub (e.g., username/appname:tag)
+- `<docker_hub_username>`: Your Docker Hub username
+- `<docker_hub_password>`: Your Docker Hub password
 
 ## Documentation
 
