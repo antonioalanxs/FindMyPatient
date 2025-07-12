@@ -1,0 +1,35 @@
+.swal2-toast,
+.swal2-modal {
+  background-color: $card-bg !important;
+}
+
+.swal2-icon {
+  box-sizing: content-box;
+
+  margin-bottom: 1.5rem;
+}
+
+.swal2-success-circular-line-left,
+.swal2-success-circular-line-right,
+.swal2-success-fix {
+  background-color: transparent !important;
+}
+
+.swal2-warning {
+  border-color: $danger !important;
+
+  color: $danger !important;
+}
+
+.swal2-title {
+  color: $white !important;
+  font-weight: 500 !important;
+}
+
+.swal2-html-container {
+  color: $gray-500 !important;
+}
+
+.swal2-actions > button {
+  margin: 0.5rem;
+}

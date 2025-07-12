@@ -1,0 +1,1130 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "patient"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "doctor"
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": {
+      "name": "administrator"
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "12345678A",
+      "first_name": "John",
+      "last_name": "Smith",
+      "email": "john.smith@example.com",
+      "reset_password_token": null,
+      "birth_date": "1985-05-15",
+      "identity_card_number": "12345678A",
+      "gender": "M",
+      "phone_number": "+34600123456",
+      "nationality": "US",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "87654321B",
+      "first_name": "Mary",
+      "last_name": "Lopez",
+      "email": "mary.lopez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1990-08-25",
+      "identity_card_number": "87654321B",
+      "gender": "F",
+      "phone_number": "+34611223344",
+      "nationality": "US",
+      "is_active": true,
+      "groups": [2]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "11223344C",
+      "first_name": "Charles",
+      "last_name": "Martin",
+      "email": "charles.martin@example.com",
+      "reset_password_token": null,
+      "birth_date": "1975-12-10",
+      "identity_card_number": "11223344C",
+      "gender": "M",
+      "phone_number": "+34622334455",
+      "nationality": "US",
+      "is_active": true,
+      "groups": [3]
+    }
+  },
+  {
+    "model": "medical_specialties.medicalspecialty",
+    "pk": 1,
+    "fields": {
+      "name": "Cardiology",
+      "description": "Medical specialty that deals with heart diseases and the circulatory system."
+    }
+  },
+  {
+    "model": "medical_specialties.medicalspecialty",
+    "pk": 2,
+    "fields": {
+      "name": "Dermatology",
+      "description": "Medical specialty that deals with skin diseases."
+    }
+  },
+  {
+    "model": "doctors.doctor",
+    "pk": 2,
+    "fields": {
+      "collegiate_code": "123456",
+      "medical_specialty": 1,
+      "user_ptr_id": 2
+    }
+  },
+  {
+    "model": "addresses.address",
+    "pk": 1,
+    "fields": {
+      "street": "Fake Street",
+      "city": "New York",
+      "number": "1",
+      "country": "US",
+      "zip_code": "10001"
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 1,
+    "fields": {
+      "social_security_code": "123456789012",
+      "primary_doctor": 2,
+      "address": 1,
+      "user_ptr_id": 1
+    }
+  },
+  {
+    "model": "administrators.administrator",
+    "pk": 3,
+    "fields": {
+      "user_ptr_id": 3
+    }
+  },
+  {
+    "model": "rooms.room",
+    "pk": 1,
+    "fields": {
+      "name": "Room 0101",
+      "description": "Health examination space with adjustable lighting.",
+      "location": "1st Floor, East Wing",
+      "capacity": 5,
+      "medical_specialty": 1,
+      "is_available": true
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 1,
+    "fields": {
+      "start_time": "2025-06-23T09:00:00Z",
+      "end_time": "2025-06-23T09:30:00Z",
+      "doctor": 2
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 2,
+    "fields": {
+      "start_time": "2025-07-01T10:30:00Z",
+      "end_time": "2025-07-01T11:00:00Z",
+      "doctor": 2
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 1,
+    "fields": {
+      "request_date": "2025-06-23T09:00:00Z",
+      "status": "scheduled",
+      "reason": "Routine checkup",
+      "observations": "Patient in good condition.",
+      "medical_specialty": 1,
+      "patient": 1,
+      "doctor": 2,
+      "room": 1,
+      "schedule": 1
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 1,
+    "fields": {
+      "description": "Blood pressure control",
+      "duration": "3 months",
+      "start_date": "2025-06-23",
+      "comments": "Take medicine every morning.",
+      "application_frequency": "Daily",
+      "dosage": "1 pill",
+      "patient": 1,
+      "doctor": 2,
+      "appointment": 1
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 1,
+    "fields": {
+      "name": "Blood Test",
+      "description": "Routine blood analysis",
+      "date": "2025-06-23",
+      "result": "All values normal.",
+      "patient": 1,
+      "doctor": 2,
+      "appointment": 1
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 2,
+    "fields": {
+      "request_date": "2025-07-01T10:30:00Z",
+      "status": "scheduled",
+      "reason": "Palpitations",
+      "observations": "Patient reports palpitations after exercise.",
+      "medical_specialty": 1,
+      "patient": 1,
+      "doctor": 2,
+      "room": 1,
+      "schedule": 2
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 2,
+    "fields": {
+      "description": "Beta-blocker therapy",
+      "duration": "1 month",
+      "start_date": "2025-07-01",
+      "comments": "Monitor side effects.",
+      "application_frequency": "Daily",
+      "dosage": "Half pill",
+      "patient": 1,
+      "doctor": 2,
+      "appointment": 2
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 2,
+    "fields": {
+      "name": "ECG",
+      "description": "Electrocardiogram to check heart rhythm",
+      "date": "2025-07-01",
+      "result": "Sinus rhythm. No abnormalities.",
+      "patient": 1,
+      "doctor": 2,
+      "appointment": 2
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "33333333D",
+      "first_name": "David",
+      "last_name": "Jones",
+      "email": "david.jones@example.com",
+      "reset_password_token": null,
+      "birth_date": "1982-03-10",
+      "identity_card_number": "33333333D",
+      "gender": "M",
+      "phone_number": "+34632345678",
+      "nationality": "UK",
+      "is_active": true,
+      "groups": [2]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "44444444E",
+      "first_name": "Emma",
+      "last_name": "Garcia",
+      "email": "emma.garcia@example.com",
+      "reset_password_token": null,
+      "birth_date": "1988-11-22",
+      "identity_card_number": "44444444E",
+      "gender": "F",
+      "phone_number": "+34633445566",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [2]
+    }
+  },
+  {
+    "model": "doctors.doctor",
+    "pk": 4,
+    "fields": {
+      "collegiate_code": "333333",
+      "medical_specialty": 1,
+      "user_ptr_id": 4
+    }
+  },
+  {
+    "model": "doctors.doctor",
+    "pk": 5,
+    "fields": {
+      "collegiate_code": "444444",
+      "medical_specialty": 2,
+      "user_ptr_id": 5
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "55555555F",
+      "first_name": "Alice",
+      "last_name": "Baker",
+      "email": "alice.baker@example.com",
+      "reset_password_token": null,
+      "birth_date": "1993-02-01",
+      "identity_card_number": "55555555F",
+      "gender": "F",
+      "phone_number": "+34634567890",
+      "nationality": "US",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "11112222G",
+      "first_name": "Brandon",
+      "last_name": "Lee",
+      "email": "brandon.lee@example.com",
+      "reset_password_token": null,
+      "birth_date": "1991-05-12",
+      "identity_card_number": "11112222G",
+      "gender": "M",
+      "phone_number": "+34645678901",
+      "nationality": "CA",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "77778888H",
+      "first_name": "Carla",
+      "last_name": "Mendez",
+      "email": "carla.mendez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1996-06-30",
+      "identity_card_number": "77778888H",
+      "gender": "F",
+      "phone_number": "+34656789012",
+      "nationality": "ES",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "99990000J",
+      "first_name": "Daniel",
+      "last_name": "Rodriguez",
+      "email": "daniel.rodriguez@example.com",
+      "reset_password_token": null,
+      "birth_date": "1989-09-14",
+      "identity_card_number": "99990000J",
+      "gender": "M",
+      "phone_number": "+34667890123",
+      "nationality": "US",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "22223333K",
+      "first_name": "Erika",
+      "last_name": "Santos",
+      "email": "erika.santos@example.com",
+      "reset_password_token": null,
+      "birth_date": "1992-07-07",
+      "identity_card_number": "22223333K",
+      "gender": "F",
+      "phone_number": "+34678901234",
+      "nationality": "PT",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "33334444L",
+      "first_name": "Fabio",
+      "last_name": "Costa",
+      "email": "fabio.costa@example.com",
+      "reset_password_token": null,
+      "birth_date": "1994-10-01",
+      "identity_card_number": "33334444L",
+      "gender": "M",
+      "phone_number": "+34689012345",
+      "nationality": "BR",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 12,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "55556666M",
+      "first_name": "Gloria",
+      "last_name": "White",
+      "email": "gloria.white@example.com",
+      "reset_password_token": null,
+      "birth_date": "1987-03-25",
+      "identity_card_number": "55556666M",
+      "gender": "F",
+      "phone_number": "+34690123456",
+      "nationality": "AU",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 13,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "66667777N",
+      "first_name": "Henry",
+      "last_name": "Mueller",
+      "email": "henry.mueller@example.com",
+      "reset_password_token": null,
+      "birth_date": "1978-12-10",
+      "identity_card_number": "66667777N",
+      "gender": "M",
+      "phone_number": "+34691234567",
+      "nationality": "DE",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 14,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "77778888O",
+      "first_name": "Irene",
+      "last_name": "Taylor",
+      "email": "irene.taylor@example.com",
+      "reset_password_token": null,
+      "birth_date": "1979-04-11",
+      "identity_card_number": "77778888O",
+      "gender": "F",
+      "phone_number": "+34692345678",
+      "nationality": "UK",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "base.user",
+    "pk": 15,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$NNSKBMgar9et28uZNGFg8T$vkAB5hWH47RRHMdOEu2i4z1eEvKm5UKM1pIlee/7phk=",
+      "last_login": null,
+      "username": "88889999P",
+      "first_name": "James",
+      "last_name": "Wilson",
+      "email": "james.wilson@example.com",
+      "reset_password_token": null,
+      "birth_date": "1980-01-05",
+      "identity_card_number": "88889999P",
+      "gender": "M",
+      "phone_number": "+34693456789",
+      "nationality": "US",
+      "is_active": true,
+      "groups": [1]
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 6,
+    "fields": {
+      "social_security_code": "ABC123000001",
+      "primary_doctor": 2,
+      "address": 1,
+      "user_ptr_id": 6
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 7,
+    "fields": {
+      "social_security_code": "ABC123000002",
+      "primary_doctor": 4,
+      "address": 1,
+      "user_ptr_id": 7
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 8,
+    "fields": {
+      "social_security_code": "ABC123000003",
+      "primary_doctor": 4,
+      "address": 1,
+      "user_ptr_id": 8
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 9,
+    "fields": {
+      "social_security_code": "ABC123000004",
+      "primary_doctor": 5,
+      "address": 1,
+      "user_ptr_id": 9
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 10,
+    "fields": {
+      "social_security_code": "ABC123000005",
+      "primary_doctor": 2,
+      "address": 1,
+      "user_ptr_id": 10
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 11,
+    "fields": {
+      "social_security_code": "ABC123000006",
+      "primary_doctor": 5,
+      "address": 1,
+      "user_ptr_id": 11
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 12,
+    "fields": {
+      "social_security_code": "ABC123000007",
+      "primary_doctor": 4,
+      "address": 1,
+      "user_ptr_id": 12
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 13,
+    "fields": {
+      "social_security_code": "ABC123000008",
+      "primary_doctor": 4,
+      "address": 1,
+      "user_ptr_id": 13
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 14,
+    "fields": {
+      "social_security_code": "ABC123000009",
+      "primary_doctor": 5,
+      "address": 1,
+      "user_ptr_id": 14
+    }
+  },
+  {
+    "model": "patients.patient",
+    "pk": 15,
+    "fields": {
+      "social_security_code": "ABC123000010",
+      "primary_doctor": 2,
+      "address": 1,
+      "user_ptr_id": 15
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 3,
+    "fields": {
+      "start_time": "2025-07-05T10:00:00Z",
+      "end_time": "2025-07-05T10:30:00Z",
+      "doctor": 4
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 4,
+    "fields": {
+      "start_time": "2025-07-05T11:00:00Z",
+      "end_time": "2025-07-05T11:30:00Z",
+      "doctor": 5
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 5,
+    "fields": {
+      "start_time": "2025-07-10T10:00:00Z",
+      "end_time": "2025-07-10T10:30:00Z",
+      "doctor": 4
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 6,
+    "fields": {
+      "start_time": "2025-07-15T09:00:00Z",
+      "end_time": "2025-07-15T09:30:00Z",
+      "doctor": 5
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 7,
+    "fields": {
+      "start_time": "2025-07-20T10:00:00Z",
+      "end_time": "2025-07-20T10:30:00Z",
+      "doctor": 4
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 8,
+    "fields": {
+      "start_time": "2025-07-25T11:00:00Z",
+      "end_time": "2025-07-25T11:30:00Z",
+      "doctor": 5
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 9,
+    "fields": {
+      "start_time": "2025-07-30T12:00:00Z",
+      "end_time": "2025-07-30T12:30:00Z",
+      "doctor": 4
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 10,
+    "fields": {
+      "start_time": "2025-08-01T09:00:00Z",
+      "end_time": "2025-08-01T09:30:00Z",
+      "doctor": 5
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 11,
+    "fields": {
+      "start_time": "2025-08-03T10:00:00Z",
+      "end_time": "2025-08-03T10:30:00Z",
+      "doctor": 4
+    }
+  },
+  {
+    "model": "schedules.schedule",
+    "pk": 12,
+    "fields": {
+      "start_time": "2025-08-05T11:00:00Z",
+      "end_time": "2025-08-05T11:30:00Z",
+      "doctor": 5
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 3,
+    "fields": {
+      "request_date": "2025-07-05T09:50:00Z",
+      "status": "scheduled",
+      "reason": "General checkup",
+      "observations": "",
+      "medical_specialty": 1,
+      "patient": 6,
+      "doctor": 4,
+      "room": 1,
+      "schedule": 3
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 4,
+    "fields": {
+      "request_date": "2025-07-05T10:50:00Z",
+      "status": "scheduled",
+      "reason": "Follow-up for skin rash",
+      "observations": "",
+      "medical_specialty": 2,
+      "patient": 7,
+      "doctor": 5,
+      "room": 1,
+      "schedule": 4
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 5,
+    "fields": {
+      "request_date": "2025-07-10T07:50:00Z",
+      "status": "scheduled",
+      "reason": "Blood pressure check",
+      "observations": "",
+      "medical_specialty": 1,
+      "patient": 8,
+      "doctor": 4,
+      "room": 1,
+      "schedule": 5
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 6,
+    "fields": {
+      "request_date": "2025-07-15T08:50:00Z",
+      "status": "scheduled",
+      "reason": "Allergic reaction",
+      "observations": "",
+      "medical_specialty": 2,
+      "patient": 9,
+      "doctor": 5,
+      "room": 1,
+      "schedule": 6
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 7,
+    "fields": {
+      "request_date": "2025-07-20T09:50:00Z",
+      "status": "scheduled",
+      "reason": "Routine heart exam",
+      "observations": "",
+      "medical_specialty": 1,
+      "patient": 10,
+      "doctor": 4,
+      "room": 1,
+      "schedule": 7
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 8,
+    "fields": {
+      "request_date": "2025-07-25T10:50:00Z",
+      "status": "scheduled",
+      "reason": "Skin irritation",
+      "observations": "",
+      "medical_specialty": 2,
+      "patient": 11,
+      "doctor": 5,
+      "room": 1,
+      "schedule": 8
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 9,
+    "fields": {
+      "request_date": "2025-07-30T07:50:00Z",
+      "status": "scheduled",
+      "reason": "Cholesterol check",
+      "observations": "",
+      "medical_specialty": 1,
+      "patient": 12,
+      "doctor": 4,
+      "room": 1,
+      "schedule": 9
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 10,
+    "fields": {
+      "request_date": "2025-08-01T08:50:00Z",
+      "status": "scheduled",
+      "reason": "Dermatology consultation",
+      "observations": "",
+      "medical_specialty": 2,
+      "patient": 13,
+      "doctor": 5,
+      "room": 1,
+      "schedule": 10
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 11,
+    "fields": {
+      "request_date": "2025-08-03T09:50:00Z",
+      "status": "scheduled",
+      "reason": "Arrhythmia follow-up",
+      "observations": "",
+      "medical_specialty": 1,
+      "patient": 14,
+      "doctor": 4,
+      "room": 1,
+      "schedule": 11
+    }
+  },
+  {
+    "model": "appointments.appointment",
+    "pk": 12,
+    "fields": {
+      "request_date": "2025-08-05T10:50:00Z",
+      "status": "scheduled",
+      "reason": "Skin lesion check",
+      "observations": "",
+      "medical_specialty": 2,
+      "patient": 15,
+      "doctor": 5,
+      "room": 1,
+      "schedule": 12
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 3,
+    "fields": {
+      "name": "Blood Test",
+      "description": "Routine analysis",
+      "date": "2025-07-05",
+      "result": "",
+      "patient": 6,
+      "doctor": 4,
+      "appointment": 3
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 3,
+    "fields": {
+      "description": "Daily vitamins",
+      "duration": "2 weeks",
+      "start_date": "2025-07-05",
+      "comments": "Take after breakfast",
+      "application_frequency": "Daily",
+      "dosage": "1 pill",
+      "patient": 6,
+      "doctor": 4,
+      "appointment": 3
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 4,
+    "fields": {
+      "name": "Skin Scraping",
+      "description": "Test for dermatitis",
+      "date": "2025-07-05",
+      "result": "",
+      "patient": 7,
+      "doctor": 5,
+      "appointment": 4
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 4,
+    "fields": {
+      "description": "Dermatitis cream",
+      "duration": "1 week",
+      "start_date": "2025-07-05",
+      "comments": "",
+      "application_frequency": "Twice a day",
+      "dosage": "Apply thin layer",
+      "patient": 7,
+      "doctor": 5,
+      "appointment": 4
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 5,
+    "fields": {
+      "name": "BP Monitoring",
+      "description": "Blood pressure readings",
+      "date": "2025-07-10",
+      "result": "",
+      "patient": 8,
+      "doctor": 4,
+      "appointment": 5
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 5,
+    "fields": {
+      "description": "Mild hypertensive meds",
+      "duration": "1 month",
+      "start_date": "2025-07-10",
+      "comments": "",
+      "application_frequency": "Daily",
+      "dosage": "1 pill",
+      "patient": 8,
+      "doctor": 4,
+      "appointment": 5
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 6,
+    "fields": {
+      "name": "Allergy Patch Test",
+      "description": "Check for allergens",
+      "date": "2025-07-15",
+      "result": "",
+      "patient": 9,
+      "doctor": 5,
+      "appointment": 6
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 6,
+    "fields": {
+      "description": "Antihistamine therapy",
+      "duration": "2 weeks",
+      "start_date": "2025-07-15",
+      "comments": "",
+      "application_frequency": "Daily",
+      "dosage": "1 pill",
+      "patient": 9,
+      "doctor": 5,
+      "appointment": 6
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 7,
+    "fields": {
+      "name": "ECG",
+      "description": "Heart exam",
+      "date": "2025-07-20",
+      "result": "",
+      "patient": 10,
+      "doctor": 4,
+      "appointment": 7
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 7,
+    "fields": {
+      "description": "Cardio-protective meds",
+      "duration": "3 months",
+      "start_date": "2025-07-20",
+      "comments": "",
+      "application_frequency": "Daily",
+      "dosage": "1 pill",
+      "patient": 10,
+      "doctor": 4,
+      "appointment": 7
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 8,
+    "fields": {
+      "name": "Skin Culture",
+      "description": "Check for infection",
+      "date": "2025-07-25",
+      "result": "",
+      "patient": 11,
+      "doctor": 5,
+      "appointment": 8
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 8,
+    "fields": {
+      "description": "Topical antibiotic",
+      "duration": "10 days",
+      "start_date": "2025-07-25",
+      "comments": "",
+      "application_frequency": "Twice a day",
+      "dosage": "Apply small amount",
+      "patient": 11,
+      "doctor": 5,
+      "appointment": 8
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 9,
+    "fields": {
+      "name": "Lipid Panel",
+      "description": "Checks cholesterol levels",
+      "date": "2025-07-30",
+      "result": "",
+      "patient": 12,
+      "doctor": 4,
+      "appointment": 9
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 9,
+    "fields": {
+      "description": "Cholesterol-lowering meds",
+      "duration": "2 months",
+      "start_date": "2025-07-30",
+      "comments": "",
+      "application_frequency": "Daily",
+      "dosage": "1 pill",
+      "patient": 12,
+      "doctor": 4,
+      "appointment": 9
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 10,
+    "fields": {
+      "name": "Dermal Photography",
+      "description": "Monitor mole changes",
+      "date": "2025-08-01",
+      "result": "",
+      "patient": 13,
+      "doctor": 5,
+      "appointment": 10
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 10,
+    "fields": {
+      "description": "Topical anti-inflammatory",
+      "duration": "2 weeks",
+      "start_date": "2025-08-01",
+      "comments": "",
+      "application_frequency": "Once daily",
+      "dosage": "Apply generously",
+      "patient": 13,
+      "doctor": 5,
+      "appointment": 10
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 11,
+    "fields": {
+      "name": "Arrhythmia Panel",
+      "description": "Holter monitor data",
+      "date": "2025-08-03",
+      "result": "",
+      "patient": 14,
+      "doctor": 4,
+      "appointment": 11
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 11,
+    "fields": {
+      "description": "Beta-blocker trial",
+      "duration": "4 weeks",
+      "start_date": "2025-08-03",
+      "comments": "Check pulse daily",
+      "application_frequency": "Daily",
+      "dosage": "Half pill",
+      "patient": 14,
+      "doctor": 4,
+      "appointment": 11
+    }
+  },
+  {
+    "model": "medical_tests.medicaltest",
+    "pk": 12,
+    "fields": {
+      "name": "Biopsy",
+      "description": "Sample of skin lesion",
+      "date": "2025-08-05",
+      "result": "",
+      "patient": 15,
+      "doctor": 5,
+      "appointment": 12
+    }
+  },
+  {
+    "model": "treatments.treatment",
+    "pk": 12,
+    "fields": {
+      "description": "Post-procedure ointment",
+      "duration": "5 days",
+      "start_date": "2025-08-05",
+      "comments": "Observe for infection",
+      "application_frequency": "Twice a day",
+      "dosage": "Apply small amount",
+      "patient": 15,
+      "doctor": 5,
+      "appointment": 12
+    }
+  }
+]
