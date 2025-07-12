@@ -122,22 +122,24 @@ Use the `build_and_push_image.sh` script to build and push your Docker images to
 
 ### Sample users
 
-| **Role**       | **Username** | **Password** |
-|----------------|--------------|--------------|
-| Administrator  | 11223344C    | root         |
-| Doctor         | 87654321B    | root         |
-| Patient        | 12345678A    | root         |
+|    **Role**   | **Username** | **Password** |
+| :-----------: | :----------: | :----------: |
+| Administrator |   11223344C  |     root     |
+|     Doctor    |   87654321B  |     root     |
+|    Patient    |   12345678A  |     root     |
+
 
 There are more users, but these are the most representative.
 
 ### User types
 
-| User Type     | Description                                                                                  |
-|---------------|----------------------------------------------------------------------------------------------|
-| Anonymous     | Unregistered user in the application, with no access to most functionalities.                |
-| Patient       | Registered user with permissions focused on functionalities intended for patients.           |
-| Doctor        | Registered user with access to functionalities specific to the medical role.                 |
-| Administrator | Registered user with full control over the platform and all its entities, with the widest and most complete set of permissions. |
+| **User Type** |                                            **Description**                                           |
+| :-----------: | :--------------------------------------------------------------------------------------------------: |
+|   Anonymous   |             Unregistered user in the application, with no access to most functionalities.            |
+|    Patient    |          Registered user with permissions focused on functionalities intended for patients.          |
+|     Doctor    |             Registered user with access to functionalities specific to the medical role.             |
+| Administrator | Registered user with full control over the platform and all its entities, with the most permissions. |
+
 
 
 ### Functional Requirements
@@ -197,35 +199,37 @@ There are more users, but these are the most representative.
 
 ### Non Functional Requirements
 
-| **Non Functional Requirements**                                     |
-|---------------------------------------------------------------------|
-| Support for Most Web Browsers                                       |
-| Responsive Design                                                   |
-| Minimalist and User-Friendly Interface                              |
-| Back Navigation on All Screens                                      |
-| Accessibility and Usability                                         |
-| Email Sending                                                       |
-| Email Layout                                                        |
-| Scalability                                                         |
-| Availability                                                        |
-| JWT Authentication                                                  |
-| Automatic Session Renewal                                           |
-| Search and Pagination of All Resources                              |
-| SQL Database                                                        |
-| Data Export in Excel (.xlsx) or JSON Format                         |
-| Security and Protection of Users’ Confidential Information          |
+|               **Non Functional Requirements**              |
+| :--------------------------------------------------------: |
+|                Support for Most Web Browsers               |
+|                      Responsive Design                     |
+|           Minimalist and User-Friendly Interface           |
+|               Back Navigation on All Screens               |
+|                 Accessibility and Usability                |
+|                        Email Sending                       |
+|                        Email Layout                        |
+|                         Scalability                        |
+|                        Availability                        |
+|                     JWT Authentication                     |
+|                  Automatic Session Renewal                 |
+|           Search and Pagination of All Resources           |
+|                        SQL Database                        |
+|         Data Export in Excel (.xlsx) or JSON Format        |
+| Security and Protection of Users’ Confidential Information |
+
 
 
 ### Diagrams
 
-| Category                                 | URI                                                                                     |
-|------------------------------------------|------------------------------------------------------------------------------------------|
-| [NM1] - Anonymous Navigation Map         | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-anonymous.png) |
-| [NM2] - Patient Navigation Map           | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-patient.png)   |
-| [NM3] - Doctor Navigation Map            | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-doctor.png)    |
-| [NM4] - Administrator Navigation Map     | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-admin.png)     |
-| [NM5] - Screen / Error Navigation Map    | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-screens.png)   |
-| Architecture Diagram                     | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/architecture-diagram-v2.png) |
-| E / R Diagram                            | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/er-diagram.png)       |
-| Database Diagram                         | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png) |
-| Real-Time Tracking of Patients Diagram   | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png) |
+|              **Category**              |                                                 **URI**                                                 |
+| :------------------------------------: | :-----------------------------------------------------------------------------------------------------: |
+|     NM1 - Anonymous Navigation Map     |     [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-anonymous.png)    |
+|      NM2 - Patient Navigation Map      |      [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-patient.png)     |
+|       NM3 - Doctor Navigation Map      |      [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-doctor.png)      |
+|   NM4 - Administrator Navigation Map   |       [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-admin.png)      |
+|   NM5 - Screen / Error Navigation Map  |      [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-screens.png)     |
+|          Architecture Diagram          | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/architecture-diagram-v2.png) |
+|              E / R Diagram             |        [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/er-diagram.png)       |
+|            Database Diagram            |     [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png)    |
+| Real-Time Tracking of Patients Diagram |    [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png)   |
+
