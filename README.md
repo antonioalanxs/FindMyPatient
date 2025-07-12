@@ -15,6 +15,7 @@
     - [Functional Requirements](#functional-requirements)
     - [Non Functional Requirements](#non-functional-requirements)
     - [Diagrams](#diagrams)
+  - [License](#license)
 
 ## Overview
 
@@ -140,8 +141,6 @@ There are more users, but these are the most representative.
 |     Doctor    |             Registered user with access to functionalities specific to the medical role.             |
 | Administrator | Registered user with full control over the platform and all its entities, with the most permissions. |
 
-
-
 ### Functional Requirements
 
 |                                                           | Anonymous | Patient | Doctor | Administrator |
@@ -217,8 +216,6 @@ There are more users, but these are the most representative.
 |         Data Export in Excel (.xlsx) or JSON Format        |
 | Security and Protection of Users’ Confidential Information |
 
-
-
 ### Diagrams
 
 |              **Category**              |                                                 **URI**                                                 |
@@ -233,3 +230,6 @@ There are more users, but these are the most representative.
 |            Database Diagram            |     [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png)    |
 | Real-Time Tracking of Patients Diagram |    [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png)   |
 
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).
