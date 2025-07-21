@@ -1,5 +1,0 @@
-version: '3'
-
-services:
-  test:
-    image: antonioalanis/findmypatient-backend:latest

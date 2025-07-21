@@ -108,52 +108,52 @@ jobs:
           ./build_and_push_image.sh frontend.dockerfile ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-frontend:latest ${{ secrets.DOCKER_HUB_USERNAME }} ${{ secrets.DOCKER_HUB_PASSWORD }}
         working-directory: docker
 
-  deploy-to-azure:
-    name: Deploy to Azure
-    runs-on: ubuntu-latest
-    needs: [backend-ci, frontend-ci, build-and-push-images-to-docker-hub]
-    if: github.ref == 'refs/heads/main'
+  # deploy-to-azure:
+  #   name: Deploy to Azure
+  #   runs-on: ubuntu-latest
+  #   needs: [backend-ci, frontend-ci, build-and-push-images-to-docker-hub]
+  #   if: github.ref == 'refs/heads/main'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Azure CLI login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     - name: Azure CLI login
+  #       uses: azure/login@v2
+  #       with:
+  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Delete existing Azure Container Instances
-        run: |
-          az container delete --name findmypatient-backend --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes || true
-          az container delete --name findmypatient-frontend --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes || true
+  #     - name: Delete existing Azure Container Instances
+  #       run: |
+  #         az container delete --name findmypatient-backend --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes || true
+  #         az container delete --name findmypatient-frontend --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --yes || true
 
-      - name: Deploy Docker images to Azure Container Instances
-        run: |
-          az container create \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --name findmypatient-backend \
-            --image ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-backend:latest \
-            --registry-login-server index.docker.io \
-            --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
-            --registry-password ${{ secrets.DOCKER_HUB_PASSWORD }} \
-            --dns-name-label backend-findmypatient \
-            --ports 80 \
-            --os-type Linux \
-            --cpu 1 \
-            --memory 1.5
+  #     - name: Deploy Docker images to Azure Container Instances
+  #       run: |
+  #         az container create \
+  #           --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+  #           --name findmypatient-backend \
+  #           --image ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-backend:latest \
+  #           --registry-login-server index.docker.io \
+  #           --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+  #           --registry-password ${{ secrets.DOCKER_HUB_PASSWORD }} \
+  #           --dns-name-label backend-findmypatient \
+  #           --ports 80 \
+  #           --os-type Linux \
+  #           --cpu 1 \
+  #           --memory 1.5
 
-          az container create \
-            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
-            --name findmypatient-frontend \
-            --image ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-frontend:latest \
-            --registry-login-server index.docker.io \
-            --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
-            --registry-password ${{ secrets.DOCKER_HUB_PASSWORD }} \
-            --dns-name-label frontend-findmypatient \
-            --ports 80 \
-            --os-type Linux \
-            --cpu 1 \
-            --memory 1.5
+  #         az container create \
+  #           --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+  #           --name findmypatient-frontend \
+  #           --image ${{ secrets.DOCKER_HUB_USERNAME }}/findmypatient-frontend:latest \
+  #           --registry-login-server index.docker.io \
+  #           --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+  #           --registry-password ${{ secrets.DOCKER_HUB_PASSWORD }} \
+  #           --dns-name-label frontend-findmypatient \
+  #           --ports 80 \
+  #           --os-type Linux \
+  #           --cpu 1 \
+  #           --memory 1.5

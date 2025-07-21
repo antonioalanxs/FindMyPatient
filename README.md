@@ -14,7 +14,8 @@
     - [User types](#user-types)
     - [Functional Requirements](#functional-requirements)
     - [Non Functional Requirements](#non-functional-requirements)
-    - [Diagrams](#diagrams)
+    - [Documents](#documents)
+  - [Contributions](#contributions)
   - [License](#license)
 
 ## Overview
@@ -130,7 +131,7 @@ Use the `build_and_push_image.sh` script to build and push your Docker images to
 |    Patient    |   12345678A  |     root     |
 
 
-There are more users, but these are the most representative.
+**Note**: There are more users, but these are the most representative.
 
 ### User types
 
@@ -196,6 +197,8 @@ There are more users, but these are the most representative.
 | Delete permission group                                  |           |         |        |      ✔️       |
 | Export database                                          |           |         |   ✔️   |      ✔️       |
 
+**Note**: This is a general overview table to give you an idea of the system's functionality. There are over 100 functional requirements in total.
+
 ### Non Functional Requirements
 
 |               **Non Functional Requirements**              |
@@ -216,19 +219,33 @@ There are more users, but these are the most representative.
 |         Data Export in Excel (.xlsx) or JSON Format        |
 | Security and Protection of Users’ Confidential Information |
 
-### Diagrams
+### Documents
 
-|              **Category**              |                                                 **URI**                                                 |
-| :------------------------------------: | :-----------------------------------------------------------------------------------------------------: |
-|     NM1 - Anonymous Navigation Map     |     [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-anonymous.png)    |
-|      NM2 - Patient Navigation Map      |      [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-patient.png)     |
-|       NM3 - Doctor Navigation Map      |      [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-doctor.png)      |
-|   NM4 - Administrator Navigation Map   |       [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-admin.png)      |
-|   NM5 - Screen / Error Navigation Map  |      [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/navmap-screens.png)     |
-|          Architecture Diagram          | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/architecture-diagram-v2.png) |
-|              E / R Diagram             |        [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/er-diagram.png)       |
-|            Database Diagram            |     [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png)    |
-| Real-Time Tracking of Patients Diagram |    [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png)   |
+| **Document**                            | **URI**                                                                                                 |
+|:-----------------------------------------:|----------------------------------------------------------------------------------------------------------|
+| Anonymous Navigation Map                | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/non-authenticated-user-navigation-map.drawio.png) |
+| Patient Navigation Map                  | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/patient-navigation-map.drawio.png) |
+| Doctor Navigation Map                   | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/doctor-navigation-map.drawio.png) |
+| Administrator Navigation Map            | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/administrator-navigation-map.drawio.png) |
+| Screen / Error Navigation Map           | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/error-navigation-map.drawio.png) |
+| Architecture Diagram                    | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/architecture-diagram-v2.png) |
+| ER Diagram                              | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/er-diagram.png) |
+| Database Diagram                        | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/database-diagram.png) |
+| Real-Time Tracking Diagram              | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/websockets-diagram.png) |
+| Deployment Diagram                      | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/deploy.png) |
+| Workflow Diagram                        | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/workflow.png) |
+| Bachelor's Thesis Report                | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/AntonioJosé_AlanísBernal_Memoria.pdf) |
+| Bachelor's Thesis Presentation          | [↗️](https://github.com/antonioalanxs/FindMyPatient/blob/main/README-files/AntonioJosé_AlanísBernal_Presentación.pdf) |
+
+## Contributions
+
+If you would like to contribute to the project, please follow these steps:
+
+1. Fork the repository
+2. Create a new branch for your feature or bug fix (`git checkout -b feature/new-feature`)
+3. Make your changes and commit them following the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) format (`git commit -m 'feat: add new feature'` or `fix: correct a bug`)
+4. Push your branch to the remote repository (`git push origin feature/new-feature`)
+5. Create a Pull Request
 
 ## License
 
